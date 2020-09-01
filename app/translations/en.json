@@ -28,9 +28,9 @@
   "boilerplate.components.Header.menu4": "Reports",
   "boilerplate.components.Header.welcome": "Welcome",
 
-  "boilerplate.components.BankHeader.menu1": "Branches",
-  "boilerplate.components.BankHeader.menu2": "Partners",
-  "boilerplate.components.BankHeader.menu3": "Users",
+  "boilerplate.components.PartnerHeader.menu1": "Branches",
+  "boilerplate.components.PartnerHeader.menu2": "Partners",
+  "boilerplate.components.PartnerHeader.menu3": "Users",
 
   "boilerplate.containers.ForgotPage.pagetitle": "Forgot Password",
   "boilerplate.containers.ForgotPage.title": "Enter your mobile number",

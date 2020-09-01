@@ -45,13 +45,13 @@ class BankSidebarThree extends Component {
     return (
         <Sidebar marginRight>
             
-            <A href={"/bank/branch/"+this.props.branchId}>
+            <A href={"/partner/branch/"+this.props.branchId}>
             <Card rounded selected={info} className="sideNav">
                 <i className="material-icons">person_add</i>
                 <h3>Branch Info</h3>
             </Card >
             </A>
-            <A href={"/bank/cashiers/"+this.props.branchId}>
+            <A href={"/partner/cashiers/"+this.props.branchId}>
             <Card rounded selected={cashier} className="sideNav">
             <i className="material-icons">folder</i>
                 <h3>Cashier</h3>

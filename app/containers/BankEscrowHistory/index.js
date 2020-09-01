@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import Wrapper from 'components/Wrapper';
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
 import Logo from 'components/Header/Logo';
 import Nav from 'components/Header/Nav';
@@ -485,7 +485,7 @@ export default class BankEscrowHistory extends Component {
           <meta charSet="utf-8" />
           <title>Escrow History | BANK | E-WALLET</title>
         </Helmet>
-        <BankHeader />
+        <PartnerHeader />
         <Container verticalMargin>
           <SidebarBank />
           <Main>

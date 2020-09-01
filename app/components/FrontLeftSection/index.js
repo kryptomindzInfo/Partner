@@ -30,8 +30,8 @@ class FrontLeftSection extends Component {
               (this.props.logo) ?
               <img src={this.props.logo} />
               :
-              (this.props.from == 'bank')  ?
-                <FormattedMessage {...messages.bank} />
+              (this.props.from == 'partner')  ?
+                'PARTNER'
               :
               (this.props.from == 'user')  ?
               <FormattedMessage {...messages.user} />

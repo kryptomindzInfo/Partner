@@ -15,24 +15,21 @@ import HomePage from 'containers/HomePage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import OTPPage from 'containers/OTPPage/Loadable';
-import DashboardPage from 'containers/DashboardPage/Loadable';
-import BankPage from 'containers/BankPage/Loadable';
 import InfraInfo from 'containers/InfraInfo/Loadable';
 import CreateFee from 'containers/CreateFee/Loadable';
 import EditFee from 'containers/EditFee/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LocaleToggle from 'containers/LocaleToggle/index';
 
-import BankLoginPage from 'containers/BankLoginPage/Loadable';
+import LoginPage from 'containers/PartnerLoginPage/Loadable';
 import BankForgotPasswordPage from 'containers/BankForgotPasswordPage/Loadable';
 import BankOTPPage from 'containers/BankOTPPage/Loadable';
-import BankSetupPage from 'containers/BankSetupPage/Loadable';
-import BankDashboard from 'containers/BankDashboard/Loadable';
-import BankActivate from 'containers/BankActivate/Loadable';
 import SetupPage from 'containers/SetupPage/Loadable';
+import PartnerDashboard from 'containers/PartnerDashboard/Loadable';
+import Activate from 'containers/PartnerActivate/Loadable';
 import ForgotSetup from 'containers/ForgotSetup/Loadable';
 import BankInfo from 'containers/BankInfo/Loadable';
-import BankBranchInfo from 'containers/BankBranchInfo/Loadable';
+import PartnerBranchInfo from 'containers/PartnerBranchInfo/Loadable';
 import BankDocuments from 'containers/BankDocuments/Loadable';
 import BankTheme from 'containers/BankTheme/Loadable';
 import UserPage from 'containers/UserPage/Loadable';
@@ -43,13 +40,13 @@ import MasterHistory from 'containers/MasterHistory/Loadable';
 import InfraProfile from 'containers/InfraProfile/Loadable';
 import InfraCurrency from 'containers/InfraCurrency/Loadable';
 import InfraCountry from 'containers/InfraCountry/InfraCountry';
-import BankOperationalHistory from 'containers/BankOperationalHistory/Loadable';
+import PartnerOperationalHistory from 'containers/PartnerOperationalHistory/Loadable';
 import BankEscrowHistory from 'containers/BankEscrowHistory/Loadable';
-import BankBranchList from 'containers/BankBranchList/Loadable';
+import PartnerBranchList from 'containers/PartnerBranchList/Loadable';
 import TermsConditions from 'components/TermsConditions';
 import BankCreateFee from 'containers/BankCreateFee/Loadable';
-import BankCashierList from 'containers/BankCashierList/Loadable';
-import BankUser from 'containers/BankUser';
+import PartnerCashierList from 'containers/PartnerCashierList/Loadable';
+import PartnerUser from 'containers/PartnerUser';
 import BranchLogin from 'containers/BranchLogin';
 import BranchForgotPassword from 'containers/BranchForgotPassword';
 import BranchOTPPage from 'containers/BranchOTPPage';
@@ -71,7 +68,6 @@ import BankEditFee from 'containers/BankEditFee';
 import FeeList from 'containers/FeeList';
 
 import { ThemeProvider } from 'styled-components';
-import AllRoutes from './AllRoutes';
 import BankCreationConfirmationPage from '../../components/BankCreationConfirmationPage';
 import CashierRoute from './CashierRoute';
 import BranchRoute from './BranchRoute';
@@ -113,9 +109,6 @@ export default function App(props) {
       <div>
         <Switch>
           <BranchRoute exact path="/send-money" component={CashierSendMoney} />
-          <Route exact path="/routes" component={AllRoutes} />
-          <Route exact path="/" component={HomePage} notify={notify} />
-          <Route exact path="/setup" component={SetupPage} notify={notify} />
           <Route exact path="/lang" component={LocaleToggle} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/forgot-password" component={ForgotPasswordPage} />
@@ -123,8 +116,7 @@ export default function App(props) {
           <Route exact path="/otp" component={OTPPage} />
           <Route exact path="/termsConditions" component={TermsConditions} />
 
-          <InfraRoute exact path="/dashboard" component={DashboardPage} />
-          <InfraRoute exact path="/banks" component={BankPage} />
+          
           <InfraRoute exact path="/profile" component={InfraProfile} />
           <InfraRoute exact path="/currency" component={InfraCurrency} />
           <InfraRoute exact path="/country" component={InfraCountry} />
@@ -162,9 +154,9 @@ export default function App(props) {
             path="/merchants/:id"
             component={p => <InfraMerchantList {...p} />}
           />
-          <Route exact path="/bank" component={BankLoginPage} />
-          <Route exact path="/bank/setup" component={BankSetupPage} />
-          <Route exact path="/bank/activate" component={BankActivate} />
+          <Route exact path="/" component={LoginPage} />
+          <Route exact path="/setup" component={SetupPage} />
+          <Route exact path="/activate" component={Activate} />
           <Route
             exact
             path="/bank/forgot-password"
@@ -172,17 +164,17 @@ export default function App(props) {
           />
           <Route exact path="/bank/otp" component={BankOTPPage} />
 
-          <BankRoute exact path="/bank/dashboard" component={BankDashboard} />
+          <BankRoute exact path="/dashboard" component={PartnerDashboard} />
           <BankRoute path="/bank/info" component={BankInfo} />
           <BankRoute path="/bank/fees" component={BankFees} />
           <BankRoute path="/bank/documents" component={BankDocuments} />
-          <BankRoute path="/bank/branches" component={BankBranchList} />
-          <BankRoute path="/bank/branch/:branch?" component={BankBranchInfo} />
+          <BankRoute path="/branches" component={PartnerBranchList} />
+          <BankRoute path="/partner/branch/:branch?" component={PartnerBranchInfo} />
           <BankRoute
-            path="/bank/cashiers/:branch?"
-            component={BankCashierList}
+            path="/partner/cashiers/:branch?"
+            component={PartnerCashierList}
           />
-          <BankRoute path="/bank/users" component={BankUser} />
+          <BankRoute path="/users" component={PartnerUser} />
           <BankRoute path="/bank/create-fee" component={BankCreateFee} />
           <BankRoute
             path="/bank/theme"
@@ -191,8 +183,8 @@ export default function App(props) {
             appTheme={theme}
           />
           <BankRoute
-            path="/bank/operationalHistory"
-            component={BankOperationalHistory}
+            path="/partner/operationalHistory"
+            component={PartnerOperationalHistory}
           />
           <BankRoute
             exact
@@ -209,8 +201,8 @@ export default function App(props) {
           />
           <BankRoute
             exact
-            path="/bank/operationalHistory"
-            component={BankOperationalHistory}
+            path="/partner/operationalHistory"
+            component={PartnerOperationalHistory}
           />
           <BankRoute
             exact

@@ -9,7 +9,7 @@ import Card from '../../../components/Card';
 import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
 import SettingSideBar from '../SettingSidebar';
-import BankHeader from '../../../components/Header/BankHeader';
+import PartnerHeader from '../../../components/Header/PartnerHeader';
 import { CURRENCY } from '../../App/constants';
 import MerchantFee from './MerchantFee';
 import { getRules } from '../api/merchantAPI';
@@ -118,7 +118,7 @@ const MerchantFeesPage = props => {
         <meta charSet="utf-8" />
         <title>Merchant | Settings</title>
       </Helmet>
-      <BankHeader active="merchants" />
+      <PartnerHeader active="merchants" />
       <Container verticalMargin>
         <SettingSideBar active="fee" />
         <Main big>

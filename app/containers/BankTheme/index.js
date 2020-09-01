@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import { SwatchesPicker } from 'react-color';
 import Color from 'color';
 
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
 import BankSidebarTwo from 'components/Sidebar/BankSidebarTwo';
 import Main from 'components/Main';
@@ -35,7 +35,7 @@ export function BankTheme(props) {
         <title>BankTheme</title>
         <meta name="description" content="Description of BankTheme" />
       </Helmet>
-      <BankHeader />
+      <PartnerHeader />
       <Container>
         <BankSidebarTwo active="theme" />
         <Main>

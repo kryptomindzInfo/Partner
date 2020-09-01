@@ -14,7 +14,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import Wrapper from 'components/Wrapper';
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
 import Popup from 'components/Popup';
 import BankSidebarTwo from 'components/Sidebar/BankSidebarTwo';
@@ -601,7 +601,7 @@ export default class BankInfo extends Component {
           <meta charSet="utf-8" />
           <title>Banks | INFRA | E-WALLET</title>
         </Helmet>
-        <BankHeader />
+        <PartnerHeader />
         <Container verticalMargin>
           <BankSidebarTwo active="info" />
           <Main>

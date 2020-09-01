@@ -14,7 +14,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import Wrapper from 'components/Wrapper';
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import CashierWallets from 'components/Sidebar/CashierWallets';
 import Container from 'components/Container';
 import Popup from 'components/Popup';
@@ -610,7 +610,7 @@ export default class BankCashierInfo extends Component {
           <meta charSet="utf-8" />
           <title>Branch | INFRA | E-WALLET</title>
         </Helmet>
-        <BankHeader page="branch"  goto={"/bank/cashiers/"+this.props.match.params.branch} middleTitle={this.state.name} />
+        <PartnerHeader page="branch"  goto={"/bank/cashiers/"+this.props.match.params.branch} middleTitle={this.state.name} />
         <Container verticalMargin>
           
           <BankSidebarCashier active="info" blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={this.state.name}/>

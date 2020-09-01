@@ -6,7 +6,7 @@
 import { defineMessages } from 'react-intl';
 
 export const scope = 'boilerplate.components.Header';
-export const scope2 = 'boilerplate.components.BankHeader';
+export const scope2 = 'boilerplate.components.PartnerHeader';
 
 export default defineMessages({
   logo: {

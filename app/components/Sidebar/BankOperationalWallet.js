@@ -22,7 +22,7 @@ toast.configure({
   pauseOnHover: true,
   draggable: true,
 });
-const token = localStorage.getItem('bankLogged');
+const token = localStorage.getItem('partnerLogged');
 
 class BankOperationalWallet extends Component {
   constructor() {
@@ -96,82 +96,6 @@ class BankOperationalWallet extends Component {
     });
   };
 
-  addBank = event => {
-    event.preventDefault();
-    // axios
-    //   .post(`${API_URL  }/generateOTP`, {
-    //     name: this.state.name,
-    //     mobile: this.state.mobile,
-    //     page: 'addBank',
-    //     token,
-    //   })
-    //   .then(res => {
-    //     if(res.status == 200){
-    //       if(res.data.error){
-    //         throw res.data.error;
-    //       }else{
-    //         this.setState({
-    //           showOtp: true,
-    //           notification: 'OTP Sent'
-    //         });
-    //         this.success();
-    //       }
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    //   })
-    //   .catch(err => {
-    //     this.setState({
-    //       notification: (err.response) ? err.response.data.error : err.toString()
-    //     });
-    //     this.error();
-    //   });
-  };
-
-  verifyOTP = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL}/addBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              notification: 'Bank added successfully!',
-            });
-            this.success();
-            this.closePopup();
-            this.getBanks();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  };
-
   submitMoney = e => {
     e.preventDefault();
     if (this.state.amount > this.state.balance) {
@@ -239,7 +163,7 @@ class BankOperationalWallet extends Component {
       bank: this.props.historyLink,
     });
     axios
-      .get(`${API_URL}/getBankOperationalBalance?bank=${this.state.token}`)
+      .get(`${API_URL}/partner/getOperationalBalance?token=${token}`)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -293,7 +217,7 @@ class BankOperationalWallet extends Component {
             <FormattedMessage {...messages.sendmoney} />
           </button>
         }
-        <A href={'/bank/operationalHistory'}>
+        <A href={'/partner/operationalHistory'}>
           <span className="history">History</span>
         </A>
 

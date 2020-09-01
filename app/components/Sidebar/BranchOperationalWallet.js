@@ -585,9 +585,7 @@ class BranchOperationalWallet extends Component {
   getBalance = () => {
     axios
       .get(
-        `${API_URL}/getWalletBalance?bank=${this.props.bankName}&token=${
-          this.state.token
-        }&type=branch&page=operational`,
+        `${API_URL}/partner/getOperationalBalance`,
       )
       .then(res => {
         if (res.status == 200) {

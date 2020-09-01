@@ -37,9 +37,9 @@ class Welcome extends Component {
   };
 
   logoutBank = () => {
-    localStorage.removeItem('bankLogged');
-    localStorage.removeItem('bankName');
-    history.push('/bank');
+    localStorage.removeItem('partnerLogged');
+    localStorage.removeItem('PartnerName');
+    history.push('/');
     //this.props.history.push('/bank');
   };
 
@@ -60,7 +60,7 @@ class Welcome extends Component {
     let name = '';
     let isAdmin = false;
     if (this.props.from == 'bank') {
-      name = localStorage.getItem('bankName');
+      name = localStorage.getItem('partnerName');
     } else if (this.props.from == 'branch') {
       name = localStorage.getItem('branchName');
     } else if (this.props.from == 'cashier') {
@@ -134,7 +134,7 @@ class Welcome extends Component {
             ) : (
               <>
                 <Name>
-                  <span>BANK:</span> {name}
+                  <span>Partner:</span> {name}
                 </Name>
                 <SubNav className="bankSubNav">
                   <A href="/bank/info">Settings</A>

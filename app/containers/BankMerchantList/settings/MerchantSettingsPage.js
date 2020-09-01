@@ -11,7 +11,7 @@ import Col from '../../../components/Col';
 import EditMerchantPopup from './EditMerchantPopup';
 import Loader from '../../../components/Loader';
 import SettingSideBar from '../SettingSidebar';
-import BankHeader from '../../../components/Header/BankHeader';
+import PartnerHeader from '../../../components/Header/PartnerHeader';
 
 const MerchantSettingsPage = props => {
   const [editMerchantPopup, setEditMerchantPopup] = useState(false);
@@ -43,7 +43,7 @@ const MerchantSettingsPage = props => {
         <meta charSet="utf-8" />
         <title>Merchant | Settings</title>
       </Helmet>
-      <BankHeader active="merchants" />
+      <PartnerHeader active="merchants" />
       <Container verticalMargin>
         <SettingSideBar merchantId={id} active="info" />
         <Main>

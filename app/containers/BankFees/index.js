@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Wrapper from 'components/Wrapper';
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import BankSidebarTwo from 'components/Sidebar/BankSidebarTwo';
 import Container from 'components/Container';
 import Loader from 'components/Loader';
@@ -559,7 +559,7 @@ export class BankFees extends Component {
           <meta charSet="utf-8" />
           <title>Banks | INFRA | E-WALLET</title>
         </Helmet>
-        <BankHeader />
+        <PartnerHeader />
         <Container verticalMargin>
           <BankSidebarTwo active="fees" />
           <Main

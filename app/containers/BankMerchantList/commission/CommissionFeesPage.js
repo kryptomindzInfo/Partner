@@ -9,7 +9,7 @@ import Card from '../../../components/Card';
 import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
 import SettingSideBar from '../SettingSidebar';
-import BankHeader from '../../../components/Header/BankHeader';
+import PartnerHeader from '../../../components/Header/PartnerHeader';
 import { CURRENCY } from '../../App/constants';
 import CommissionFee from './CommissionFee';
 import CommissionRevenueSharingRule from './CommissionRevenueSharingRule';
@@ -118,7 +118,7 @@ const CommissionFeesPage = props => {
         <meta charSet="utf-8" />
         <title>Merchant | Settings</title>
       </Helmet>
-      <BankHeader active="merchants" />
+      <PartnerHeader active="merchants" />
       <Container verticalMargin>
         <SettingSideBar active="commission" />
         <Main big>

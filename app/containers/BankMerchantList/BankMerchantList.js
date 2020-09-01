@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import BankHeader from '../../components/Header/BankHeader';
+import PartnerHeader from '../../components/Header/PartnerHeader';
 import Wrapper from '../../components/Wrapper';
 import Container from '../../components/Container';
 import SidebarBank from '../../components/Sidebar/SidebarBank';
@@ -114,7 +114,7 @@ function BankMerchantList(props) {
         <meta charSet="utf-8" />
         <title>Banks | INFRA | E-WALLET</title>
       </Helmet>
-      <BankHeader active="merchants" />
+      <PartnerHeader active="merchants" />
       <Container verticalMargin>
         <SidebarBank />
         <Main>

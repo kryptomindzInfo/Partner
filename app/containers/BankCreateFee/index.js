@@ -31,7 +31,7 @@ import Row from 'components/Row';
 import Col from 'components/Col';
 import styled from 'styled-components';
 import Loader from 'components/Loader';
-import BankHeader from 'components/Header/BankHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import BankSidebarTwo from 'components/Sidebar/BankSidebarTwo';
 
 const H4 = styled.h4`
@@ -596,7 +596,7 @@ export default class BankCreateFee extends Component {
           <meta charSet="utf-8" />
           <title>Create Fee | INFRA | E-WALLET</title>
         </Helmet>
-        <BankHeader />
+        <PartnerHeader />
         <Container verticalMargin>
           <BankSidebarTwo active="fees" />
           <Main>
