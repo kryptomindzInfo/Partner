@@ -78,7 +78,7 @@ export default class BranchLogin extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/branchLogin`, this.state)
+      .post(`${API_URL}/partnerBranch/login`, this.state)
       .then(res => {
         if (res.status == 200) {
           console.log(res);
@@ -117,10 +117,10 @@ export default class BranchLogin extends Component {
 
   componentDidMount() {
     axios
-      .post(`${API_URL}/getBankByName`, {name: this.props.match.params.bank})
+      .post(`${API_URL}/getPartnerByName`, {name: this.props.match.params.bank})
       .then(res => {
         if (res.status == 200) {
-          this.setState({ bank: res.data.banks, loading:false });
+          this.setState({ bank: res.data, loading:false });
         } else {
           throw res.data.error;
         }

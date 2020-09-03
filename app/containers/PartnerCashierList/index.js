@@ -92,7 +92,7 @@ export default class PartnerCashierList extends Component {
     this.setState({ popup: true });
   };
   showEditPopup = (v) => {
-    this.setState({ editPopup: true, name: v.name, bcode: v.bcode, eworking_from: v.working_from == 0? this.state.working_from : v.working_from, eworking_to: v.working_to == 0 ? this.state.working_to: v.working_to, per_trans_amt: v.per_trans_amt, max_trans_amt: v.max_trans_amt, max_trans_count: v.max_trans_count, cashier_id: v._id});
+    this.setState({ editPopup: true, name: v.name, code: v.code, eworking_from: v.working_from == 0? this.state.working_from : v.working_from, eworking_to: v.working_to == 0 ? this.state.working_to: v.working_to, per_trans_amt: v.per_trans_amt, max_trans_amt: v.max_trans_amt, max_trans_count: v.max_trans_count, cashier_id: v._id});
   };
 
   closePopup = () => {
@@ -100,7 +100,7 @@ export default class PartnerCashierList extends Component {
       popup: false,
       editPopup: false,
       name: '',
-      bcode: '',
+      code: '',
       working_from: '00:00',
       working_to: '00:00',
       per_trans_amt: '',
@@ -155,6 +155,7 @@ addBranch = event => {
       axios
       .post(`${API_URL}/partner/addCashier`, this.state)
       .then(res => {
+        console.log(res);
         if(res.status == 200){
           if(res.data.error){
             throw res.data.error;
@@ -276,7 +277,7 @@ addBranch = event => {
       .post(`${API_URL  }/partner/editCashier`, {
         cashier_id: this.state.cashier_id,
     name: this.state.name,
-    bcode:this.state.bcode,
+    code:this.state.code,
     working_from: this.state.eworking_from,
     working_to: this.state.eworking_to,
     per_trans_amt: this.state.per_trans_amt,
@@ -493,7 +494,6 @@ addBranch = event => {
     .post(`${API_URL  }/getOne`, { page: 'branch', type: 'bank', token: token, page_id : this.props.match.params.branch})
     .then(res => {
       if(res.status == 200){
-        console.log(res.data);
         this.setState({ otpEmail: res.data.row.email, otpMobile: res.data.row.mobile, bankName: res.data.row.name, dbcode: res.data.row.bcode, working_from: res.data.row.working_from  == 0 ? '00:00' : res.data.row.working_from, working_to: res.data.row.working_to  == 0 ? '00:00' : res.data.row.working_to  });
         this.getCashiers();
       }
@@ -505,7 +505,7 @@ addBranch = event => {
 
   getCashiers = () => {
     axios
-      .post(`${API_URL  }/getAll`, { page: 'cashier', type: 'partner', token: token, where: {branch_id: this.props.match.params.branch}})
+      .post(`${API_URL}/partner/getAll`, { page: 'partnerCashier', token: token, where: {branch_id: this.props.match.params.branch}})
       .then(res => {
         if(res.status == 200){
           console.log(res.data);
@@ -520,16 +520,12 @@ addBranch = event => {
 
   componentDidMount() {
     this.setState({ branch_id: this.props.match.params.branch },() =>{
-      this.getBanks();
-      // this.getCashiers();
+      // this.getBanks();
+      this.getCashiers();
     })
-   
-     
-
   }
 
   render() {
-    console.log(this.props);
     function inputFocus(e) {
       const { target } = e;
       target.parentElement.querySelector("label").classList.add("focused");
@@ -557,7 +553,7 @@ addBranch = event => {
           <meta charSet="utf-8" />
           <title>Cashiers | BANK | E-WALLET</title>
         </Helmet>
-        <PartnerHeader page="branch" middleTitle={this.state.bankName} goto="/bank/branches/"  />
+        <PartnerHeader page="branch" middleTitle={this.state.bankName} goto="/branches"  />
         <Container verticalMargin>
         <BankSidebarThree active="cashier" branchId={this.props.match.params.branch} bankName={this.state.name}/>
           <Main>
@@ -607,7 +603,7 @@ addBranch = event => {
                             <span className="absoluteMiddleRight primary popMenuTrigger">
                             <i className="material-icons ">more_vert</i>
                             <div className="popMenu">
-                              <A href={"/bank/cashier/"+dis.props.match.params.branch+"/"+b._id}>Cashier Info</A>
+                              <A href={"/partner/cashier/"+dis.props.match.params.branch+"/"+b._id}>Cashier Info</A>
                               <span onClick={() => dis.showEditPopup(b)}>Edit</span>
                               {
                                 b.status == -1 ?
@@ -684,10 +680,10 @@ addBranch = event => {
                 <label>Cashier Code*</label>
                 <TextInput
                   type="text"
-                  name="bcode"
+                  name="code"
                   onFocus={inputFocus}
                   onBlur={inputBlur}
-                  value={this.state.bcode}
+                  value={this.state.code}
                   onChange={this.handleInputChange}
                   required
                 />
@@ -861,10 +857,10 @@ addBranch = event => {
                 <TextInput
                   type="text"
                   autoFocus
-                  name="bcode"
+                  name="code"
                   onFocus={inputFocus}
                   onBlur={inputBlur}
-                  value={this.state.bcode}
+                  value={this.state.code}
                   onChange={this.handleInputChange}
                   required
                 />

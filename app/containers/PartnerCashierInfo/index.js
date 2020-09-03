@@ -62,10 +62,10 @@ font-size: 20px;
 padding: 15px;
 `;
 
-const token = localStorage.getItem('bankLogged');
-const bid = localStorage.getItem('bankId');
+const token = localStorage.getItem('partnerLogged');
+const bid = localStorage.getItem('partnerId');
 
-export default class BankCashierInfo extends Component {
+export default class PartnerCashierInfo extends Component {
   constructor() {
     super();
     this.state = {
@@ -127,38 +127,6 @@ export default class BankCashierInfo extends Component {
     });
   };
 
-
-  editBank = event => {
-
-    event.preventDefault();
-    if(this.state.logo == null || this.state.logo == ''){
-      this.setState({
-        notification: "You need to upload a logo"
-      }, () =>{
-        this.error();
-      });
-    }
-    else if(this.state.contract == null || this.state.contract == ''){
-      this.setState({
-        notification: "You need to upload a contract"
-      }, () =>{
-        this.error();
-      });
-    }
-    else{
-      this.setState({
-        editBankLoading: true
-      });
-      this.setState({
-        showOtp: true
-      }, () =>{
-        this.generateOTP();
-        this.setState({
-          editBankLoading: false
-        });
-      });
-    }
-  };
   showEditPopup = (v) => {
     this.setState({ editPopup: true });
   };
@@ -390,22 +358,9 @@ export default class BankCashierInfo extends Component {
   };
 
   logout = () => {
-    // event.preventDefault();
-    // axios.post(API_URL+'/logout', {token: token})
-    // .then(res => {
-    //    if(res.status == 200){
     localStorage.removeItem("logged");
     localStorage.removeItem("name");
     this.setState({ redirect: true });
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    // })
-    // .catch(err => {
-    //   alert('Login to continue');
-    //   this.setState({ redirect: true });
-    // });
   };
 
 
@@ -413,49 +368,6 @@ export default class BankCashierInfo extends Component {
     event.preventDefault();
 
   };
-
-  verifyOTP = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/addBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: "Bank added successfully!",
-            });
-            this.success();
-            this.closeMiniPopUp();
-            this.getBranches();
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-      });
-  };
-
 
   removeFile = key => {
     this.setState({
@@ -517,7 +429,7 @@ export default class BankCashierInfo extends Component {
 
   getBranches = () => {
     axios
-      .post(`${API_URL  }/getOne`, { token:token, page_id: this.state.cashier_id, type: 'bank', page: 'cashier' })
+      .post(`${API_URL}/partner/getOne`, { token:token, page: 'partnerCashier', where: {cashier_id: this.state.cashier_id}})
       .then(res => {
         if(res.status == 200){
           this.setState({ loading: false, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.bcode, working_from: res.data.row.working_from, working_to: res.data.row.working_to, per_trans_amt: res.data.row.per_trans_amt, max_trans_count: res.data.row.max_trans_count, max_trans_amt: res.data.row.max_trans_amt, cashier_id: res.data.row._id, status: res.data.row.status});
@@ -571,7 +483,7 @@ export default class BankCashierInfo extends Component {
     this.setState({ cashier_id: this.props.match.params.cashier, branch_id : this.props.match.params.branch }, () => {
       if (token !== undefined && token !== null) {
         this.getBranches();
-        this.getBanks();
+        // this.getBanks();
       } else {
         // alert('Login to continue');
         // this.setState({loading: false, redirect: true });

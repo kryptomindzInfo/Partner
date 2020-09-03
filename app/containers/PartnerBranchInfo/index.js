@@ -387,37 +387,6 @@ export default class PartnerBranchInfo extends Component {
       });
   };
 
-  decline = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/declineFee`, {
-        id: this.state.sid,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: 'Declined'
-            });
-            this.success();
-
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-      });
-  };
-
 
   showWallet = event => {
     event.preventDefault();
@@ -530,7 +499,7 @@ export default class PartnerBranchInfo extends Component {
       .post(`${API_URL}/partner/getBranch`, { token:token, branch_id: this.state.branch_id})
       .then(res => {
         if(res.status == 200){
-          this.setState({loading: false});
+          console.log(res);
           this.setState({ loading: false, banks: res.data.branch, name: res.data.branch.name, bcode: res.data.branch.code, credit_limit: res.data.branch.credit_limit, username: res.data.branch.username, address1: res.data.branch.address1, state: res.data.branch.state, zip: res.data.branch.zip, country: res.data.branch.country, ccode: res.data.branch.ccode, mobile: res.data.branch.mobile, email: res.data.branch.email, branch_id: res.data.branch._id, status: res.data.branch.status});
         }
       })

@@ -43,7 +43,7 @@ toast.configure({
 
 const token = localStorage.getItem('cashierLogged');
 const bid = localStorage.getItem('cashierId');
-const logo = localStorage.getItem('bankLogo');
+// const logo = localStorage.getItem('bankLogo');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
 //enable the following line and disable the next line to test for tomorrow
@@ -348,7 +348,7 @@ generateOTP = () => {
 
   getStats = () => {
     axios
-      .post(`${API_URL}/getCashierDashStats`, {
+      .post(`${API_URL}/partnerCashier/getDashStats`, {
         token: token
       })
       .then(res => {
@@ -411,7 +411,7 @@ generateOTP = () => {
 
   getBranchByName = () => {
     axios
-      .post(`${API_URL}/getBranchByName`, {
+      .post(`${API_URL}/partnerCashier/getBranchByName`, {
         name: this.props.match.params.bank,
       })
       .then(res => {
@@ -513,7 +513,7 @@ generateOTP = () => {
           from="cashier"
         />
         <Container verticalMargin>
-          <SidebarCashier refresh={this.getHistory.bind(this)} branchName={this.props.match.params.bank} ref={this.child} />
+          {/* <SidebarCashier refresh={this.getHistory.bind(this)} branchName={this.props.match.params.bank} ref={this.child} /> */}
           <Main>
 
             <div className="clr">

@@ -171,7 +171,7 @@ export default class BranchCashierInfo extends Component {
             notification: 'Cashier ' + n
           });
           this.success();
-          this.getBranches();
+          this.getCashier();
         }
       }else{
         const error = new Error(res.data.error);
@@ -256,7 +256,7 @@ export default class BranchCashierInfo extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL  }/editCashier`, this.state)
+      .post(`${API_URL}/partnerBranch/editCashier`, this.state)
       .then(res => {
         if(res.status == 200){
           if(res.data.error){
@@ -267,7 +267,7 @@ export default class BranchCashierInfo extends Component {
             }, function(){
               this.success();
               this.closePopup();
-              this.getBranches();
+              this.getCashier();
             });
           }
         }else{
@@ -302,7 +302,7 @@ export default class BranchCashierInfo extends Component {
     axios
       .post(`${API_URL  }/editBranch`, {
         name: this.state.name,
-        bcode: this.state.bcode,
+        code: this.state.code,
         username: this.state.username,
         credit_limit: this.state.credit_limit,
         address1: this.state.address1,
@@ -325,7 +325,7 @@ export default class BranchCashierInfo extends Component {
             }, function(){
               this.success();
               this.closePopup();
-              this.getBranches();
+              this.getCashier();
             });
           }
         }else{
@@ -425,7 +425,7 @@ export default class BranchCashierInfo extends Component {
             });
             this.success();
             this.closeMiniPopUp();
-            this.getBranches();
+            this.getCashier();
           }
         }else{
           const error = new Error(res.data.error);
@@ -499,12 +499,13 @@ export default class BranchCashierInfo extends Component {
   }
 
 
-  getBranches = () => {
+  getCashier = () => {
     axios
-      .post(`${API_URL  }/getOne`, { token:token, page_id: this.state.cashier_id, type: 'branch', page: 'cashier' })
+      .post(`${API_URL}/partnerBranch/getOne`, { token:token, page: 'partnerCashier', where: { _id: this.state.cashier_id } })
       .then(res => {
         if(res.status == 200){
-          this.setState({ loading: false, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.bcode, working_from: res.data.row.working_from, working_to: res.data.row.working_to, per_trans_amt: res.data.row.per_trans_amt, max_trans_count: res.data.row.max_trans_count, max_trans_amt: res.data.row.max_trans_amt, cashier_id: res.data.row._id, status: res.data.row.status});
+          console.log(res);
+          this.setState({ loading: false, banks: res.data.row, name: res.data.row.name, code: res.data.row.code, working_from: res.data.row.working_from, working_to: res.data.row.working_to, per_trans_amt: res.data.row.per_trans_amt, max_trans_count: res.data.row.max_trans_count, max_trans_amt: res.data.row.max_trans_amt, cashier_id: res.data.row._id, status: res.data.row.status});
         }
       })
       .catch(err => {
@@ -542,7 +543,7 @@ export default class BranchCashierInfo extends Component {
 
     this.setState({ cashier_id: this.props.match.params.cashier }, () => {
       if (token !== undefined && token !== null) {
-        this.getBranches();
+        this.getCashier();
 
       } else {
         // alert('Login to continue');
@@ -607,7 +608,7 @@ export default class BranchCashierInfo extends Component {
                 Cashier Code
                 </Col>
                 <Col className="infoRight">
-                {this.state.bcode}
+                {this.state.code}
                 </Col>
               </Row>
 
@@ -736,10 +737,10 @@ export default class BranchCashierInfo extends Component {
                 <TextInput
                   type="text"
                   autoFocus
-                  name="bcode"
+                  name="code"
                   onFocus={inputFocus}
                   onBlur={inputBlur}
-                  value={this.state.bcode}
+                  value={this.state.code}
                   onChange={this.handleInputChange}
                   required
                 />

@@ -754,7 +754,7 @@ export default class BranchDashboard extends Component {
   };
   getStats = () => {
     axios
-      .post(`${API_URL}/getBranchDashStats`, {
+      .post(`${API_URL}/partnerBranch/getDashStats`, {
         token: token,
       })
       .then(res => {
@@ -776,7 +776,7 @@ export default class BranchDashboard extends Component {
   };
   getBranchByName = () => {
     axios
-      .post(`${API_URL}/getBranchByName`, {
+      .post(`${API_URL}/partnerBranch/getDetailsByName`, {
         name: name,
       })
       .then(res => {
@@ -819,9 +819,8 @@ export default class BranchDashboard extends Component {
 
   getCashiers = () => {
     axios
-      .post(`${API_URL}/getAll`, {
-        page: 'cashier',
-        type: 'branch',
+      .post(`${API_URL}/partnerBranch/getAll`, {
+        page: 'partnerCashier',
         token: token,
         where: { branch_id: bid },
       })
@@ -836,8 +835,8 @@ export default class BranchDashboard extends Component {
 
     getUsers = () => {
     axios
-      .post(`${API_URL}/getAll`, {
-        page: 'bankuser',
+      .post(`${API_URL}/partnerBranch/getAll`, {
+        page: 'partnerUser',
         type: 'branch',
         token: token,
         where: {},
@@ -892,7 +891,7 @@ export default class BranchDashboard extends Component {
           bankLogo={STATIC_URL + logo}
         />
         <Container verticalMargin>
-          <SidebarBranch bankName={this.props.match.params.bank} />
+          {/* <SidebarBranch bankName={this.props.match.params.bank} /> */}
           <Main>
             <Row>
               <Col>

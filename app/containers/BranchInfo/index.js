@@ -128,38 +128,6 @@ export default class BranchInfo extends Component {
     });
   };
 
-
-  editBank = event => {
-
-    event.preventDefault();
-    if(this.state.logo == null || this.state.logo == ''){
-      this.setState({
-        notification: "You need to upload a logo"
-      }, () =>{
-        this.error();
-      });
-    }
-    else if(this.state.contract == null || this.state.contract == ''){
-      this.setState({
-        notification: "You need to upload a contract"
-      }, () =>{
-        this.error();
-      });
-    }
-    else{
-      this.setState({
-        editBankLoading: true
-      });
-      this.setState({
-        showOtp: true
-      }, () =>{
-        this.generateOTP();
-        this.setState({
-          editBankLoading: false
-        });
-      });
-    }
-  };
   showEditPopup = (v) => {
     this.setState({ editPopup: true });
   };
@@ -258,57 +226,6 @@ export default class BranchInfo extends Component {
     });
   };
 
-  editBranch = event => {
-    this.setState({
-      editBranchLoading: true
-    });
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/editBranch`, {
-        name: this.state.name,
-        bcode: this.state.bcode,
-        username: this.state.username,
-        credit_limit: this.state.credit_limit,
-        address1: this.state.address1,
-        state: this.state.state,
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        branch_id: this.state.branch_id,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: "Bank updated successfully!",
-            }, function(){
-              this.success();
-              this.closePopup();
-              this.getBranches();
-            });
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-        this.setState({
-          editBranchLoading: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString(),
-          editBranchLoading:false
-        });
-        this.error();
-      });
-  };
-
   showMiniPopUp = event => {
     this.setState({ popup: true });
     var id = event.target.getAttribute("data-id");
@@ -338,168 +255,15 @@ export default class BranchInfo extends Component {
   };
 
   logout = () => {
-    // event.preventDefault();
-    // axios.post(API_URL+'/logout', {token: token})
-    // .then(res => {
-    //    if(res.status == 200){
     localStorage.removeItem("logged");
     localStorage.removeItem("name");
     this.setState({ redirect: true });
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    // })
-    // .catch(err => {
-    //   alert('Login to continue');
-    //   this.setState({ redirect: true });
-    // });
   };
-
-  addBank = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/generateOTP`, {
-        name: this.state.name,
-        mobile: this.state.mobile,
-        page: 'addBank',
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              showEditOtp: true,
-              notification: 'OTP Sent'
-            });
-            this.success();
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-      });
-  };
-
-  approve = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/approveFee`, {
-        id: this.state.sid,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: 'Approved',
-
-            });
-            this.success();
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-
-      });
-  };
-
-  decline = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/declineFee`, {
-        id: this.state.sid,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: 'Declined'
-            });
-            this.success();
-
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-      });
-  };
-
 
   showWallet = event => {
     event.preventDefault();
 
   };
-
-  verifyOTP = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL  }/addBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: "Bank added successfully!",
-            });
-            this.success();
-            this.closeMiniPopUp();
-            this.getBranches();
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString()
-        });
-        this.error();
-      });
-  };
-
 
   removeFile = key => {
     this.setState({
@@ -561,10 +325,10 @@ export default class BranchInfo extends Component {
 
   getBranches = () => {
     axios
-      .post(`${API_URL  }/getBranchInfo`, { token:token})
+      .post(`${API_URL}/partnerBranch/getOne`, { token:token, page: 'partnerBranch', where: { _id: bid } })
       .then(res => {
         if(res.status == 200){
-          this.setState({ loading: false, bankUsers: res.data.bankUsers, banks: res.data.branches, name: res.data.branches.name, bcode: res.data.branches.bcode, credit_limit: res.data.branches.credit_limit, username: res.data.branches.username, address1: res.data.branches.address1, state: res.data.branches.state, zip: res.data.branches.zip, country: res.data.branches.country, ccode: res.data.branches.ccode, mobile: res.data.branches.mobile, email: res.data.branches.email, branch_id: res.data.branches._id, status: res.data.branches.status, dbcode: res.data.branches.bcode});
+          this.setState({ loading: false, bankUsers: res.data.bankUsers, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.code, credit_limit: res.data.row.credit_limit, username: res.data.row.username, address1: res.data.row.address1, state: res.data.row.state, zip: res.data.row.zip, country: res.data.row.country, ccode: res.data.row.ccode, mobile: res.data.row.mobile, email: res.data.row.email, branch_id: res.data.row._id, status: res.data.row.status, dbcode: res.data.row.bcode});
         }
       })
       .catch(err => {
@@ -596,72 +360,8 @@ export default class BranchInfo extends Component {
     this.setState({ popup: true});
   };
 
-  verifyEditOTP = event => {
-    this.setState({
-      verifyLoading: true
-    });
-    event.preventDefault();
-
-    axios
-      .post(`${API_URL  }/editBankBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-        zip: this.state.zip,
-        bank_id: this.state.bank_id,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        bcode: this.state.bcode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        otp_id: this.state.otpId,
-        token,
-      })
-      .then(res => {
-        if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
-          }else{
-            this.setState({
-              notification: "Bank updated successfully!",
-            });
-            this.success();
-            this.closePopup();
-            this.getBranches();
-          }
-        }else{
-          const error = new Error(res.data.error);
-          throw error;
-        }
-        this.setState({
-          verifyLoading: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          notification: (err.response) ? err.response.data.error : err.toString(),
-          verifyLoading: false
-        });
-        this.error();
-      });
-  };
-
   componentDidMount() {
     this.getBranches();
-    // this.setState({ bank: this.state.bank_id });
-    // this.setState({ branch_id: this.props.match.params.branch }, () => {
-    //   if (token !== undefined && token !== null) {
-    //     this.getBranches();
-    //
-    //   } else {
-    //     // alert('Login to continue');
-    //     // this.setState({loading: false, redirect: true });
-    //   }
-    // });
-
   }
 
 

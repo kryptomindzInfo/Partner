@@ -71,9 +71,6 @@ export default class BranchCashierList extends Component {
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
     this.warn = this.warn.bind(this);
-
-    this.onChange = this.onChange.bind(this);
-    this.fileUpload = this.fileUpload.bind(this);
   }
 
   success = () => toast.success(this.state.notification);
@@ -128,7 +125,7 @@ export default class BranchCashierList extends Component {
     this.setState({
       assignPop: true,
       name: v.name,
-      bcode: v.bcode,
+      code: v.code,
       working_from: v.working_from,
       working_to: v.working_to,
       per_trans_amt: v.per_trans_amt,
@@ -142,7 +139,7 @@ export default class BranchCashierList extends Component {
     this.setState({
       editPopup: true,
       name: v.name,
-      bcode: v.bcode,
+      code: v.code,
       working_from: v.working_from,
       working_to: v.working_to,
       per_trans_amt: v.per_trans_amt,
@@ -163,7 +160,7 @@ export default class BranchCashierList extends Component {
       assignPop: false,
       openingPopup: false,
       name: '',
-      bcode: '',
+      code: '',
       working_from: '',
       working_to: '',
       per_trans_amt: '',
@@ -196,11 +193,9 @@ export default class BranchCashierList extends Component {
     });
 
     axios
-      .put(`${API_URL}/updateCashier`, {
-        page_id: this.state.cashier_id,
-        updateData: { bank_user_id: this.state.bank_user_id },
-        page: 'cashier',
-        type: 'branch',
+      .post(`${API_URL}/partnerBranch/updateCashierUser`, {
+        cashier_id: this.state.cashier_id,
+        user_id: this.state.bank_user_id,
         token: token,
       })
       .then(res => {
@@ -214,7 +209,7 @@ export default class BranchCashierList extends Component {
             });
             this.success();
             this.closePopup();
-            this.getBranches();
+            this.getCashiers();
           }
         } else {
           const error = new Error(res.data.error);
@@ -248,7 +243,7 @@ export default class BranchCashierList extends Component {
             });
             this.success();
             this.closePopup();
-            this.getBranches();
+            this.getCashiers();
           }
         } else {
           const error = new Error(res.data.error);
@@ -359,7 +354,7 @@ export default class BranchCashierList extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/editCashier`, this.state)
+      .post(`${API_URL}/partnerBranch/editCashier`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -372,7 +367,7 @@ export default class BranchCashierList extends Component {
               function() {
                 this.success();
                 this.closePopup();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -412,7 +407,7 @@ export default class BranchCashierList extends Component {
               function() {
                 this.success();
                 this.closePopup();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -448,7 +443,7 @@ export default class BranchCashierList extends Component {
               },
               function() {
                 this.success();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -488,7 +483,7 @@ export default class BranchCashierList extends Component {
               () => {
                 this.success();
                 this.closeMiniPopUp();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -531,7 +526,7 @@ export default class BranchCashierList extends Component {
               () => {
                 this.success();
                 this.closeMiniPopUp();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -567,50 +562,10 @@ export default class BranchCashierList extends Component {
     input.click();
   };
 
-  onChange(e) {
-    if (e.target.files && e.target.files[0] != null) {
-      this.fileUpload(e.target.files[0], e.target.getAttribute('data-key'));
-    }
-  }
-
-  fileUpload(file, key) {
-    const formData = new FormData();
-    //  formData.append('token',token);
-    formData.append('file', file);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
-
-    axios
-      .post(`${API_URL}/fileUpload?token=${token}`, formData, config)
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              [key]: res.data.name,
-            });
-          }
-        } else {
-          throw res.data.error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  }
-
   getUsers = () => {
     axios
-      .post(`${API_URL}/getAll`, {
-        page: 'bankuser',
-        type: 'branch',
+      .post(`${API_URL}/partnerBranch/getAll`, {
+        page: 'partnerUser',
         token: token,
         where: {},
       })
@@ -622,11 +577,10 @@ export default class BranchCashierList extends Component {
       .catch(err => {});
   };
 
-  getBranches = () => {
+  getCashiers = () => {
     axios
-      .post(`${API_URL}/getAll`, {
-        page: 'cashier',
-        type: 'branch',
+      .post(`${API_URL}/partnerBranch/getAll`, {
+        page: 'partnerCashier',
         token: token,
         where: { branch_id: bid },
       })
@@ -640,12 +594,11 @@ export default class BranchCashierList extends Component {
   };
 
   componentDidMount() {
-    this.getBranches();
+    this.getCashiers();
     this.getUsers();
   }
 
   render() {
-    console.log(this.props);
     function inputFocus(e) {
       const { target } = e;
       target.parentElement.querySelector('label').classList.add('focused');
@@ -678,7 +631,7 @@ export default class BranchCashierList extends Component {
           bankLogo={STATIC_URL + logo}
         />
         <Container verticalMargin>
-          <SidebarBranch bankName={this.props.match.params.bank} />
+          {/* <SidebarBranch bankName={this.props.match.params.bank} /> */}
           <Main>
             <ActionBar
               marginBottom="33px"
@@ -731,19 +684,12 @@ export default class BranchCashierList extends Component {
                                   (b.cash_received - b.cash_paid)
                                 ).toFixed(2)}
                               </td>
-                              {/* <td className="tac">
-                                {CURRENCY}{' '}
-                                {(
-                                  Number(b.max_trans_amt) -
-                                  (b.cash_paid + b.cash_received)
-                                ).toFixed(2)}
-                              </td> */}
                               <td>
                                 {this.state.users.filter(
-                                  u => u._id == b.bank_user_id,
+                                  u => u._id == b.partner_user_id,
                                 )[0]
                                   ? this.state.users.filter(
-                                      u => u._id == b.bank_user_id,
+                                      u => u._id == b.partner_user_id,
                                     )[0].name
                                   : ''}
                               </td>
@@ -844,11 +790,11 @@ export default class BranchCashierList extends Component {
                 <label>Cashier Code*</label>
                 <TextInput
                   type="text"
-                  name="bcode"
+                  name="code"
                   autoFocus
                   onFocus={inputFocus}
                   onBlur={inputBlur}
-                  value={this.state.bcode}
+                  value={this.state.code}
                   onChange={this.handleInputChange}
                   readOnly
                   required
@@ -952,10 +898,10 @@ export default class BranchCashierList extends Component {
                     <label>Cashier Code*</label>
                     <TextInput
                       type="text"
-                      name="bcode"
+                      name="code"
                       onFocus={inputFocus}
                       onBlur={inputBlur}
-                      value={this.state.bcode}
+                      value={this.state.code}
                       onChange={this.handleInputChange}
                       required
                     />
@@ -1113,10 +1059,10 @@ export default class BranchCashierList extends Component {
                     <TextInput
                       type="text"
                       autoFocus
-                      name="bcode"
+                      name="code"
                       onFocus={inputFocus}
                       onBlur={inputBlur}
-                      value={this.state.bcode}
+                      value={this.state.code}
                       onChange={this.handleInputChange}
                       required
                     />

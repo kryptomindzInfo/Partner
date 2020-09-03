@@ -29,18 +29,6 @@ class BranchWallets extends Component {
   }
 
 getBalance = () => {
-  // console.log(this.props.match.params.branch);
-  //   axios
-  //   .post(`${API_URL  }/getOne`, { page: 'branch', type: 'bank', token: token, page_id : this.props.match.params.branch})
-  //   .then(res => {
-  //     if(res.status == 200){
-  //       console.log(res.data);
-        
-  //     }
-  //   })
-  //   .catch(err => {
-
-  //   });
 console.log(this.props);
       axios
       .get(
@@ -64,30 +52,6 @@ console.log(this.props);
         }
       })
       .catch(err => {});
-    // axios
-    //   .get(
-    //     `${API_URL}/getWalletBalance?bank=${this.props.bankName}&token=${
-    //       this.state.token
-    //     }&type=branch&page=operational`,
-    //   )
-    //   .then(res => {
-    //     if (res.status == 200) {
-    //       if (res.data.error) {
-    //         throw res.data.error;
-    //       } else {
-    //         this.setState({
-    //           balance: res.data.balance,
-    //         }, () => {
-    //           var dis =this;
-    //           setTimeout(function(){
-    //             dis.getBalance();
-    //           }, 3000);
-    //         });
-
-    //       }
-    //     }
-    //   })
-    //   .catch(err => {});
   };
 
   componentDidMount() {
