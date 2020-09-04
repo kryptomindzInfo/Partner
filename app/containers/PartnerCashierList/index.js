@@ -64,7 +64,9 @@ export default class PartnerCashierList extends Component {
       popup: false,
       showOtp: false,
       working_from: "00:00",
+      default_working_from: "00:00",
       working_to: "00:00",
+      default_working_to: "00:00",
     };
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -101,8 +103,8 @@ export default class PartnerCashierList extends Component {
       editPopup: false,
       name: '',
       code: '',
-      working_from: '00:00',
-      working_to: '00:00',
+      working_from: this.state.default_working_from,
+      working_to: this.state.default_working_to,
       per_trans_amt: '',
       max_trans_amt: '',
       max_trans_count: '',
@@ -166,6 +168,7 @@ addBranch = event => {
             this.success();
             this.closePopup();
             this.getCashiers();
+            this.getBanks();
           }
         }else{
           const error = new Error(res.data.error);
@@ -296,6 +299,7 @@ addBranch = event => {
               this.success();
               this.closePopup();
               this.getCashiers();
+              this.getBanks();
             });
           }
         }else{
@@ -495,7 +499,7 @@ addBranch = event => {
     .then(res => {
       if(res.status == 200){
         console.log(res.data);
-        this.setState({ otpEmail: res.data.row.email, otpMobile: res.data.row.mobile, bankName: res.data.row.name, dbcode: res.data.row.bcode, working_from: res.data.row.working_from  == 0 ? '00:00' : res.data.row.working_from, working_to: res.data.row.working_to  == 0 ? '00:00' : res.data.row.working_to  });
+        this.setState({ otpEmail: res.data.row.email, otpMobile: res.data.row.mobile, bankName: res.data.row.name, dbcode: res.data.row.bcode, default_working_from: res.data.row.working_from  == 0 ? '00:00' : res.data.row.working_from, working_from: res.data.row.working_from  == 0 ? '00:00' : res.data.row.working_from, default_working_to: res.data.row.working_to  == 0 ? '00:00' : res.data.row.working_to, working_to: res.data.row.working_to  == 0 ? '00:00' : res.data.row.working_to  });
         this.getCashiers();
       }
     })

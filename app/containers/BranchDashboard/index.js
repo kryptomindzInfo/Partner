@@ -969,10 +969,10 @@ export default class BranchDashboard extends Component {
                               </td> */}
                               <td>
                                 {this.state.users.filter(
-                                  u => u._id == b.bank_user_id,
+                                  u => u._id == b.partner_user_id,
                                 )[0]
                                   ? this.state.users.filter(
-                                      u => u._id == b.bank_user_id,
+                                      u => u._id == b.partner_user_id,
                                     )[0].name
                                   : ''}
                               </td>
