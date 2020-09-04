@@ -43,7 +43,7 @@ toast.configure({
 
 const token = localStorage.getItem('cashierLogged');
 const bid = localStorage.getItem('cashierId');
-// const logo = localStorage.getItem('bankLogo');
+const logo = localStorage.getItem('bankLogo');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
 //enable the following line and disable the next line to test for tomorrow
@@ -215,7 +215,7 @@ generateOTP = () => {
       verifyEditOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/openCashierBalance`, this.state)
+      .post(`${API_URL}/partnerCashier/openBalance`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -306,10 +306,10 @@ generateOTP = () => {
 
   getHistory = () => {
     axios
-      .post(`${API_URL}/cashier/getTransactionHistory`, {
+      .post(`${API_URL}/partnerCashier/getHistory`, {
         token: token,
         where: { cashier_id: bid },
-        from: 'cashier',
+        from: 'operational',
         page: this.state.activePage,
         offset: this.state.perPage,
       })
@@ -513,7 +513,7 @@ generateOTP = () => {
           from="cashier"
         />
         <Container verticalMargin>
-          {/* <SidebarCashier refresh={this.getHistory.bind(this)} branchName={this.props.match.params.bank} ref={this.child} /> */}
+          <SidebarCashier refresh={this.getHistory.bind(this)} branchName={this.props.match.params.bank} ref={this.child} />
           <Main>
 
             <div className="clr">

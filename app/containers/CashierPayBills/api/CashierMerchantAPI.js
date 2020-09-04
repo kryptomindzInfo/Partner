@@ -5,7 +5,7 @@ import { API_URL } from '../../App/constants';
 const token = localStorage.getItem('cashierLogged');
 const fetchCashierMerchantList = async () => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/listMerchants`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/listMerchants`, {
       token,
     });
     if (res.status === 200) {
@@ -25,7 +25,7 @@ const fetchCashierMerchantList = async () => {
 
 const checkCashierFee = async payload => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/checkMerchantFee`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/checkMerchantFee`, {
       token,
       ...payload,
     });

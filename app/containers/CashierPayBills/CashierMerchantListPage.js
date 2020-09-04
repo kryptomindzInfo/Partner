@@ -62,7 +62,7 @@ function CashierMerchantListPage(props) {
   const getStats = () => {
     const getStatus = setInterval(function(){
       axios
-      .post(`${API_URL}/getCashierDashStats`, {
+      .post(`${API_URL}/partnerCashier/getDashStats`, {
         token: token
       })
       .then(res => {

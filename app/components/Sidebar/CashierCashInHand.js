@@ -110,7 +110,7 @@ class CashierCashInHand extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierCancelTransfer`, {
+      .post(`${API_URL}/partnerCashier/cancelTransfer`, {
         otpId: this.state.otpId,
         otp: this.state.otp,
         token,
@@ -155,7 +155,7 @@ class CashierCashInHand extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierAcceptIncoming`, {
+      .post(`${API_URL}/partnerCashier/acceptIncoming`, {
         otpId: this.state.otpId,
         otp: this.state.otp,
         token,
@@ -274,7 +274,7 @@ class CashierCashInHand extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierTransferMoney`, {
+      .post(`${API_URL}/partnerCashier/transferMoney`, {
         otpId: this.state.otpId,
         otp: this.state.otp,
         token,
@@ -392,7 +392,7 @@ class CashierCashInHand extends Component {
 
   getStats = () => {
     axios
-      .post(`${API_URL}/getCashierDashStats`, {
+      .post(`${API_URL}/partnerCashier/getDashStats`, {
         token: token
       })
       .then(res => {
@@ -429,7 +429,7 @@ class CashierCashInHand extends Component {
 
   getIncoming = () => {
     axios
-      .post(`${API_URL}/getCashierIncomingTransfer`, {
+      .post(`${API_URL}/partnerCashier/getIncomingTransfer`, {
         token: token
       })
       .then(res => {
@@ -456,10 +456,9 @@ class CashierCashInHand extends Component {
 
   getCashiers = () => {
     axios
-      .post(`${API_URL}/getAll`, {
+      .post(`${API_URL}/partnerCashier/getAll`, {
         token: token,
-        page: "cashier",
-        type: "cashier",
+        page: "partnerCashier",
         where: {
           branch_id: this.state.branch_id,
           _id: { $ne: cid },

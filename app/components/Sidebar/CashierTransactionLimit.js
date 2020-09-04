@@ -807,7 +807,7 @@ class CashierTransactionLimit extends Component {
 
   getTransLimit = () => {
     axios
-      .post(`${API_URL}/getCashierTransLimit`, { token })
+      .post(`${API_URL}/partnerCashier/getCashierTransLimit`, { token })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {

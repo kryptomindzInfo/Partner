@@ -258,7 +258,7 @@ class CashierClosingBalance extends Component {
 
   getStats = () => {
     axios
-      .post(`${API_URL}/getClosingBalance`, {
+      .post(`${API_URL}/partnerCashier/getClosingBalance`, {
         token: token,
       })
       .then(res => {
@@ -338,7 +338,7 @@ class CashierClosingBalance extends Component {
       verifyEditOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/addClosingBalance`, this.state)
+      .post(`${API_URL}/partnerCashier/addClosingBalance`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {

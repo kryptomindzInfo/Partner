@@ -52,7 +52,7 @@ export default class CashierLogin extends Component {
       username: '',
       password: '',
       notification: '',
-      loading: false,
+      loading: true,
       redirect: false,
     };
     this.error = this.error.bind(this);
@@ -89,7 +89,7 @@ export default class CashierLogin extends Component {
             localStorage.setItem('cashierUserName', res.data.username);
             localStorage.setItem('userId', res.data.id);
             localStorage.setItem('cashierId', res.data.cashier_id);
-            // localStorage.setItem('bankLogo', this.state.bank.logo);
+            localStorage.setItem('bankLogo', this.state.bank.logo);
             localStorage.setItem('cashierEmail', res.data.email);
             localStorage.setItem('cashierMobile', res.data.mobile);
             console.log(res);
@@ -112,19 +112,19 @@ export default class CashierLogin extends Component {
   };
 
   componentDidMount() {
-    // axios
-    //   .post(`${API_URL}/partnerCashier/getBranchByName`, {name: this.props.match.params.bank})
-    //   .then(res => {
-    //     if (res.status == 200) {
-    //       console.log(res);
-    //       this.setState({ bank: res.data.banks, loading:false });
-    //     } else {
-    //       throw res.data.error;
-    //     }
-    //   })
-    //   .catch(err => {
-    //     history.push("/");
-    //   });
+    axios
+      .post(`${API_URL}/getPartnerBranchByName`, {name: this.props.match.params.bank})
+      .then(res => {
+        if (res.status == 200) {
+          console.log(res);
+          this.setState({ bank: res.data.branch, loading:false });
+        } else {
+          throw res.data.error;
+        }
+      })
+      .catch(err => {
+        history.push("/");
+      });
   }
 
   render() {
@@ -153,7 +153,7 @@ export default class CashierLogin extends Component {
           <meta charSet="utf-8" />
           <title>E-WALLET | CASHIER | LOGIN</title>
         </Helmet>
-        {/* <FrontLeftSection from="cashier" title={this.state.bank.name} logo={STATIC_URL+this.state.bank.logo}></FrontLeftSection> */}
+        <FrontLeftSection from="cashier" title={this.state.bank.name} logo={STATIC_URL+this.state.bank.logo}></FrontLeftSection>
         <FrontRightSection>
           <LoginHeader>
           <FormattedMessage {...messages.pagetitle} />
