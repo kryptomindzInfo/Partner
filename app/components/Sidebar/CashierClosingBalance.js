@@ -107,7 +107,7 @@ class CashierClosingBalance extends Component {
 
   getHistory = () => {
     axios
-      .post(`${API_URL}/getAll`, {
+      .post(`${API_URL}/partnerCashier/getAll`, {
         token,
         page: 'cashierledger',
         type: 'cashier',

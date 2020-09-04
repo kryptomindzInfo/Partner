@@ -53,6 +53,7 @@ const bid = localStorage.getItem('branchId');
 const logo = localStorage.getItem('bankLogo');
 const email = localStorage.getItem('branchEmail');
 const mobile = localStorage.getItem('branchMobile');
+const partnerid = localStorage.getItem('bankid');
 
 export default class BranchCashierList extends Component {
   constructor() {
@@ -567,7 +568,7 @@ export default class BranchCashierList extends Component {
       .post(`${API_URL}/partnerBranch/getAll`, {
         page: 'partnerUser',
         token: token,
-        where: {},
+        where: {partner_id: partnerid},
       })
       .then(res => {
         if (res.status == 200) {

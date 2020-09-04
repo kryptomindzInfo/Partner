@@ -340,6 +340,7 @@ export default class PartnerUser extends Component {
         name: this.state.name,
         email: this.state.email,
         mobile: this.state.mobile,
+        ccode: this.state.ccode,
         username: this.state.username,
         password: this.state.password,
         branch_id: this.state.branch_id,
@@ -411,7 +412,7 @@ export default class PartnerUser extends Component {
     };
 
     axios
-      .post(`${API_URL}/partner/imageUpload`, {token, formData, config})
+      .post(`${API_URL}/partner/imageUpload?token=${token}`,formData, config)
       .then(res => {
         console.log('res');
         console.log('res',res);

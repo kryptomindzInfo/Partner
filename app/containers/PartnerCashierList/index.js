@@ -491,9 +491,10 @@ addBranch = event => {
 
   getBanks = () => {
     axios
-    .post(`${API_URL  }/getOne`, { page: 'branch', type: 'bank', token: token, page_id : this.props.match.params.branch})
+    .post(`${API_URL}/partner/getOne`, { page: 'partnerBranch', token: token, where: {_id: this.props.match.params.branch}})
     .then(res => {
       if(res.status == 200){
+        console.log(res.data);
         this.setState({ otpEmail: res.data.row.email, otpMobile: res.data.row.mobile, bankName: res.data.row.name, dbcode: res.data.row.bcode, working_from: res.data.row.working_from  == 0 ? '00:00' : res.data.row.working_from, working_to: res.data.row.working_to  == 0 ? '00:00' : res.data.row.working_to  });
         this.getCashiers();
       }
@@ -508,7 +509,6 @@ addBranch = event => {
       .post(`${API_URL}/partner/getAll`, { page: 'partnerCashier', token: token, where: {branch_id: this.props.match.params.branch}})
       .then(res => {
         if(res.status == 200){
-          console.log(res.data);
           this.setState({ loading: false, cashiers: res.data.rows });
         }
       })
@@ -520,7 +520,7 @@ addBranch = event => {
 
   componentDidMount() {
     this.setState({ branch_id: this.props.match.params.branch },() =>{
-      // this.getBanks();
+      this.getBanks();
       this.getCashiers();
     })
   }

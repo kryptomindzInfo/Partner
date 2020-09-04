@@ -375,7 +375,7 @@ class CashierCashInHand extends Component {
 
   getTransHistory = () => {
     axios
-      .post(`${API_URL}/getCashierTransfers`, {
+      .post(`${API_URL}/partnerCashier/getTransfers`, {
         token: token
       })
       .then(res => {

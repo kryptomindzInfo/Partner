@@ -501,10 +501,11 @@ export default class CashierInfo extends Component {
 
   getBranches = () => {
     axios
-      .post(`${API_URL  }/getCashier`, { token:token })
+      .post(`${API_URL}/partnerCashier/getDetails`, {token:token })
       .then(res => {
         if(res.status == 200){
-          this.setState({ loading: false, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.bcode, working_from: res.data.row.working_from, working_to: res.data.row.working_to, per_trans_amt: res.data.row.per_trans_amt, max_trans_count: res.data.row.max_trans_count, max_trans_amt: res.data.row.max_trans_amt, cashier_id: res.data.row._id, mobile: res.data.row2.mobile, username: res.data.row2.username, ccode: res.data.row2.ccode, email: res.data.row2.email, });
+          console.log(res);
+          this.setState({ loading: false, banks: res.data.cashier, name: res.data.cashier.name, bcode: res.data.cashier.code, working_from: res.data.cashier.working_from, working_to: res.data.cashier.working_to, per_trans_amt: res.data.cashier.per_trans_amt, max_trans_count: res.data.cashier.max_trans_count, max_trans_amt: res.data.cashier.max_trans_amt, cashier_id: res.data.cashier._id, mobile: res.data.user.mobile, username: res.data.user.username, ccode: res.data.user.ccode, email: res.data.user.email, });
         }
       })
       .catch(err => {
@@ -539,12 +540,8 @@ export default class CashierInfo extends Component {
 
 
   componentDidMount() {
-
     this.setState({ cashier_id: cashierId }, () => {
-
         this.getBranches();
-
-
     });
 
   }

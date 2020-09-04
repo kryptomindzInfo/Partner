@@ -5,7 +5,7 @@ import { API_URL } from '../../App/constants';
 const token = localStorage.getItem('cashierLogged');
 const getUserInvoices = async mobile => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/getUserInvoices`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/getUserInvoices`, {
       token,
       mobile,
     });
@@ -26,7 +26,7 @@ const getUserInvoices = async mobile => {
 
 const getInvoiceDetails = async (number, merchant_id) => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/getInvoiceDetails`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/getInvoiceDetails`, {
       token: token,
       number: number,
       merchant_id: merchant_id,
@@ -48,7 +48,7 @@ const getInvoiceDetails = async (number, merchant_id) => {
 
 const getInvoiceByCustomerCode = async (customerCode, merchant_id) => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/getInvoicesForCustomerCode`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/getInvoicesForCustomerCode`, {
       token: token,
       customer_code: customerCode,
       merchant_id: merchant_id,
@@ -70,7 +70,7 @@ const getInvoiceByCustomerCode = async (customerCode, merchant_id) => {
 
 const payInvoice = async values => {
   try {
-    const res = await axios.post(`${API_URL}/cashier/payInvoice`, {
+    const res = await axios.post(`${API_URL}/partnerCashier/payInvoice`, {
       token,
       ...values,
     });

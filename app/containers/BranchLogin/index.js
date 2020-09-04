@@ -89,6 +89,7 @@ export default class BranchLogin extends Component {
           localStorage.setItem('bankLogo', res.data.logo);
           localStorage.setItem('branchEmail', res.data.email);
           localStorage.setItem('branchMobile', res.data.mobile);
+          localStorage.setItem('bankid', res.data.partner_id);
           console.log(res);
           if(res.data.status == 0 && res.data.message === "Incorrect username or password") {
             throw res.data.message;
@@ -98,7 +99,6 @@ export default class BranchLogin extends Component {
           }else{
             window.location.href = '/branch/'+this.props.match.params.bank+'/setup';
           }
-
         } else {
           throw res.data.error;
         }
@@ -120,6 +120,7 @@ export default class BranchLogin extends Component {
       .post(`${API_URL}/getPartnerByName`, {name: this.props.match.params.bank})
       .then(res => {
         if (res.status == 200) {
+          console.log(res);
           this.setState({ bank: res.data, loading:false });
         } else {
           throw res.data.error;

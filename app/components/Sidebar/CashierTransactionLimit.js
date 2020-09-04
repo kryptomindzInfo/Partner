@@ -385,7 +385,7 @@ class CashierTransactionLimit extends Component {
   amountChange = event => {
     if (this.state.receiverIdentificationAmount != '') {
       axios
-        .post(`${API_URL}/checkCashierFee`, {
+        .post(`${API_URL}/partnerCashier/checkFee`, {
           amount: this.state.receiverIdentificationAmount,
           token,
         })
@@ -415,7 +415,7 @@ class CashierTransactionLimit extends Component {
       claimMoneyLoading: true,
     });
     axios
-      .post(`${API_URL}/getClaimMoney`, {
+      .post(`${API_URL}/partnerCashier/getClaimMoney`, {
         transferCode: this.state.transferCode,
         token,
       })
@@ -506,7 +506,7 @@ class CashierTransactionLimit extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierSendMoneyPending`, this.state)
+      .post(`${API_URL}/partnerCashier/sendMoneyPending`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -605,7 +605,7 @@ class CashierTransactionLimit extends Component {
       claimMoneyLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierVerifyClaim`, {
+      .post(`${API_URL}/partnerCashier/verifyClaim`, {
         token,
         otp: this.state.otp,
         otpId: this.state.otpId,
@@ -678,7 +678,7 @@ class CashierTransactionLimit extends Component {
       claimMoneyLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierClaimMoney`, this.state)
+      .post(`${API_URL}/partnerCashier/claimMoney`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -725,7 +725,7 @@ class CashierTransactionLimit extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/cashierSendMoney`, this.state)
+      .post(`${API_URL}/partnerCashier/sendMoney`, this.state)
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -769,7 +769,7 @@ class CashierTransactionLimit extends Component {
     });
     toWalletFormValues.token = token;
     axios
-      .post(`${API_URL}/cashier/sendMoneyToWallet`, toWalletFormValues)
+      .post(`${API_URL}/partnerCashier/sendMoneyToWallet`, toWalletFormValues)
       .then(res => {
         if (res.status === 200) {
           if (res.data.error) {
@@ -867,7 +867,7 @@ class CashierTransactionLimit extends Component {
         .post(
           isWallet
             ? `${API_URL}/cashier/checkNonWalToWalFee`
-            : `${API_URL}/checkCashierFee`,
+            : `${API_URL}/partnerCashier/checkNonWaltoWalFee`,
           { token, amount },
         )
         .then(res => {
