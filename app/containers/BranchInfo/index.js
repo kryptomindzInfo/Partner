@@ -73,7 +73,7 @@ export default class BranchInfo extends Component {
       sid: '',
       bank: bid,
       name: '',
-      address1: '',
+      address: '',
       popname: '',
       poprange: '',
       poptype: '',
@@ -240,7 +240,7 @@ export default class BranchInfo extends Component {
     this.setState({
       popup: false,
       name: '',
-      address1: '',
+      address: '',
       state: '',
       zip: '',
       ccode: '',
@@ -328,7 +328,7 @@ export default class BranchInfo extends Component {
       .post(`${API_URL}/partnerBranch/getOne`, { token:token, page: 'partnerBranch', where: { _id: bid } })
       .then(res => {
         if(res.status == 200){
-          this.setState({ loading: false, bankUsers: res.data.bankUsers, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.code, credit_limit: res.data.row.credit_limit, username: res.data.row.username, address1: res.data.row.address1, state: res.data.row.state, zip: res.data.row.zip, country: res.data.row.country, ccode: res.data.row.ccode, mobile: res.data.row.mobile, email: res.data.row.email, branch_id: res.data.row._id, status: res.data.row.status, dbcode: res.data.row.bcode});
+          this.setState({ loading: false, bankUsers: res.data.bankUsers, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.code, credit_limit: res.data.row.credit_limit, username: res.data.row.username, address: res.data.row.address, state: res.data.row.state, zip: res.data.row.zip, country: res.data.row.country, ccode: res.data.row.ccode, mobile: res.data.row.mobile, email: res.data.row.email, branch_id: res.data.row._id, status: res.data.row.status, dbcode: res.data.row.bcode});
         }
       })
       .catch(err => {
@@ -398,116 +398,105 @@ export default class BranchInfo extends Component {
         <Container verticalMargin>
           <BranchSidebarTwo active="info" blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={this.props.match.params.bank}/>
           <Main>
-
             <BranchWallets branchId={this.state.bank} bCode={this.state.dbcode} bankName={this.props.match.params.bank} />
-
           <Card bigPadding bordered>
-
             <div className="cardBody">
               <Row>
                 <Col className="infoLeft">
-                Branch Name
+                  Branch Name
                 </Col>
                 <Col className="infoRight">
-                {this.state.name}
+                  {this.state.name}
+                  </Col>
+              </Row>
+              <Row>
+                <Col className="infoLeft">
+                  Branch Code
+                </Col>
+                <Col className="infoRight">
+                  {this.state.bcode}
+                </Col>
+              </Row>
+              <Row>
+                <Col className="infoLeft">
+                  Branch User ID
+                </Col>
+                <Col className="infoRight">
+                  {this.state.username}
+                </Col>
+              </Row>
+              <Row>
+                <Col className="infoLeft">
+                  Address
+                </Col>
+                <Col className="infoRight">
+                  {this.state.address}
                 </Col>
               </Row>
 
               <Row>
                 <Col className="infoLeft">
-                Bank Code
+                  State
                 </Col>
                 <Col className="infoRight">
-                {this.state.bcode}
+                  {this.state.state}
                 </Col>
               </Row>
 
               <Row>
                 <Col className="infoLeft">
-                Bank User ID
+                  Zip Code
                 </Col>
                 <Col className="infoRight">
-                {this.state.username}
+                  {this.state.zip}
+                </Col>
+              </Row>
+              <Row>
+                <Col className="infoLeft">
+                  Country Code
+                </Col>
+                <Col className="infoRight">
+                  {this.state.ccode}
                 </Col>
               </Row>
 
               <Row>
                 <Col className="infoLeft">
-                Address
+                  Country
                 </Col>
                 <Col className="infoRight">
-                {this.state.address1}
+                  {this.state.country}
                 </Col>
               </Row>
-
               <Row>
                 <Col className="infoLeft">
-                State
+                  Email
                 </Col>
                 <Col className="infoRight">
-                {this.state.state}
+                  {this.state.email}
                 </Col>
               </Row>
-
               <Row>
                 <Col className="infoLeft">
-                Zip Code
+                  Phone Number
                 </Col>
                 <Col className="infoRight">
-                {this.state.zip}
+                  {this.state.mobile}
                 </Col>
               </Row>
-
               <Row>
                 <Col className="infoLeft">
-                Country Code
-                </Col>
-                <Col className="infoRight">
-                {this.state.ccode}
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="infoLeft">
-                Country
-                </Col>
-                <Col className="infoRight">
-                {this.state.country}
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="infoLeft">
-                Email
-                </Col>
-                <Col className="infoRight">
-                {this.state.email}
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="infoLeft">
-                Phone Number
-                </Col>
-                <Col className="infoRight">
-                {this.state.mobile}
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="infoLeft">
-                Bank Users
+                  Bank Users
                 </Col>
                 <Col className="infoRight">
                   {
-                      this.state.bankUsers && this.state.bankUsers.length > 0
-                        ? this.state.bankUsers.map(function(b) {
-
-                          return <div key={b._id}>{b.name}</div>
-                        })
-                        :
-                        null
-                    }
+                    this.state.bankUsers && this.state.bankUsers.length > 0
+                      ? this.state.bankUsers.map(function(b) {
+                        return <div key={b._id}>{b.name}</div>
+                      })
+                      :
+                      null
+                  }
                 </Col>
               </Row>
 
@@ -580,10 +569,10 @@ export default class BranchInfo extends Component {
                         <label>Address*</label>
                         <TextInput
                           type="text"
-                          name="address1"
+                          name="address"
                           onFocus={inputFocus}
                           onBlur={inputBlur}
-                          value={this.state.address1}
+                          value={this.state.address}
                           onChange={this.handleInputChange}
                           required
                           autoFocus

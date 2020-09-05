@@ -44,7 +44,7 @@ class BankSidebarCashier extends Component {
     const bt = this.props.blockTxt == 1 ? 'Block' : 'Unblock';
     return (
         <Sidebar marginRight>
-            <A href="/bank/info">
+            <A href="/info">
             <Card rounded selected={info} className="sideNav">
                 <i className="material-icons">person_add</i>
                 <h3>Cashier Info</h3>

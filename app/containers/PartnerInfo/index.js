@@ -60,17 +60,17 @@ const Tab2 = styled.div`
   padding: 15px;
 `;
 
-const token = localStorage.getItem('bankLogged');
-const bid = localStorage.getItem('bankId');
+const token = localStorage.getItem('partnerLogged');
+const bid = localStorage.getItem('partnerId');
 console.log(bid);
-export default class BankInfo extends Component {
+export default class PartnerInfo extends Component {
   constructor() {
     super();
     this.state = {
       sid: '',
       bank: bid,
       name: '',
-      address1: '',
+      address: '',
       popname: '',
       poprange: '',
       poptype: '',
@@ -234,7 +234,7 @@ export default class BankInfo extends Component {
     this.setState({
       popup: false,
       name: '',
-      address1: '',
+      address: '',
       state: '',
       zip: '',
       ccode: '',
@@ -249,22 +249,9 @@ export default class BankInfo extends Component {
   };
 
   logout = () => {
-    // event.preventDefault();
-    // axios.post(API_URL+'/logout', {token: token})
-    // .then(res => {
-    //    if(res.status == 200){
     localStorage.removeItem('logged');
     localStorage.removeItem('name');
     this.setState({ redirect: true });
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    // })
-    // .catch(err => {
-    //   alert('Login to continue');
-    //   this.setState({ redirect: true });
-    // });
   };
 
   addBank = event => {
@@ -300,110 +287,8 @@ export default class BankInfo extends Component {
       });
   };
 
-  approve = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL}/approveFee`, {
-        id: this.state.sid,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              notification: 'Approved',
-            });
-            this.success();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  };
-
-  decline = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL}/declineFee`, {
-        id: this.state.sid,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              notification: 'Declined',
-            });
-            this.success();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  };
-
   showWallet = event => {
     event.preventDefault();
-  };
-
-  verifyOTP = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL}/addBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              notification: 'Bank added successfully!',
-            });
-            this.success();
-            this.closeMiniPopUp();
-            this.getBanks();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
   };
 
   removeFile = key => {
@@ -464,18 +349,19 @@ export default class BankInfo extends Component {
 
   getBanks = () => {
     axios
-      .post(`${API_URL}/getOne`, { token: token, type: 'bank', page: 'bank' })
+      .post(`${API_URL}/partner/getOne`, { token: token, page: 'partner', where: {_id: bid} })
       .then(res => {
         if (res.status == 200) {
+          console.log(res);
           this.setState({
             loading: false,
             banks: res.data.row,
-            bcode: res.data.row.bcode,
+            code: res.data.row.code,
             working_from: res.data.row.working_from  == 0? '00:00' : res.data.row.working_from ,
             working_to: res.data.row.working_to  == 0? '00:00' : res.data.row.working_to ,
             logo: res.data.row.logo,
             name: res.data.row.name,
-            address1: res.data.row.address1,
+            address: res.data.row.address,
             state: res.data.row.state,
             zip: res.data.row.zip,
             country: res.data.row.country,
@@ -517,13 +403,13 @@ export default class BankInfo extends Component {
     axios
       .post(`${API_URL}/editBankBank`, {
         name: this.state.name,
-        address1: this.state.address1,
+        address: this.state.address,
         state: this.state.state,
         zip: this.state.zip,
         bank_id: this.state.bank_id,
         country: this.state.country,
         ccode: this.state.ccode,
-        bcode: this.state.bcode,
+        code: this.state.code,
         working_from: this.state.working_from,
         working_to: this.state.working_to,
         email: this.state.email,
@@ -617,18 +503,18 @@ export default class BankInfo extends Component {
             <Card bigPadding bordered>
               <div className="cardBody">
                 <Row>
-                  <Col className="infoLeft">Bank Name</Col>
+                  <Col className="infoLeft">Partner Name</Col>
                   <Col className="infoRight">{this.state.banks.name}</Col>
                 </Row>
 
                 <Row>
-                  <Col className="infoLeft">Bank Code</Col>
-                  <Col className="infoRight">{this.state.banks.bcode}</Col>
+                  <Col className="infoLeft">Partner Code</Col>
+                  <Col className="infoRight">{this.state.banks.code}</Col>
                 </Row>
 
                 <Row>
                   <Col className="infoLeft">Address</Col>
-                  <Col className="infoRight">{this.state.banks.address1}</Col>
+                  <Col className="infoRight">{this.state.banks.address}</Col>
                 </Row>
 
                 <Row>
@@ -735,14 +621,14 @@ export default class BankInfo extends Component {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <label>Bank Code*</label>
+                    <label>Code*</label>
                     <TextInput
                       type="text"
-                      name="bcode"
+                      name="code"
                       autoFocus
                       onFocus={inputFocus}
                       onBlur={inputBlur}
-                      value={this.state.bcode}
+                      value={this.state.code}
                       onChange={this.handleInputChange}
                       required
                     />
@@ -753,11 +639,11 @@ export default class BankInfo extends Component {
                     </label>
                     <TextInput
                       type="text"
-                      name="address1"
+                      name="address"
                       onFocus={inputFocus}
                       onBlur={inputBlur}
                       autoFocus
-                      value={this.state.address1}
+                      value={this.state.address}
                       onChange={this.handleInputChange}
                       required
                     />

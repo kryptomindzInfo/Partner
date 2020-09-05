@@ -25,7 +25,7 @@ import SetupPage from 'containers/SetupPage/Loadable';
 import PartnerDashboard from 'containers/PartnerDashboard/Loadable';
 import Activate from 'containers/PartnerActivate/Loadable';
 import ForgotSetup from 'containers/ForgotSetup/Loadable';
-import BankInfo from 'containers/BankInfo/Loadable';
+import PartnerInfo from 'containers/PartnerInfo/Loadable';
 import PartnerBranchInfo from 'containers/PartnerBranchInfo/Loadable';
 import BankDocuments from 'containers/BankDocuments/Loadable';
 import BankTheme from 'containers/BankTheme/Loadable';
@@ -113,7 +113,7 @@ export default function App(props) {
           <Route exact path="/bank/otp" component={BankOTPPage} />
 
           <BankRoute exact path="/dashboard" component={PartnerDashboard} />
-          <BankRoute path="/bank/info" component={BankInfo} />
+          <BankRoute path="/info" component={PartnerInfo} />
           <BankRoute path="/bank/fees" component={BankFees} />
           <BankRoute path="/bank/documents" component={BankDocuments} />
           <BankRoute path="/branches" component={PartnerBranchList} />

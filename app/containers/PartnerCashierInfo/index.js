@@ -429,7 +429,7 @@ export default class PartnerCashierInfo extends Component {
 
   getBranches = () => {
     axios
-      .post(`${API_URL}/partner/getOne`, { token:token, page: 'partnerCashier', where: {cashier_id: this.state.cashier_id}})
+      .post(`${API_URL}/partner/getOne`, { token:token, page: 'partnerCashier', where: {_id: this.state.cashier_id}})
       .then(res => {
         if(res.status == 200){
           this.setState({ loading: false, banks: res.data.row, name: res.data.row.name, bcode: res.data.row.bcode, working_from: res.data.row.working_from, working_to: res.data.row.working_to, per_trans_amt: res.data.row.per_trans_amt, max_trans_count: res.data.row.max_trans_count, max_trans_amt: res.data.row.max_trans_amt, cashier_id: res.data.row._id, status: res.data.row.status});

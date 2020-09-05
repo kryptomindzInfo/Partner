@@ -137,7 +137,7 @@ class Welcome extends Component {
                   <span>Partner:</span> {name}
                 </Name>
                 <SubNav className="bankSubNav">
-                  <A href="/bank/info">Settings</A>
+                  <A href="/info">Settings</A>
                   <span onClick={this.logoutBank}>Logout</span>
                 </SubNav>
               </>
