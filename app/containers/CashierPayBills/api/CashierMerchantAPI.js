@@ -23,6 +23,27 @@ const fetchCashierMerchantList = async () => {
   }
 };
 
+const getPenaltyRule = async (value) => {
+  try {
+    const res = await axios.post(`${API_URL}/partnerCashier/getMerchantPenaltyRule`, {
+      token,
+      merchant_id: value.merchant_id,
+    });
+    if (res.status === 200) {
+      if (res.data.status === 0) {
+        toast.error(res.data.message);
+        return { rule: {}, loading: false };
+      }
+      return { rule: res.data.rule, loading: false };
+    }
+    toast.error(res.data.message);
+    return { rule: {}, loading: false };
+  } catch (err) {
+    toast.error('Something went wrong');
+    return { rule: {}, loading: false };
+  }
+};
+
 const checkCashierFee = async payload => {
   try {
     const res = await axios.post(`${API_URL}/partnerCashier/checkMerchantFee`, {
@@ -44,4 +65,4 @@ const checkCashierFee = async payload => {
   }
 };
 
-export { fetchCashierMerchantList, checkCashierFee };
+export { fetchCashierMerchantList, checkCashierFee, getPenaltyRule };
