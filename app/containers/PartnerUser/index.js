@@ -839,7 +839,7 @@ export default class PartnerUser extends Component {
               </div>
             ) : (
               <div>
-                <h1>Edit Bank User</h1>
+                <h1>Edit User</h1>
                 <form action="" method="post" onSubmit={this.editUser}>
                   <FormGroup>
                     <label>

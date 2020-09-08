@@ -853,7 +853,7 @@ export default class BranchDashboard extends Component {
 
     this.getCashiers();
     this.getUsers();
-    this.getBranches();
+    // this.getBranches();
     this.getBranchByName();
   }
 
@@ -891,7 +891,7 @@ export default class BranchDashboard extends Component {
           bankLogo={STATIC_URL + logo}
         />
         <Container verticalMargin>
-          {/* <SidebarBranch bankName={this.props.match.params.bank} /> */}
+          <SidebarBranch bankName={this.props.match.params.bank} />
           <Main>
             <Row>
               <Col>

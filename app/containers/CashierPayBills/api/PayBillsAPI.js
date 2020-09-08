@@ -69,6 +69,7 @@ const getInvoiceByCustomerCode = async (customerCode, merchant_id) => {
 };
 
 const payInvoice = async values => {
+  console.log(values);
   try {
     const res = await axios.post(`${API_URL}/partnerCashier/payInvoice`, {
       token,

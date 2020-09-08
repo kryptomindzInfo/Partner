@@ -23,27 +23,52 @@ const PayBillsInvoiceList = props => {
   );
   const handleCheckboxClick = async (e, invoice, index) => {
     setButtonLoading(true);
-    console.log(index);
     if(e.target.checked) {
-      setTotalAmount(totalAmount + invoice.amount);
-      const data = await checkCashierFee({
-        merchant_id: merchant._id,
-        amount: totalAmount + invoice.amount,
-      });
-      setTotalFee(data.fee);
-      const list = [...selectedInvoiceList,invoice._id];
-      setSelectedInvoiceList(list);
-      setButtonLoading(false);
+      if(invoice.has_counter_invoice === true){
+        const counterInvoice = invoiceList.filter((val) => val.number === `${invoice.number}C`);
+        setTotalAmount(totalAmount + invoice.amount + counterInvoice[0].amount);
+        const data = await checkCashierFee({
+          merchant_id: merchant._id,
+          amount: totalAmount + invoice.amount + counterInvoice[0].amount,
+        });
+        setTotalFee(data.fee);
+        const list = [...selectedInvoiceList,invoice._id,counterInvoice[0]._id];
+        setSelectedInvoiceList(list);
+        setButtonLoading(false);
+      } else {
+        setTotalAmount(totalAmount + invoice.amount);
+        const data = await checkCashierFee({
+          merchant_id: merchant._id,
+          amount: totalAmount + invoice.amount,
+        });
+        setTotalFee(data.fee);
+        const list = [...selectedInvoiceList,invoice._id];
+        setSelectedInvoiceList(list);
+        setButtonLoading(false);
+      }
     } else {
-      const data = await checkCashierFee({
-        merchant_id: merchant._id,
-        amount: totalAmount - invoice.amount,
-      });
-      setTotalFee(data.fee);
-      const list = selectedInvoiceList.filter((val) => val !== invoice._id);
-      setSelectedInvoiceList(list);
-      setTotalAmount(totalAmount-invoice.amount);
-      setButtonLoading(false);
+      if(invoice.has_counter_invoice === true){
+        const counterInvoice = invoiceList.filter((val) => val.number === `${invoice.number}C`);
+        const data = await checkCashierFee({
+          merchant_id: merchant._id,
+          amount: totalAmount - invoice.amount - counterInvoice[0].amount,
+        });
+        setTotalFee(data.fee);
+        const list = selectedInvoiceList.filter((val) => val !== invoice._id &&  val !== counterInvoice[0]._id);
+        setSelectedInvoiceList(list);
+        setTotalAmount(totalAmount-invoice.amount-counterInvoice[0].amount);
+        setButtonLoading(false);
+      } else {
+        const data = await checkCashierFee({
+          merchant_id: merchant._id,
+          amount: totalAmount - invoice.amount,
+        });
+        setTotalFee(data.fee);
+        const list = selectedInvoiceList.filter((val) => val !== invoice._id);
+        setSelectedInvoiceList(list);
+        setTotalAmount(totalAmount-invoice.amount);
+        setButtonLoading(false);
+      }
     }
   };
 
@@ -63,12 +88,34 @@ const PayBillsInvoiceList = props => {
         >
           <Row>
             <Col cW="10%">
+            {invoice.is_counter ? (
+              <div>
+                {selectedInvoiceList.includes(invoice._id) ? (
+                  <FormGroup>
+                    <input
+                      type="checkbox"
+                      checked
+                      value={invoice._id}>
+                    </input>
+                  </FormGroup>
+                ) : (
+                  <FormGroup>
+                    <input
+                      type="checkbox"
+                      disabled
+                      value={invoice._id}>
+                    </input>
+                  </FormGroup>
+                )}
+              </div>
+            ) : (
               <FormGroup onChange={(e) => handleCheckboxClick(e, invoice, index)}>
                 <input
                   type="checkbox"
                   value={invoice._id}>
                 </input>
                 </FormGroup>
+            )}
             </Col>
             <Col 
               cW="90%"

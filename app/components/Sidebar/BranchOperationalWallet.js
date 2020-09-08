@@ -583,11 +583,15 @@ class BranchOperationalWallet extends Component {
       });
   };
   getBalance = () => {
+    const headers = {
+      'Authorization': token
+    }
     axios
-      .get(
-        `${API_URL}/partner/getOperationalBalance`,
+      .post(
+        `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`,
       )
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;

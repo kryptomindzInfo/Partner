@@ -372,7 +372,7 @@ export default class BranchOperationalHistory extends Component {
 
   getHistory = () => {
     axios
-      .post(`${API_URL}/getBranchHistory`, {
+      .post(`${API_URL}/partnerBranch/getHistory`, {
         token: token,
         from: 'operational',
         page: this.state.activePage,
@@ -399,7 +399,7 @@ export default class BranchOperationalHistory extends Component {
 
   getHistoryTotal = () => {
     axios
-      .post(`${API_URL}/getBankHistoryTotal`, {
+      .post(`${API_URL}/partnerBranch/getHistoryTotal`, {
         token: token,
         from: 'operational',
       })
