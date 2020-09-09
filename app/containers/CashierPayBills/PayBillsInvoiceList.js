@@ -108,7 +108,7 @@ const PayBillsInvoiceList = props => {
             <Col cW="10%">
             {invoice.is_counter ? (
               <div>
-                {selectedInvoiceList.includes(invoice._id) ? (
+                {selectedInvoiceList.map(a => a.id).includes(invoice._id) ? (
                   <FormGroup>
                     <input
                       type="checkbox"
@@ -152,7 +152,7 @@ const PayBillsInvoiceList = props => {
           {feeList[index] > 0 ? feeList[index] : 'NA'}
         </td>
         <td className="tac">
-        {feeList[index] > 0 ? invoice.amount+feeList[index] : 'NA'}</td>
+        {feeList[index] > 0 ? invoice.amount+feeList[index]+penaltyList[index] : 'NA'}</td>
         <td className="tac">{invoice.due_date} </td>
         <td className="tac bold">
           <div
@@ -171,9 +171,9 @@ const PayBillsInvoiceList = props => {
       </tr>
     ));
 
-  const fetchfee = async() => {
+  const fetchfee = async(penaltylist) => {
     const feelist = invoiceList.map(async (invoice,index) => {
-      if (invoice.amount < 0) {
+      if (invoice.amount + penaltylist[index] < 0) {
         const data = await checkCashierFee({
           merchant_id: merchant._id,
           amount: invoice.amount * -1,
@@ -182,25 +182,26 @@ const PayBillsInvoiceList = props => {
       } else {
         const data = await checkCashierFee({
           merchant_id: merchant._id,
-          amount: invoice.amount + penaltyList[index],
+          amount: invoice.amount + penaltylist[index],
         });
         return (data.fee);
       }
     })
     const result= await Promise.all(feelist);
-    return(result);
+    return({res:result, loading:false});
   }
 
   const calculatePenalty = async(rule) => {
     const penaltylist = invoiceList.map(async invoice => {
+      if (invoice.amount < 0) {
+        return (0);
+      }
       const datesplit = invoice.due_date.split("/");
-      const dueDate = new Date(datesplit[2],datesplit[1],datesplit[0]);
+      const dueDate = new Date(datesplit[0],datesplit[1],datesplit[2]);
       if (rule.type === 'once') {
         if( currentDate.getTime() <= dueDate.getTime()){
-          console.log("yes");
           return (0);
         } else {
-          console.log("no");
           return (rule.fixed_amount + (invoice.amount*rule.percentage)/100);
         }
       } else {
@@ -228,32 +229,17 @@ const PayBillsInvoiceList = props => {
     setLoading(true);
     const getRule = async() => {
       const res1= await fetchPenaltyRule();
-      console.log(res1);
       const res2= await calculatePenalty(res1);
-      console.log(res2);
       setPenaltyList(res2);
-      const res3= await fetchfee();
-      setFeeList(res3);
-      setLoading(false);
+      const res3= await fetchfee(res2);
+      setFeeList(res3.res);
+      setLoading(res3.loading);
     }
-    // fetchPenaltyRule();
-    // const getPenaltyList = async () => {
-    //   const res2= await calculatePenalty();
-    //   console.log(res2);
-    //   setPenaltyList(res2);
-    // };
-    // const getFeeList = async () => {
-    //   const res3= await fetchfee();
-    //   setFeeList(res3);
-    //   setLoading(false);
-    // };
     getRule();
-    // getPenaltyList();
-    // getFeeList();
     }, []); // Or [] if effect doesn't need props or state
   
   if (isLoading) {
-    return <Loader  />;
+    return <Loader />;
   }
   return (
     <div>
