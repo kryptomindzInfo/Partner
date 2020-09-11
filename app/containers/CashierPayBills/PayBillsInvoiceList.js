@@ -197,7 +197,7 @@ const PayBillsInvoiceList = props => {
         return (0);
       }
       const datesplit = invoice.due_date.split("/");
-      const dueDate = new Date(datesplit[0],datesplit[1],datesplit[2]);
+      const dueDate = new Date(datesplit[2],datesplit[1],datesplit[0]);
       if (rule.type === 'once') {
         if( currentDate.getTime() <= dueDate.getTime()){
           return (0);
