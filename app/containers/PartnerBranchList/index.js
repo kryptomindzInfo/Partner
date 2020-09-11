@@ -440,7 +440,7 @@ export default class PartnerBranchList extends Component {
       <Wrapper from="bank">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Banks | INFRA | E-WALLET</title>
+          <title>Partners | INFRA | E-WALLET</title>
         </Helmet>
         <PartnerHeader active="branches" />
         <Container verticalMargin>
