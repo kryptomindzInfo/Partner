@@ -349,7 +349,7 @@ class CashierTransactionLimit extends Component {
   generateOTP = () => {
     this.setState({ resend: false, timer: 30 });
     axios
-      .post(`${API_URL}/sendOTP`, {
+      .post(`${API_URL}/partnerCashier/sendOTP`, {
         email: this.state.otpEmail,
         mobile: this.state.otpMobile,
         page: this.state.otpOpt,
@@ -358,6 +358,7 @@ class CashierTransactionLimit extends Component {
         token,
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -680,6 +681,7 @@ class CashierTransactionLimit extends Component {
     axios
       .post(`${API_URL}/partnerCashier/claimMoney`, this.state)
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -724,9 +726,11 @@ class CashierTransactionLimit extends Component {
     this.setState({
       verifySendMoneyOTPLoading: true,
     });
+    console.log(this.state);
     axios
       .post(`${API_URL}/partnerCashier/sendMoney`, this.state)
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -866,8 +870,8 @@ class CashierTransactionLimit extends Component {
       axios
         .post(
           isWallet
-            ? `${API_URL}/cashier/checkNonWalToWalFee`
-            : `${API_URL}/partnerCashier/checkNonWaltoWalFee`,
+            ? `${API_URL}/partnerCashier/checkNonWaltoWalFee`
+            : `${API_URL}/partnerCashier/checkFee`,
           { token, amount },
         )
         .then(res => {
@@ -925,7 +929,7 @@ class CashierTransactionLimit extends Component {
       if (value) {
         if (value.length === 10) {
           axios
-            .post(`${API_URL}/cashier/getUser`, {
+            .post(`${API_URL}/partnerCashier/getUserByMobile`, {
               mobile: value,
               token,
             })

@@ -162,10 +162,11 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
     const token = localStorage.getItem('cashierLogged');
     if (amount !== '') {
       axios
-        .post(`${API_URL}/cashier/checkNonWalToWalFee`, { token, amount })
+        .post(`${API_URL}/partnerCashier/checkNonWaltoWalFee`, { token, amount })
         .then(res => {
+          console.log(res);
           if (res.status === 200) {
-            if (res.data.error) {
+            if (res.data.status === 0) {
               setLiveFee('');
               toast.error(res.data.error);
             } else {
@@ -191,7 +192,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
         setWalletBankName('');
         return new Promise((resolve, reject) => {
           axios
-            .post(`${API_URL}/cashier/getUser`, {
+            .post(`${API_URL}/partnerCashier/getUserByMobile`, {
               mobile: value,
               token,
             })
@@ -227,7 +228,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
     if (value) {
       if (value.length === 10) {
         axios
-          .post(`${API_URL}/cashier/getUser`, {
+          .post(`${API_URL}/partnerCashier/getUserByMobile`, {
             mobile: value,
             token,
           })

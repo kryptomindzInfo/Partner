@@ -632,7 +632,7 @@ export default class BranchCashierList extends Component {
           bankLogo={STATIC_URL + logo}
         />
         <Container verticalMargin>
-          {/* <SidebarBranch bankName={this.props.match.params.bank} /> */}
+          <SidebarBranch bankName={this.props.match.params.bank} />
           <Main>
             <ActionBar
               marginBottom="33px"

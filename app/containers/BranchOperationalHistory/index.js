@@ -549,13 +549,13 @@ export default class BranchOperationalHistory extends Component {
                           var isoformat = b.Timestamp;
                           var readable = new Date(isoformat);
                           var m = readable.getMonth(); // returns 6
-                          var d = readable.getDay(); // returns 15
+                          var d = readable.toDateString(); // returns 15
                           var y = readable.getFullYear();
                           var h = readable.getHours();
                           var mi = readable.getMinutes();
                           var mlong = months[m];
                           var fulldate =
-                            d + ' ' + mlong + ' ' + y + ' ' + h + ':' + mi;
+                            d + ' ' + h + ':' + mi;
 
                           return dis.state.filter == b.Value.tx_data.tx_type ||
                             dis.state.filter == '' ? (
