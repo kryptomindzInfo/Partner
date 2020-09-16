@@ -314,14 +314,15 @@ generateOTP = () => {
         offset: this.state.perPage,
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           var notification = {};
-          var result = res.data.history1.concat(res.data.history2);
+          var result = res.data.history;
           result.sort(
             function(a, b) {
               return (
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
+                new Date(b.created_at).Timestamp.getTime() -
+                new Date(a.created_at).Timestamp.getTime()
               ); // implicit conversion in number
             },
             () => {},

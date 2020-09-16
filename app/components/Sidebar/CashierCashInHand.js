@@ -122,7 +122,6 @@ class CashierCashInHand extends Component {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transfer Cancelled!',
             });
@@ -161,7 +160,7 @@ class CashierCashInHand extends Component {
         otp: this.state.otp,
         token,
         receiver_id: this.state.acceptId.receiver_id,
-        transfer_id: this.state.acceptId.transfer_id,
+        transfer_id: this.state.acceptId._id,
         amount: this.state.acceptId.amount,
       })
       .then(res => {
@@ -170,7 +169,6 @@ class CashierCashInHand extends Component {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transfer Accepted!',
             });
@@ -320,7 +318,7 @@ class CashierCashInHand extends Component {
       });
   };
 
-  accept = (i) => {
+  accept = (event,i) => {
     event.preventDefault();
     this.setState(
       {
@@ -485,7 +483,6 @@ class CashierCashInHand extends Component {
     this.setState({
       bank: this.props.historyLink
     });
-    console.log(localStorage);
     this.getStats();
     this.getCashiers();
     this.getIncoming();
@@ -870,7 +867,7 @@ class CashierCashInHand extends Component {
                                   <div>
                                     <Row>
                                       <Col>
-                                        <Button onClick={() => dis.accept(b)}>Accept</Button></Col><Col>
+                                        <Button onClick={(e) => dis.accept(e,b)}>Accept</Button></Col><Col>
                                         <Button onClick={() => dis.cancelTransfer(b)}>Cancel</Button></Col>
                                     </Row>
                                   </div>
