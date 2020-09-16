@@ -277,7 +277,7 @@ addBranch = event => {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL  }/partner/editCashier`, {
+      .post(`${API_URL}/partner/editCashier`, {
         cashier_id: this.state.cashier_id,
     name: this.state.name,
     code:this.state.code,
@@ -289,9 +289,10 @@ addBranch = event => {
     token
       })
       .then(res => {
+        console.log(res);
         if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
+          if(res.data.status === 0){
+            throw res.data.message;
           }else{
             this.setState({
               notification: "Cashier updated successfully!",

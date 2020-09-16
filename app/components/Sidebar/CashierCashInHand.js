@@ -31,6 +31,7 @@ const cid = localStorage.getItem('cashierId');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
 const cashierName = localStorage.getItem('cashierName');
+const branchId = localStorage.getItem('branchId');
 
 class CashierCashInHand extends Component {
   constructor() {
@@ -159,9 +160,12 @@ class CashierCashInHand extends Component {
         otpId: this.state.otpId,
         otp: this.state.otp,
         token,
-        item: this.state.acceptId
+        receiver_id: this.state.acceptId.receiver_id,
+        transfer_id: this.state.acceptId.transfer_id,
+        amount: this.state.acceptId.amount,
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -208,7 +212,7 @@ class CashierCashInHand extends Component {
   generateOTP = () => {
     this.setState({ resend: false, timer: 30 });
     axios
-      .post(`${API_URL}/sendOTP`, {
+      .post(`${API_URL}/partnerCashier/sendOTP`, {
         email: this.state.otpEmail,
         mobile: this.state.otpMobile,
         page: this.state.otpOpt,
@@ -285,6 +289,7 @@ class CashierCashInHand extends Component {
         receiver_name: receiver[1]
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -460,7 +465,7 @@ class CashierCashInHand extends Component {
         token: token,
         page: "partnerCashier",
         where: {
-          branch_id: this.state.branch_id,
+          branch_id: branchId,
           _id: { $ne: cid },
           is_closed: false
         }
@@ -480,10 +485,10 @@ class CashierCashInHand extends Component {
     this.setState({
       bank: this.props.historyLink
     });
-
+    console.log(localStorage);
+    this.getStats();
     this.getCashiers();
     this.getIncoming();
-    this.getStats();
 
   }
 
