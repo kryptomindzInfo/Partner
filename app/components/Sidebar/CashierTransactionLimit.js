@@ -65,6 +65,8 @@ class CashierTransactionLimit extends Component {
       toWalletFormValues: {},
       isValidFee: true,
       isInclusive: false,
+      interbank: true,
+      interbankclaim: true,
     };
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -88,12 +90,9 @@ class CashierTransactionLimit extends Component {
   };
 
   proceed = items => {
-    console.log(items);
-
     const dis = this;
     for (const key in items) {
       if (items.hasOwnProperty(key)) {
-        console.log(`${key} -> ${items[key]}`);
         this.setState({
           [key]: items[key],
         });
@@ -298,6 +297,9 @@ class CashierTransactionLimit extends Component {
       receiverIdentificationValidTill: '',
       receiverIdentificationAmount: '',
       isWallet: false,
+      interbank: true,
+      livefee: 0,
+      interbankclaim: true,
       showSendMoneyToWalletOTP: false,
       verifySendMoneyOTPLoading: false,
     });
@@ -358,7 +360,6 @@ class CashierTransactionLimit extends Component {
         token,
       })
       .then(res => {
-        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -386,13 +387,24 @@ class CashierTransactionLimit extends Component {
   amountChange = event => {
     if (this.state.receiverIdentificationAmount != '') {
       axios
-        .post(`${API_URL}/partnerCashier/checkFee`, {
+      .post(
+        this.state.interbank
+          ? `${API_URL}/partnerCashier/interBank/checkFee`
+          : `${API_URL}/partnerCashier/checkFee`,
+        {
           amount: this.state.receiverIdentificationAmount,
+          type: "IBNWNW",
           token,
         })
         .then(res => {
           if (res.status == 200) {
-            if (res.data.error) {
+            if (res.data.status==0) {
+              this.setState(
+                {
+                  isValidFee: false,
+                },
+                function() {},
+              );
             } else {
               this.setState(
                 {
@@ -434,6 +446,7 @@ class CashierTransactionLimit extends Component {
                 senderIdentificationType: senderid.type || '',
                 senderIdentificationNumber: senderid.number || '',
                 senderIdentificationValidTill: senderid.valid || '',
+                interbankclaim: o.is_inter_bank === 0 ? false : true,
               });
             }
             const sender = JSON.parse(o.sender_info);
@@ -513,7 +526,6 @@ class CashierTransactionLimit extends Component {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transaction Successfully Submitted for Aproval',
             });
@@ -612,6 +624,7 @@ class CashierTransactionLimit extends Component {
         otpId: this.state.otpId,
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -678,15 +691,20 @@ class CashierTransactionLimit extends Component {
     this.setState({
       claimMoneyLoading: true,
     });
+    let API = "";
+    if (this.state.interbankclaim){
+      API = 'partnerCashier/interBank/claimMoney';
+    } else {
+      API = 'partnerCashier/claimMoney';
+    }
     axios
-      .post(`${API_URL}/partnerCashier/claimMoney`, this.state)
+      .post(`${API_URL}/${API}`, this.state)
       .then(res => {
         console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transaction Successfully Done',
               showVerifyClaimMoney: false,
@@ -726,16 +744,19 @@ class CashierTransactionLimit extends Component {
     this.setState({
       verifySendMoneyOTPLoading: true,
     });
-    console.log(this.state);
+    let API = '';
+    if (this.state.interbank){
+      API = 'partnerCashier/interBank/sendMoneyToNonWallet'
+    } else {
+      API = 'partnerCashier/sendMoney'
+    }
     axios
-      .post(`${API_URL}/partnerCashier/sendMoney`, this.state)
+      .post(`${API_URL}/${API}`, this.state)
       .then(res => {
-        console.log(res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transaction Successfully Done',
             });
@@ -772,14 +793,19 @@ class CashierTransactionLimit extends Component {
       verifySendMoneyOTPLoading: true,
     });
     toWalletFormValues.token = token;
+    let API = '';
+    if(toWalletFormValues.interbank){
+      API = 'partnerCashier/interBank/sendMoneyToWallet'
+    } else {
+      API = 'partnerCashier/sendMoneyToWallet';
+    }
     axios
-      .post(`${API_URL}/partnerCashier/sendMoneyToWallet`, toWalletFormValues)
+      .post(`${API_URL}/${API}`, toWalletFormValues)
       .then(res => {
         if (res.status === 200) {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            console.log(res.data.status);
             this.setState({
               notification: 'Transaction Successfully Done',
             });
@@ -900,7 +926,6 @@ class CashierTransactionLimit extends Component {
   };
 
   handleToggleChange = value => {
-    console.log(value);
     this.setState(
       {
         isWallet: value,
@@ -910,7 +935,11 @@ class CashierTransactionLimit extends Component {
   };
 
   handleFeeTypeChange = event => {
-    this.setState({ [event.target.name]: event.target.checked });
+    this.setState({ [event.target.name]: !event.target.checked }, ()=>this.amountChange());
+  };
+
+  handleBankingTypeChange = event => {
+    this.setState({ [event.target.name]: event.target.checked }, ()=>this.amountChange());
   };
 
   render() {
@@ -2575,7 +2604,7 @@ class CashierTransactionLimit extends Component {
                                   <FormControlLabel
                                     control={
                                       <MuiCheckbox
-                                        checked={this.state.isInclusive}
+                                        checked={!this.state.isInclusive}
                                         onChange={event =>
                                           this.handleFeeTypeChange(event)
                                         }
@@ -2583,7 +2612,22 @@ class CashierTransactionLimit extends Component {
                                         color="primary"
                                       />
                                     }
-                                    label="Receiver pays transaction fees"
+                                    label="Sender pays transaction fees"
+                                  />
+                                </div>
+                                <div>
+                                  <FormControlLabel
+                                    control={
+                                      <MuiCheckbox
+                                        checked={this.state.interbank}
+                                        onChange={event =>
+                                          this.handleBankingTypeChange(event)
+                                        }
+                                        name="interbank"
+                                        color="primary"
+                                      />
+                                    }
+                                    label="Receiver can recieve from any bank"
                                   />
                                 </div>
                                 <Typography
