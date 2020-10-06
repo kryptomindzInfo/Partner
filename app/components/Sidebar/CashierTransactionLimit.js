@@ -43,6 +43,7 @@ toast.configure({
 const token = localStorage.getItem('cashierLogged');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
+const date = new Date();
 
 class CashierTransactionLimit extends Component {
   constructor() {
@@ -2268,6 +2269,7 @@ class CashierTransactionLimit extends Component {
                                           label="Valid Till"
                                           size="small"
                                           fullWidth
+                                          minDate= {date}
                                           inputVariant="outlined"
                                           format="dd/MM/yyyy"
                                           required
@@ -2545,6 +2547,7 @@ class CashierTransactionLimit extends Component {
                                               label="Valid Till"
                                               size="small"
                                               fullWidth
+                                              minDate= {date}
                                               inputVariant="outlined"
                                               format="dd/MM/yyyy"
                                               required

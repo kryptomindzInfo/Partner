@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Formik, useField } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -127,6 +127,7 @@ export const Checkbox = ({ ...props }) => {
 
 const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   const classes = styles();
+  const date = new Date();
   const [user, setUser] = React.useState({});
   const [liveFee, setLiveFee] = useState(0);
   const [isFeeValid, setIsFeeValid] = useState(isValidFee);
@@ -137,7 +138,8 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   const [openWalletPopup, setWalletPopup] = React.useState(false);
   const [isUserLoading, setUserLoading] = React.useState(false);
   const [selectedMobile, setSelectedMobile] = React.useState('');
-  const [interbank, setInterBank] = React.useState(true);
+  const [interbank, setInterBank] =React.useState(true);
+  const [amount, setAmount] =React.useState('');
   const [ccCode, setCcCode] = React.useState('+000');
   const [country, setCountry] = React.useState('');
   const [
@@ -161,7 +163,6 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
 
   const getLiveFee = amount => {
     const token = localStorage.getItem('cashierLogged');
-    console.log(interbank);
     if (amount !== '') {
       let API = "";
       if(interbank){
@@ -172,7 +173,6 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
       axios
         .post(`${API_URL}/${API}`, { token, amount, type:"IBNWW" })
         .then(res => {
-          console.log(res);
           if (res.status === 200) {
             if (res.data.status === 0) {
               setLiveFee('');
@@ -255,6 +255,11 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
     }
   };
 
+  const handleFeeTypeChange = (inter ,amount) => {
+    setAmount(amount);
+    setInterBank(inter);
+  };
+
   const handleWalletSelection = (mobile, wallet) => {
     setWalletBankName(`${mobile}@${wallet}`);
     setWalletPopup(false);
@@ -263,6 +268,11 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   const handleOnProceedClick = values => {
     formValues(values);
   };
+
+  useEffect(() => {
+    getLiveFee(amount);
+  }, [interbank]);
+
   return (
     <div>
       <Formik
@@ -746,6 +756,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                             id="date-picker-dialog"
                             label="Valid Till"
                             size="small"
+                            minDate= {date}
                             fullWidth
                             inputVariant="outlined"
                             format="dd/MM/yyyy"
@@ -1020,9 +1031,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                     <div style={{ marginLeft: '1%' }}>
                       <Checkbox
                         name="interbank"
-                        onChange={event =>
-                          setInterBank(event.checked, ()=>{getLiveFee(values.receiverIdentificationAmount)})
-                        }
+                        onChange={handleFeeTypeChange(values.interbank, values.receiverIdentificationAmount)}
                       />
                       <span>Receiver can recieve from any bank</span>
                     </div>

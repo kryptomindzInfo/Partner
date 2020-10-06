@@ -37,7 +37,7 @@ function Blur(props) {
       >
         <Icon fontSize="large">error</Icon>
         <Typography variant="h4" noWrap align="center">
-          This feature is not available.
+          Transaction can't be processed at this time.
         </Typography>
       </Grid>
     </Fragment>
