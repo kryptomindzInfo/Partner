@@ -3,11 +3,13 @@ import { toast } from 'react-toastify';
 import { API_URL } from '../../App/constants';
 
 const token = localStorage.getItem('cashierLogged');
-const getUserInvoices = async mobile => {
+const bankID = localStorage.getItem('bankId');
+const getUserInvoices = async (mobile, merchant_id) => {
   try {
     const res = await axios.post(`${API_URL}/partnerCashier/getUserInvoices`, {
       token,
       mobile,
+      merchant_id,
     });
     if (res.status === 200) {
       if (res.data.status === 0) {
@@ -68,9 +70,16 @@ const getInvoiceByCustomerCode = async (customerCode, merchant_id) => {
   }
 };
 
-const payInvoice = async values => {
+const payInvoice = async (values, bankid) => {
+  let API = '';
+  if (bankid === bankID) {
+    API = 'partnerCashier/payInvoice';
+    console.log("hi");
+  } else {
+    API = 'partnerCashier/interBank/payInvoice';
+  }
   try {
-    const res = await axios.post(`${API_URL}/partnerCashier/payInvoice`, {
+    const res = await axios.post(`${API_URL}/${API}`, {
       token,
       ...values,
     });

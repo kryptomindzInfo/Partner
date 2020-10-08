@@ -50,7 +50,7 @@ const PayBillPopup = props => {
     <div>
       <Popup accentedH1 bigBody close={props.close}>
         {paybillOTP ? (
-          <PayBillOTP close={props.close} invoice={editingInvoice} />
+          <PayBillOTP close={props.close} invoice={editingInvoice}  merchant={merchant}/>
         ) : (
           <div>
             <h1>Pay {invoiceName} Bills</h1>
@@ -63,7 +63,7 @@ const PayBillPopup = props => {
                 onSubmit={async values => {
                   console.log(values);
                   if (values.searchBy === 'Mobile') {
-                    getUserInvoices(values.invoiceIdOrMobile).then(data => {
+                    getUserInvoices(values.invoiceIdOrMobile, merchant._id).then(data => {
                       console.log(data.list);
                       setInvoiceList(data.list);
                       setDisplayInvoiceList(true);

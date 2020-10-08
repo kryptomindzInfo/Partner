@@ -197,15 +197,19 @@ const PayBillsInvoiceList = props => {
         return (0);
       }
       const datesplit = invoice.due_date.split("/");
-      const dueDate = new Date(datesplit[2],datesplit[1],datesplit[0]); 
-      if (currentDate.getDate() <= dueDate.getDate()) {
-        return (0);
+      const dueDate = new Date(datesplit[2],datesplit[1]-1,datesplit[0]);
+      if (currentDate <= dueDate) {
+          return (0);
       } else {
         if(rule.type === 'once') {
           return (rule.fixed_amount + (invoice.amount*rule.percentage)/100);
         } else {
-          const diffDays = currentDate.getDate() - dueDate.getDate();
-          return ((rule.fixed_amount + (invoice.amount*rule.percentage)/100)*diffDays);
+          // To calculate the time difference of two dates 
+          var Difference_In_Time = currentDate.getTime() - dueDate.getTime(); 
+          // To calculate the no. of days between two dates 
+          var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24)); 
+          console.log(currentDate,dueDate,Difference_In_Days);     
+          return ((rule.fixed_amount + (invoice.amount*rule.percentage)/100)*Difference_In_Days.toFixed(2));
         }
       }
     });
@@ -275,7 +279,7 @@ const PayBillsInvoiceList = props => {
               {isButtonLoading ? (
                 <Loader />
               ) : (
-                `Collect Amount ${totalAmount} + Fee ${totalFee} = Total ${totalAmount+totalFee} and Pay Bill`
+                `Collect Amount ${totalAmount} + Fee ${totalFee.toFixed(2)} = Total ${totalAmount+totalFee} and Pay Bill`
               )}
             </Button>
           ) : (
