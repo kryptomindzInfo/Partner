@@ -22,8 +22,8 @@ class BranchNav extends Component {
   render() {
     const dashboard = this.props.active == 'dashboard' ? 'true' : '';
     const cashier = this.props.active == 'cashier' ? 'true' : '';
-    const merchants = this.props.active == 'merchants' ? 'true' : '';
-    const users = this.props.active == 'users' ? 'true' : '';
+    // const merchants = this.props.active == 'merchants' ? 'true' : '';
+    // const users = this.props.active == 'users' ? 'true' : '';
     const reports = this.props.active == 'reports' ? 'true' : '';
     const bankName = this.props.bankName;
     return (
@@ -42,7 +42,7 @@ class BranchNav extends Component {
               Cashier
             </Link>
           </A>
-          <A >
+          {/* <A >
             <Link active={merchants}>
               <FormattedMessage {...messages.menu3} />
             </Link>
@@ -51,7 +51,7 @@ class BranchNav extends Component {
             <Link active={users}>
               <FormattedMessage {...messages.bmenu3} />
             </Link>
-          </A>
+          </A> */}
           <A >
             <Link active={reports}>
               <FormattedMessage {...messages.menu4} />
