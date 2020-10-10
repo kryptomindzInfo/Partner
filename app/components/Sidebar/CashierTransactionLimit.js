@@ -447,7 +447,6 @@ class CashierTransactionLimit extends Component {
                 senderIdentificationType: senderid.type || '',
                 senderIdentificationNumber: senderid.number || '',
                 senderIdentificationValidTill: senderid.valid || '',
-                interbankclaim: o.is_inter_bank === 0 ? false : true,
               });
             }
             const sender = JSON.parse(o.sender_info);
@@ -483,7 +482,7 @@ class CashierTransactionLimit extends Component {
               requireOTP: o.require_otp,
               dateClaimMoney: new Date(o.created_at).toDateString(),
               master_code: o.master_code,
-
+              interbankclaim: o.is_inter_bank === 0 ? false : true,
               showClaimMoneyDetails: true,
             });
           }
