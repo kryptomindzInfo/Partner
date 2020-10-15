@@ -261,7 +261,6 @@ class CashierTransactionLimit extends Component {
   closePopupSendMoney = () => {
     this.setState({
       proceed: false,
-      popupSendMoney: false,
       showSendMoneyOTP: false,
       showConfirmPending: false,
       showClaimMoneyDetails: false,
@@ -303,6 +302,7 @@ class CashierTransactionLimit extends Component {
       interbankclaim: true,
       showSendMoneyToWalletOTP: false,
       verifySendMoneyOTPLoading: false,
+      popupSendMoney: false,
     });
   };
 
@@ -709,6 +709,7 @@ class CashierTransactionLimit extends Component {
               notification: 'Transaction Successfully Done',
               showVerifyClaimMoney: false,
               popupClaimMoney: false,
+              showClaimMoneyDetails: false,
             });
             this.success();
             this.props.refresh();
