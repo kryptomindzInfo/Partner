@@ -158,7 +158,7 @@ class BankOperationalWallet extends Component {
     }
   };
 
-  componentDidMount() {
+  getBalance = () => {
     this.setState({
       bank: this.props.historyLink,
     });
@@ -169,9 +169,17 @@ class BankOperationalWallet extends Component {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            this.setState({
-              balance: res.data.balance,
-            });
+            this.setState(
+              {
+                balance: res.data.balance,
+              },
+              () => {
+                var dis = this;
+                setTimeout(function() {
+                  dis.getBalance();
+                }, 3000);
+              },
+            );
           }
         }
       })
@@ -181,6 +189,17 @@ class BankOperationalWallet extends Component {
         });
         this.error();
       });
+  }
+
+  componentDidMount() {
+    this.setState(
+      {
+        bank: this.props.historyLink,
+      },
+      () => {
+        this.getBalance();
+      },
+    );
   }
 
   render() {
