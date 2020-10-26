@@ -159,8 +159,8 @@ addBranch = event => {
       .then(res => {
         console.log(res);
         if(res.status == 200){
-          if(res.data.error){
-            throw res.data.error;
+          if(res.data.status===0){
+            throw res.data.message;
           }else{
             this.setState({
               notification: "Cashier added successfully!",

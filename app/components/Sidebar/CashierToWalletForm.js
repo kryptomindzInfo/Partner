@@ -168,10 +168,16 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
       if(interbank){
         API = "partnerCashier/interBank/checkFee"
       } else {
-        API = "partnerCashier/checkNonWaltoWalFee"
+        API = "partnerCashier/checkFee"
       }
       axios
-        .post(`${API_URL}/${API}`, { token, amount, type:"IBNWW" })
+        .post(`${API_URL}/${API}`,
+          {
+            token,
+            amount,
+            type:"IBNWW",
+            trans_type: "Non Wallet to Wallet",
+          })
         .then(res => {
           if (res.status === 200) {
             if (res.data.status === 0) {

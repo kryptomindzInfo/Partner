@@ -395,6 +395,7 @@ class CashierTransactionLimit extends Component {
         {
           amount: this.state.receiverIdentificationAmount,
           type: "IBNWNW",
+          trans_type: "Non Wallet to Non Wallet",
           token,
         })
         .then(res => {
@@ -895,11 +896,12 @@ class CashierTransactionLimit extends Component {
     });
     if (amount !== '') {
       axios
-        .post(
-          isWallet
-            ? `${API_URL}/partnerCashier/checkNonWaltoWalFee`
-            : `${API_URL}/partnerCashier/checkFee`,
-          { token, amount },
+        .post(`${API_URL}/partnerCashier/checkFee`,
+          {
+            token,
+            amount,
+            trans_type: `${isWallet ? 'Non Wallet to Non Wallet' : 'Non Wallet to Wallet'}`,
+          },
         )
         .then(res => {
           if (res.status === 200) {
