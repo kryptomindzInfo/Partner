@@ -388,11 +388,11 @@ class CashierClosingBalance extends Component {
         if (d.data.length != 0) {
           this.setState(prevState => ({
             ...prevState,
-            denomination: d.data[0].denomination.map(d => ({
-              val: d,
+            denomination: d.data.data[0].denomination.map(d => ({
+              val: d.data,
               num: '',
             })),
-            currency: d.data[0].value,
+            currency: d.data.data[0].value,
             // notification: 'denomination added'
           }));
         }
