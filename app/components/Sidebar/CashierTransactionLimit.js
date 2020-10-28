@@ -711,6 +711,7 @@ class CashierTransactionLimit extends Component {
               showVerifyClaimMoney: false,
               popupClaimMoney: false,
               showClaimMoneyDetails: false,
+              transferCode: '',
             });
             this.success();
             this.props.refresh();

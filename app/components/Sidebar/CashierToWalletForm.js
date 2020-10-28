@@ -217,7 +217,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                 setSelectedMobile('');
                 return false;
               }
-              setAvailableWallet(res.data.data.bank);
+              setAvailableWallet(res.data.data.wallet_id);
               if (!walletBankName) {
                 setWalletPopup(true);
               }
@@ -267,7 +267,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   };
 
   const handleWalletSelection = (mobile, wallet) => {
-    setWalletBankName(`${mobile}@${wallet}`);
+    setWalletBankName(`${wallet}`);
     setWalletPopup(false);
   };
 
@@ -940,7 +940,7 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                                       )
                                     }
                                   >
-                                    {values.receiverMobile}@{availableWallet}
+                                    {availableWallet}
                                   </MenuItem>
                                 )}
                               </MenuList>
