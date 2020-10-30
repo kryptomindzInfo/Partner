@@ -15,6 +15,7 @@ import Container from 'components/Container';
 import UploadArea from 'components/UploadArea';
 import Loader from 'components/Loader';
 import MuiCheckbox from '@material-ui/core/Checkbox';
+import CashierToOperationalForm from './CashiertoOperationalForm';
 
 import { API_URL, CONTRACT_URL, CURRENCY, STATIC_URL } from 'containers/App/constants';
 
@@ -53,6 +54,7 @@ class CashierTransactionLimit extends Component {
       closingTime: null,
       withoutID: false,
       requireOTP: false,
+      sendtooperationalpopup: false,
       token,
       proceed: false,
       livefee: 0,
@@ -82,6 +84,18 @@ class CashierTransactionLimit extends Component {
   error = () => toast.error(this.state.notification);
 
   warn = () => toast.warn(this.state.notification);
+
+  openOperationalPopup = () => {
+    this.setState({
+      sendtooperationalpopup: true,
+    });
+  };
+
+  closeOperationalPopup = () => {
+    this.setState({
+      sendtooperationalpopup: false,
+    });
+  };
 
   handleInputChange = event => {
     const { value, name } = event.target;
@@ -1038,6 +1052,31 @@ class CashierTransactionLimit extends Component {
             )}
           </Col>
         </Row>
+        <Row>
+          <Col style={{width:'100%', marginTop:'5px'}} cw="100%">
+            {this.state.transactionStarted && !this.state.isClosed ? (
+              <Button
+                className="sendMoneybutton"
+                noMin
+                onClick={this.openOperationalPopup}
+              >
+                <i className="material-icons">send</i> {/* Send Money */}
+                Send Money to Operational
+              </Button>
+            ) : (
+              <Button className="sendMoneybutton" noMin disabled>
+                <i className="material-icons">send</i> {/* Send Money */}
+                Send Money to Operational
+              </Button>
+            )}
+          </Col>
+        </Row>
+
+        {this.state.sendtooperationalpopup ? (
+          <CashierToOperationalForm
+          close={() => this.closeOperationalPopup()}
+        />
+        ): null}
 
         {this.state.popupClaimMoney ? (
           <Popup bigBody close={this.closePopupSendMoney.bind(this)} accentedH1>
