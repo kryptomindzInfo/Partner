@@ -3,6 +3,8 @@ import Popup from 'components/Popup';
 import Loader from 'components/Loader';
 import Button from 'components/Button';
 import axios from 'axios';
+import Row from 'components/Row';
+import Col from 'components/Col';
 import FormGroup from 'components/FormGroup';
 import TextInput from 'components/TextInput';
 import { toast } from 'react-toastify';
@@ -41,7 +43,7 @@ function SendMoneyToOperationalPopup(props) {
     event.preventDefault();
     setLoading(true);
     try{
-      const res = await axios.post(`${API_URL}/transferMasterToOp?user=${props.type}`, {
+      const res = await axios.post(`${API_URL}/${props.type}/transferMasterToOp`, {
         amount: amount,
         token: props.token,
       });
@@ -70,17 +72,24 @@ function SendMoneyToOperationalPopup(props) {
         onSubmit={sendMoney}
       >
         <p>&nbsp;</p>
-        <FormGroup>
-          <label>Amount*</label>
-          <TextInput
-          type="text"
-          name="amount"
-          onFocus={inputFocus}
-          onBlur={inputBlur}
-          onChange={handleInputChange}
-          required
-          />
-        </FormGroup>
+        <Row>
+          <Col cW="10%">
+            <h4>XOF</h4>
+          </Col>
+          <Col cW="90%">
+            <FormGroup>
+              <label>Amount*</label>
+              <TextInput
+              type="text"
+              name="amount"
+              onFocus={inputFocus}
+              onBlur={inputBlur}
+              onChange={handleInputChange}
+              required
+              />
+              </FormGroup>
+          </Col>
+        </Row>
         {loading ? (
           <Button
             filledBtn
