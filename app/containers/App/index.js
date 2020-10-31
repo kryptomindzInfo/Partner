@@ -31,6 +31,7 @@ import BankDocuments from 'containers/BankDocuments/Loadable';
 import BankTheme from 'containers/BankTheme/Loadable';
 import BankFees from 'containers/BankFees/Loadable';
 import PartnerOperationalHistory from 'containers/PartnerOperationalHistory/Loadable';
+import PartnerMasterHistory from 'containers/PartnerMasterHistory/Loadable';
 import BankEscrowHistory from 'containers/BankEscrowHistory/Loadable';
 import PartnerBranchList from 'containers/PartnerBranchList/Loadable';
 import TermsConditions from 'components/TermsConditions';
@@ -47,6 +48,7 @@ import PartnerCashierInfo from 'containers/PartnerCashierInfo';
 import BranchCashierList from 'containers/BranchCashierList';
 import BranchCashierInfo from 'containers/BranchCashierInfo';
 import BranchOperationalHistory from 'containers/BranchOperationalHistory';
+import BranchMasterHistory from 'containers/BranchMasterHistory';
 import CashierSendMoney from 'containers/CashierSendMoney';
 import CashierLogin from 'containers/CashierLogin';
 import CashierForgotPassword from 'containers/CashierForgotPassword';
@@ -154,6 +156,11 @@ export default function App(props) {
           />
           <BankRoute
             exact
+            path="/partner/masterHistory"
+            component={PartnerMasterHistory}
+          />
+          <BankRoute
+            exact
             path="/bank/escrowHistory"
             component={BankEscrowHistory}
           />
@@ -205,6 +212,11 @@ export default function App(props) {
             exact
             path="/branch/:bank?/operationalHistory"
             component={BranchOperationalHistory}
+          />
+          <BranchRoute
+            exact
+            path="/branch/:bank?/masterHistory"
+            component={BranchMasterHistory}
           />
           <BranchRoute
             exact

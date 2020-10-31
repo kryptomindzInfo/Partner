@@ -5,6 +5,7 @@ import messages from './messages';
 import axios from 'axios';
 import Card from 'components/Card';
 import SendToOperationalPopup from './SendToOperationalPopup';
+import A from 'components/A';
 
 
 import { API_URL, STATIC_URL, CURRENCY } from 'containers/App/constants';
@@ -103,8 +104,13 @@ class BranchMasterWallet extends Component {
         <h3>
           <FormattedMessage {...messages.master} />
         </h3>
-        <h5>
+        <h5 style={{ display: 'flex', justifyContent: 'space-between' }}>
           <FormattedMessage {...messages.available} />
+          <A href={`/branch/${this.props.bankName}/masterHistory`}>
+            <span className="history" style={{ position: 'inherit' }}>
+              History
+            </span>
+          </A>
         </h5>
         <div className="cardValue">
           {CURRENCY} {this.state.balance.toFixed(2)}

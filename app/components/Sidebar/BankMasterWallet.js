@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import messages from './messages';
 import axios from 'axios';
+import A from 'components/A';
 import SendToOperationalPopup from './SendToOperationalPopup';
 
 import Card from 'components/Card';
@@ -101,6 +102,9 @@ class BankMasterWallet extends Component {
           <i className="material-icons">send</i>{' '}
           <FormattedMessage {...messages.sendmoney} />
         </button>
+        <A href={'/partner/masterHistory'}>
+          <span className="history">History</span>
+        </A>
         {this.state.popup ? (
           <SendToOperationalPopup
             close={this.handlePopupClose}
