@@ -163,7 +163,7 @@ const PayBillsInvoiceList = props => {
               color: 'green',
             }}
           >
-            <span onClick={() => props.setEditingInvoice(invoice)}>
+            <span onClick={() => props.setEditingInvoice(invoice, penaltyList[index])}>
               Pay Bill
             </span>
           </div>
