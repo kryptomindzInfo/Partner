@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Formik, useField } from 'formik';
 import Popup from 'components/Popup';
+import Loader from 'components/Loader';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -141,6 +142,7 @@ const CashierToWalletForm = ({ close }) => {
   const [liveFee, setLiveFee] = useState(0);
   const anchorRef = React.useRef(null);
   const [openWalletPopup, setWalletPopup] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [interbank, setInterBank] =React.useState(true);
   const [amount, setAmount] =React.useState('');
 
@@ -188,6 +190,7 @@ const CashierToWalletForm = ({ close }) => {
   };
 
   const handleOnProceedClick = async(values) => {
+    setLoading(true);
     const token = localStorage.getItem('cashierLogged');
     let API = "";
     if(interbank){
@@ -203,12 +206,15 @@ const CashierToWalletForm = ({ close }) => {
       if (res.status === 200) {
         if (res.data.status === 0) {
           toast.error(res.data.message);
+          setLoading(false);
         } else {
           toast.success(res.data.message);
-          props.close();
+          setLoading(false);
+          close();
         }
       } else {
         toast.error(res.data.message);
+        setLoading(false);
       }
     } catch (err) {
       toast.error('Something went wrong');
@@ -954,18 +960,22 @@ const CashierToWalletForm = ({ close }) => {
                           values.amount
                         }
                       >
-                        <Typography variant="h6">
-                          {values.amount
-                            ? 'Collect '
-                            : ''}
-                          {values.amount
-                            ? values.is_inclusive
-                              ? `${values.amount} and `
-                              : `${values.amount +
-                                  liveFee} and `
-                            : ''}
-                          Proceed
-                        </Typography>
+                        {loading ? (
+                          <Loader></Loader>
+                        ) : (
+                            <Typography variant="h6">
+                            {values.amount
+                              ? 'Collect '
+                              : ''}
+                            {values.amount
+                              ? values.is_inclusive
+                                ? `${values.amount} and `
+                                : `${values.amount +
+                                    liveFee} and `
+                              : ''}
+                            Proceed
+                          </Typography>
+                        )}
                       </Button>
                     </Grid>
                   </Grid>
