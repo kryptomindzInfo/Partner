@@ -270,17 +270,6 @@ class BranchCreditLimit extends Component {
         </div></Col>
         </Row>
 
-        {
-          //   this.props.activateNeeded ?
-          //   <button className="fullWidth">
-          // <FormattedMessage {...messages.activate} />
-          // </button>
-          //   :
-          <button>
-          Request for more credit
-          </button>
-        }
-
 
         {this.state.popup ? (
           <Popup close={this.closePopup.bind(this)} roundedCorner>
