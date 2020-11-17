@@ -25,7 +25,8 @@ toast.configure({
   pauseOnHover: true,
   draggable: true,
 });
-const token = localStorage.getItem('bankLogged');
+const token = localStorage.getItem('branchLogged');
+const limit = localStorage.getItem('branchLimit');
 
 class BranchCreditLimit extends Component {
   constructor() {
@@ -53,195 +54,45 @@ class BranchCreditLimit extends Component {
 
   warn = () => toast.warn(this.state.notification);
 
-  handleInputChange = event => {
-    const { value, name } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-  sendMoney = e => {
-    e.preventDefault();
-
-    axios
-      .post(`${API_URL}/getWalletsOperational`, {
-        bank_id: this.props.historyLink,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              from: res.data.from,
-              to: res.data.to,
-              popup: true,
-            });
-            document.getElementById('popfrom').focus();
-            document.getElementById('popto').focus();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  };
-
-  closePopup = () => {
-    this.setState({
-      popup: false,
-    });
-  };
-
-  addBank = event => {
-    event.preventDefault();
-    // axios
-    //   .post(`${API_URL  }/generateOTP`, {
-    //     name: this.state.name,
-    //     mobile: this.state.mobile,
-    //     page: 'addBank',
-    //     token,
-    //   })
-    //   .then(res => {
-    //     if(res.status == 200){
-    //       if(res.data.error){
-    //         throw res.data.error;
-    //       }else{
-    //         this.setState({
-    //           showOtp: true,
-    //           notification: 'OTP Sent'
-    //         });
-    //         this.success();
-    //       }
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    //   })
-    //   .catch(err => {
-    //     this.setState({
-    //       notification: (err.response) ? err.response.data.error : err.toString()
-    //     });
-    //     this.error();
-    //   });
-  };
-
-  verifyOTP = event => {
-    event.preventDefault();
-    axios
-      .post(`${API_URL}/addBank`, {
-        name: this.state.name,
-        address1: this.state.address1,
-        state: this.state.state,
-
-        zip: this.state.zip,
-        country: this.state.country,
-        ccode: this.state.ccode,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        logo: this.state.logo,
-        contract: this.state.contract,
-        otp: this.state.otp,
-        token,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState({
-              notification: 'Bank added successfully!',
-            });
-            this.success();
-            this.closePopup();
-            this.getBanks();
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
-      });
-  };
-
-  submitMoney = e => {
-    e.preventDefault();
-    if (this.state.amount > this.state.balance) {
-      this.setState(
-        {
-          notification: 'Insufficient Balance',
-        },
-        function() {
-          this.error();
-        },
-      );
-    } else if (this.state.amount == '') {
-      this.setState(
-        {
-          notification: 'Invalid Amount',
-        },
-        function() {
-          this.error();
-        },
-      );
-    } else {
-      axios
-        .post(`${API_URL}/transferMoney`, {
-          from: this.state.from,
-          to: this.state.to,
-          amount: this.state.amount,
-          note: this.state.note,
-          auth: 'infra',
-          token,
-        })
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.error) {
-              throw res.data.error;
-            } else {
-              this.setState(
-                {
-                  notification:
-                    'Transfer Initiated, You will be notified once done',
-                },
-                function() {
-                  this.success();
-                  setTimeout(function() {}, 1000);
-                },
-              );
-            }
-          } else {
-            const error = new Error(res.data.error);
-            throw error;
-          }
-        })
-        .catch(err => {
-          this.setState({
-            notification: err.response
-              ? err.response.data.error
-              : err.toString(),
-          });
-          this.error();
-        });
+  getBalance = () => {
+    const headers = {
+      'Authorization': token
     }
+    axios
+      .post(
+        `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`,
+      )
+      .then(res => {
+        if (res.status == 200) {
+          if (res.data.error) {
+            throw res.data.error;
+          } else {
+            this.setState(
+              {
+                balance: res.data.balance,
+              },
+              () => {
+                var dis = this;
+                setTimeout(function() {
+                  dis.getBalance();
+                }, 3000);
+              },
+            );
+          }
+        }
+      })
+      .catch(err => {});
   };
 
   componentDidMount() {
-    this.setState({
-      bank: this.props.historyLink,
-    });
-
+    this.setState(
+      {
+        bank: this.props.historyLink,
+      },
+      () => {
+        this.getBalance();
+      },
+    );
   }
 
   render() {
@@ -263,13 +114,12 @@ class BranchCreditLimit extends Component {
         </h3>
         <Row>
         <Col><h3 className="miniTitle">Maximum</h3><div className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+          {CURRENCY} {limit}
         </div></Col>
         <Col><h3 className="miniTitle">Remaining</h3><div className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+          {CURRENCY} {this.state.balance > 0 ? limit : limit+this.state.balance  }
         </div></Col>
         </Row>
-
 
         {this.state.popup ? (
           <Popup close={this.closePopup.bind(this)} roundedCorner>
