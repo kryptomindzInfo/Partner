@@ -59,9 +59,16 @@ class BranchCreditLimit extends Component {
       'Authorization': token
     }
     axios
-      .post(
-        `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`,
-      )
+    .post(this.props.branchId  ?
+      `${API_URL}/partner/getBranchWalletBalnce`
+      :
+      `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`
+      ,
+      {
+        token: localStorage.getItem('partnerLogged'),
+        branch_id: this.props.branchId  || '',
+        wallet_type: 'operational',
+      })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -114,10 +121,12 @@ class BranchCreditLimit extends Component {
         </h3>
         <Row>
         <Col><h3 className="miniTitle">Maximum</h3><div className="cardValue">
-          {CURRENCY} {limit}
+        {CURRENCY} {this.props.credit_limit ? this.props.credit_limit: limit}
         </div></Col>
         <Col><h3 className="miniTitle">Remaining</h3><div className="cardValue">
-          {CURRENCY} {this.state.balance > 0 ? limit : limit+this.state.balance  }
+        {CURRENCY} {this.props.credit_limit ? 
+            this.state.balance > 0 ? this.props.credit_limit : this.props.credit_limit+this.state.balance :
+            this.state.balance > 0 ? limit : limit+this.state.balance}
         </div></Col>
         </Row>
 

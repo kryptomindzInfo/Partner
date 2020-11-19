@@ -40,17 +40,17 @@ class BranchWallets extends Component {
       <Row>
         <Col>
           <Card marginBottom="54px" buttonMarginTop="32px" bigPadding bordered>
-            <BranchOperationalWallet bankName={this.props.bankName}/>
+            <BranchOperationalWallet branchId={this.props.branchId} bankName={this.props.bankName}/>
           </Card>
         </Col>
       <Col>
         <Card marginBottom="54px" buttonMarginTop="32px" bigPadding bordered>
-          <BranchMasterWallet bankName={this.props.bankName}/>
+          <BranchMasterWallet branchId={this.props.branchId} bankName={this.props.bankName}/>
         </Card>
       </Col>
       <Col>
         <Card marginBottom="54px" buttonMarginTop="32px" bigPadding  bordered>
-          <BranchCreditLimit bankName={this.props.bankName}/>
+          <BranchCreditLimit branchId={this.props.branchId} credit_limit={this.props.limit} bankName={this.props.bankName}/>
         </Card>
       </Col>
       </Row>

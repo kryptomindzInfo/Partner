@@ -581,13 +581,18 @@ class BranchOperationalWallet extends Component {
       });
   };
   getBalance = () => {
-    const headers = {
-      'Authorization': token
-    }
+
     axios
-      .post(
-        `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`,
-      )
+    .post(this.props.branchId  ?
+      `${API_URL}/partner/getBranchWalletBalnce`
+      :
+      `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=operational&wallet_id=`
+      ,
+      {
+        token: localStorage.getItem('partnerLogged'),
+        branch_id: this.props.branchId  || '',
+        wallet_type: 'operational',
+      })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {

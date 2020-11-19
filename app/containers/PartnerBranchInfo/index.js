@@ -131,6 +131,7 @@ export default class PartnerBranchInfo extends Component {
     axios
     .post(`${API_URL  }/getOne`, { page: 'branch', type: 'partner', token: token, page_id : this.state.branch_id})
     .then(res => {
+      console.log(res);
       if(res.status == 200){
         console.log(res.data);
         this.setState({ otpEmail: res.data.row.email, otpMobile: res.data.row.mobile, bankName: res.data.row.name, dbcode: res.data.row.bcode });
@@ -635,7 +636,7 @@ export default class PartnerBranchInfo extends Component {
           <BankSidebarThree active="info" branchId={this.props.match.params.branch}  blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={bname}/>
           <Main>
 
-            <BranchWallets branchId={this.props.match.params.branch} bCode={this.state.dbcode} bankName={this.state.bname} />
+            <BranchWallets branchId={this.props.match.params.branch} bCode={this.state.dbcode} bankName={this.state.bname} limit={this.state.credit_limit}/>
 
           <Card bigPadding bordered>
 
