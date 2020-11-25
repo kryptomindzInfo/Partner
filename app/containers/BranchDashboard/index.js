@@ -200,22 +200,9 @@ export default class BranchDashboard extends Component {
   };
 
   logout = () => {
-    // event.preventDefault();
-    // axios.post(API_URL+'/logout', {token: token})
-    // .then(res => {
-    //    if(res.status == 200){
     localStorage.removeItem('logged');
     localStorage.removeItem('name');
     this.setState({ redirect: true });
-    //     }else{
-    //       const error = new Error(res.data.error);
-    //       throw error;
-    //     }
-    // })
-    // .catch(err => {
-    //   alert('Login to continue');
-    //   this.setState({ redirect: true });
-    // });
   };
 
   addBranch = event => {

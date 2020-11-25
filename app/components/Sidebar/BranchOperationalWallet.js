@@ -595,8 +595,8 @@ class BranchOperationalWallet extends Component {
       })
       .then(res => {
         if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
+          if (res.data.status === 0) {
+            throw res.data.message;
           } else {
             this.setState(
               {
@@ -676,7 +676,7 @@ class BranchOperationalWallet extends Component {
         </h5>
 
         <div className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+          {this.state.balance ?  `${CURRENCY} ${this.state.balance.toFixed(2)}` : `${CURRENCY} 0`}
         </div>
 
         <Row>

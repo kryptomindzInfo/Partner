@@ -120,7 +120,7 @@ class BranchMasterWallet extends Component {
           </A>
         </h5>
         <div className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+        {this.state.balance ?  `${CURRENCY} ${this.state.balance.toFixed(2)}` : `${CURRENCY} 0`}
         </div>
         <button
           onClick={this.handlePopupOpen}
