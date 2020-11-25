@@ -924,7 +924,6 @@ export default class BranchDashboard extends Component {
                     <tr>
                       <th>Cashier Name</th>
                       <th>Cash in Hand (XOF)</th>
-                      {/* <th>Transaction limit ({CURRENCY})</th> */}
                       <th>Assigned to</th>
                       <th>Input amount</th>
                       <th>Withdrawal</th>
@@ -947,13 +946,6 @@ export default class BranchDashboard extends Component {
                                   (b.cash_received - b.cash_paid)
                                 ).toFixed(2)}
                               </td>
-                              {/* <td className="tac">
-                                {CURRENCY}{' '}
-                                {(
-                                  Number(b.max_trans_amt) -
-                                  (b.cash_paid + b.cash_received)
-                                ).toFixed(2)}
-                              </td> */}
                               <td>
                                 {this.state.users.filter(
                                   u => u._id == b.partner_user_id,
@@ -964,13 +956,13 @@ export default class BranchDashboard extends Component {
                                   : ''}
                               </td>
                               <td>
-                              {b.cash_received}
+                              {b.cash_received.toFixed(2)}
                               </td>
                               <td>
-                              {b.cash_paid}
+                              {b.cash_paid.toFixed(2)}
                               </td>
                               <td>
-                              {b.fee_generated}
+                              {b.fee_generated.toFixed(2)}
                               </td>
 
                               <td style = {{color: b.is_closed ? 'red' : 'green' }}>
