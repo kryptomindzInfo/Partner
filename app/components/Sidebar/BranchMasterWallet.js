@@ -67,7 +67,7 @@ class BranchMasterWallet extends Component {
         `${API_URL}/partnerBranch/getWalletBalance?partner=${this.props.bankName}&token=${token}&page=master&wallet_id=`
         ,
         {
-          token: localStorage.getItem('partnerLogged'),
+          token: this.props.branchId ? localStorage.getItem('partnerLogged') : token,
           branch_id: this.props.branchId  || '',
           wallet_type: 'master',
         })
