@@ -22,6 +22,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { API_URL, CURRENCY } from '../../containers/App/constants';
 import CountrySelectBox from '../Form/CountrySelectBox';
 import TypeSelectBox from '../Form/TypeSelectBox';
+import OtpPopup from './OtpPopup';
 
 toast.configure({
   position: 'bottom-right',
@@ -145,6 +146,13 @@ const CashierToWalletForm = ({ close }) => {
   const [loading, setLoading] = React.useState(false);
   const [interbank, setInterBank] =React.useState(true);
   const [amount, setAmount] =React.useState('');
+  const [showOtp, setShowOtp] = React.useState(false);
+  const [values, setvalues] = React.useState({});
+
+  const haldleOtpClick = (values) => {
+    setvalues(values);
+    setShowOtp(true);
+  };
 
   
 
@@ -224,10 +232,19 @@ const CashierToWalletForm = ({ close }) => {
   useEffect(() => {
     getLiveFee(amount);
   }, [interbank]);
+
   return (
     <Popup bigBody close={close}>
-      <h1>Send Money to Operational</h1>
-      <Formik
+       {showOtp ? (
+        <OtpPopup
+          values={values}
+          execute={handleOnProceedClick}
+          close={close}
+        />
+      ) : (
+      <div>
+        <h1>Send Money to Operational</h1>
+        <Formik
         initialValues={{
           ccode: '+221',
           givenname: '',
@@ -254,7 +271,7 @@ const CashierToWalletForm = ({ close }) => {
         onSubmit={async values => {
           values.livefee = liveFee;
           values.requireOTP = '111111';
-          handleOnProceedClick(values);
+          haldleOtpClick(values);
         }}
         validationSchema={Yup.object().shape({
           mobile: Yup.string()
@@ -985,6 +1002,8 @@ const CashierToWalletForm = ({ close }) => {
           );
         }}
       </Formik>
+      </div>
+      )}
     </Popup>
   );
 };

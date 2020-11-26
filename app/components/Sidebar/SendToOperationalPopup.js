@@ -9,6 +9,7 @@ import FormGroup from 'components/FormGroup';
 import TextInput from 'components/TextInput';
 import { toast } from 'react-toastify';
 import { API_URL} from 'containers/App/constants';
+import OtpPopup from './OtpPopup';
 
 toast.configure({
   position: 'bottom-right',
@@ -22,6 +23,11 @@ toast.configure({
 function SendMoneyToOperationalPopup(props) {
   const [amount, setAmount] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [showOtp, setShowOtp] = React.useState(false);
+
+  const haldleOtpClick = () => {
+    setShowOtp(true);
+  };
 
   const inputFocus = (e) => {
     const { target } = e;
@@ -39,12 +45,11 @@ function SendMoneyToOperationalPopup(props) {
     setAmount(e.target.value);
   };
 
-  const sendMoney = async(event) => {
-    event.preventDefault();
+  const sendMoney = async(values) => {
     setLoading(true);
     try{
       const res = await axios.post(`${API_URL}/${props.type}/transferMasterToOp`, {
-        amount: amount,
+        amount: values,
         token: props.token,
       });
       if (res.status === 200) {
@@ -65,46 +70,56 @@ function SendMoneyToOperationalPopup(props) {
 
   return (
     <Popup close={props.close}>
-      <h1> Send Money To Operational Wallet</h1>
-      <form
-        action=""
-        method="post"
-        onSubmit={sendMoney}
-      >
-        <p>&nbsp;</p>
-        <Row>
-          <Col cW="10%">
-            <h4>XOF</h4>
-          </Col>
-          <Col cW="90%">
-            <FormGroup>
-              <label>Amount*</label>
-              <TextInput
-              type="text"
-              name="amount"
-              onFocus={inputFocus}
-              onBlur={inputBlur}
-              onChange={handleInputChange}
-              required
-              />
-              </FormGroup>
-          </Col>
-        </Row>
-        {loading ? (
-          <Button
-            filledBtn
-            marginTop="50px"
-            marginBottom="50px"
-            disabled
-          >
-            <Loader />
-          </Button>
-        ) : (
-          <Button filledBtn marginTop="50px" marginBottom="50px">
-            <span>Send Money</span>
-          </Button>
-        )}
-      </form>
+      {showOtp ? (
+        <OtpPopup
+          values={amount}
+          execute={sendMoney}
+          close={props.close}
+        />
+      ) : (
+      <div>
+        <h1> Send Money To Operational Wallet</h1>
+        <form
+          action=""
+          method="post"
+          onSubmit={haldleOtpClick}
+        >
+          <p>&nbsp;</p>
+          <Row>
+            <Col cW="10%">
+              <h4>XOF</h4>
+            </Col>
+            <Col cW="90%">
+              <FormGroup>
+                <label>Amount*</label>
+                <TextInput
+                type="text"
+                name="amount"
+                onFocus={inputFocus}
+                onBlur={inputBlur}
+                onChange={handleInputChange}
+                required
+                />
+                </FormGroup>
+            </Col>
+          </Row>
+          {loading ? (
+            <Button
+              filledBtn
+              marginTop="50px"
+              marginBottom="50px"
+              disabled
+            >
+              <Loader />
+            </Button>
+          ) : (
+            <Button filledBtn marginTop="50px" marginBottom="50px">
+              <span>Send Money</span>
+            </Button>
+          )}
+        </form>
+      </div>
+      )}
     </Popup>
   );
 }
