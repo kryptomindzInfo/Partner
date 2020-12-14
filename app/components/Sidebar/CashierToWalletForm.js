@@ -139,6 +139,10 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   const [isUserLoading, setUserLoading] = React.useState(false);
   const [selectedMobile, setSelectedMobile] = React.useState('');
   const [interbank, setInterBank] =React.useState(true);
+  const [receiverGivenName,setreceiverGivenName]= React.useState('');
+  const [receiverFamilyName,setreceiverFamilyName]= React.useState('');
+  const [receiverCountry,setreceiverCountry]= React.useState('');
+  const [receiverEmail,setreceiverEmail]= React.useState('');
   const [amount, setAmount] =React.useState('');
   const [ccCode, setCcCode] = React.useState('+000');
   const [country, setCountry] = React.useState('');
@@ -218,6 +222,10 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                 return false;
               }
               setAvailableWallet(res.data.data.wallet_id);
+              setreceiverGivenName(res.data.data.name);
+              setreceiverFamilyName(res.data.data.last_name);
+              setreceiverCountry(res.data.data.country);
+              setreceiverEmail(res.data.data.country)
               if (!walletBankName) {
                 setWalletPopup(true);
               }
@@ -272,7 +280,15 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
   };
 
   const handleOnProceedClick = values => {
-    formValues(values);
+    const obj = {
+      ...values,
+      receiverGivenName,
+      receiverFamilyName,
+      receiverCountry,
+      receiverGivenName,
+      receiverEmail,
+    }
+    formValues(obj);
   };
 
   useEffect(() => {

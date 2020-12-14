@@ -826,6 +826,7 @@ class CashierTransactionLimit extends Component {
     const { toWalletFormValues } = this.state;
     this.setState({
       verifySendMoneyOTPLoading: true,
+      receiptvalues: toWalletFormValues,
     });
     toWalletFormValues.token = token;
     let API = '';
@@ -843,6 +844,7 @@ class CashierTransactionLimit extends Component {
           } else {
             this.setState({
               notification: 'Transaction Successfully Done',
+              receiptpopup: true,
             });
             this.success();
             this.closePopupSendMoney();
