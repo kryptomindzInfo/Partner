@@ -28,7 +28,7 @@ export class Reciept extends Component {
             <Row>
               <Col className="popInfoLeft">Transaction ID :</Col>
                 <Col className="popInfoRight">
-                19648821974200954
+                67648821974200954
               </Col>
             </Row>
             <Row>
