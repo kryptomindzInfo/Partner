@@ -36,7 +36,6 @@ const OtpPopup = props => {
     if (otp === '111111') {
       toast.success('OTP verified successfully');
       await props.execute(props.values);
-      props.close();
     } else {
       toast.error('OTP Mismatch');
     }
