@@ -52,7 +52,7 @@ const PayBillPopup = props => {
     <div>
       <Popup accentedH1 bigBody close={props.close}>
         {paybillOTP ? (
-          <PayBillOTP close={props.close} invoice={editingInvoice}  merchant={merchant}/>
+          <PayBillOTP close={props.close} invoice={editingInvoice}  merchant={merchant} show={props.show}/>
         ) : (
           <div>
             <h1>Pay {invoiceName} Bills</h1>
@@ -176,8 +176,10 @@ const PayBillPopup = props => {
                 invoiceList={invoiceList}
                 setEditingInvoice={(value, penalty) => handleSetEditingInvoice(value, penalty)}
                 close={props.close}
-                showOTPPopup={values => {
+                showOTPPopup={(values,invoices) => {
+                  console.log(invoices);
                   setEditingInvoice(values);
+                  props.showReceiptPopup(invoices);
                   setPaybillOTP(true);
                 }}
               />
@@ -187,8 +189,10 @@ const PayBillPopup = props => {
             {displayInvoiceDetailForm ? (
               <PayBillsInvoiceDetails
                 merchantId={merchant._id}
-                showOTPPopup={values => {
+                showOTPPopup={(values,invoices) => {
+                  console.log(invoices);
                   setEditingInvoice(values);
+                  props.showReceiptPopup(invoices);
                   setPaybillOTP(true);
                 }}
                 close={props.close}

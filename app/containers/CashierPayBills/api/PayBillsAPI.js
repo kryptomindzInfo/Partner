@@ -70,7 +70,7 @@ const getInvoiceByCustomerCode = async (customerCode, merchant_id) => {
   }
 };
 
-const payInvoice = async (values, bankid) => {
+const payInvoice = async (values, bankid,fun,fun2) => {
   let API = '';
   if (bankid === bankID) {
     API = 'partnerCashier/payInvoice';
@@ -85,12 +85,16 @@ const payInvoice = async (values, bankid) => {
     });
     if (res.status === 200) {
       if (res.data.status === 0) {
+        fun2();
         toast.error(res.data.message);
       } else {
+        fun2();
+        fun();
         toast.success(res.data.message);
       }
     }
   } catch (err) {
+    fun2();
     toast.error('Something went wrong');
   }
 };

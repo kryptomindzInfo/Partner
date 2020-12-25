@@ -35,8 +35,7 @@ const PayBillOTP = props => {
     setVerifyOtpLoading(true);
     if (otp === '111111') {
       toast.success('OTP verified successfully');
-      await payInvoice(props.invoice, props.merchant.bank_id);
-      props.close();
+      await payInvoice(props.invoice, props.merchant.bank_id,props.show,props.close);
     } else {
       toast.error('OTP Mismatch');
     }

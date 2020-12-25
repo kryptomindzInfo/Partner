@@ -17,6 +17,7 @@ const PayBillsInvoiceList = props => {
   const [isButtonLoading, setButtonLoading] = useState(false);
   const [selectedInvoiceList, setSelectedInvoiceList] = useState([]);
   const [totalFee, setTotalFee] = useState(0);
+  const [payingInvoiceList, setPayingInvoiceList] = useState([]);
   const [feeList, setFeeList] = useState([]);
   const [penaltyList, setPenaltyList] = useState([]);
   const [penaltyRule, setPenaltyRule] = useState({});
@@ -43,10 +44,24 @@ const PayBillsInvoiceList = props => {
           id: counterInvoice[0]._id,
           penalty: 0,
         }
+        const obj4 = {
+          invoice: invoice,
+          penalty: penaltyList[index],
+          fee: feeList[index],
+        }
+        const obj3 = {
+          invoice: counterInvoice[0],
+          penalty: 0,
+          fee: feeList[index],
+        }
+        const paylist = [...payingInvoiceList];
+        paylist.push(obj3);
+        paylist.push(obj4);
         const list = [...selectedInvoiceList];
         list.push(obj1);
         list.push(obj2);
         setSelectedInvoiceList(list);
+        setPayingInvoiceList(paylist);
         setButtonLoading(false);
       } else {
         setTotalAmount(totalAmount + invoice.amount + penaltyList[index]);
@@ -59,6 +74,14 @@ const PayBillsInvoiceList = props => {
           id: invoice._id,
           penalty: penaltyList[index],
         }
+        const obj2 = {
+          invoice: invoice,
+          penalty: penaltyList[index],
+          fee: feeList[index],
+        }
+        const paylist = [...payingInvoiceList];
+        paylist.push(obj2);
+        setPayingInvoiceList(paylist);
         const list = [...selectedInvoiceList];
         list.push(obj1);
         setSelectedInvoiceList(list);
@@ -74,6 +97,8 @@ const PayBillsInvoiceList = props => {
         setTotalFee(data.fee);
         const list = selectedInvoiceList.filter((val) => val.id !== invoice._id &&  val.id !== counterInvoice[0]._id);
         setSelectedInvoiceList(list);
+        const paylist = payingInvoiceList.filter((val) => val.invoice.id !== invoice._id &&  val.invoive.id !== counterInvoice[0]._id);
+        setPayingInvoiceList(paylist);
         setTotalAmount(totalAmount-invoice.amount-counterInvoice[0].amount - penaltyList[index]);
         setButtonLoading(false);
       } else {
@@ -84,6 +109,8 @@ const PayBillsInvoiceList = props => {
         setTotalFee(data.fee);
         const list = selectedInvoiceList.filter((val) => val.id !== invoice._id);
         setSelectedInvoiceList(list);
+        const paylist = payingInvoiceList.filter((val) => val.invoice.id !== invoice._id);
+        setPayingInvoiceList(paylist);
         setTotalAmount(totalAmount- invoice.amount - penaltyList[index]);
         setButtonLoading(false);
       }
@@ -95,7 +122,7 @@ const PayBillsInvoiceList = props => {
       invoices : selectedInvoiceList,
       merchant_id : merchant._id,
     }
-    props.showOTPPopup(obj);
+    props.showOTPPopup(obj,payingInvoiceList);
   };
   
   const getInvoiceList = () =>

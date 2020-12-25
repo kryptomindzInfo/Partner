@@ -86,7 +86,12 @@ const PayBillsInvoiceDetails = props => {
               penalty: props.penalty,
             }]
           }
-          props.showOTPPopup(obj);
+          const payinvoice = [{
+            invoice: invoice,
+            penalty: props.penalty,
+            fee:fee,
+          }]
+          props.showOTPPopup(obj.payinvoice);
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required('Name is required.'),
