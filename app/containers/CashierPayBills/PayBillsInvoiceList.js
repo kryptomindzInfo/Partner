@@ -127,7 +127,7 @@ const PayBillsInvoiceList = props => {
   
   const getInvoiceList = () =>
     invoiceList.map((invoice,index) => (
-      <tr key={invoice._id}>
+      <tr key={invoice._id} className={ penaltyList[index] > 0 ? 'red' : ''}>
         <td
           className="tac"
         >

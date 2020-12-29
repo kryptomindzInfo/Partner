@@ -15,60 +15,64 @@ margin-top: ${props => props.marginTop ? props.marginTop : '0' };
     position:relative;
     width: 12%;
 }
-> tbody > tr > td{
-    font-size: 16px;
-    font-weight: 300;
-    color: #4a4a4a;
-    text-align: ${props => props.textAlign ? props.textAlign : 'center' };
-    padding: ${props => props.smallTd ? '10px' : '14px 22px' };
-    background-color: rgba(81, 111, 10, 0.01);
-    position:relative;
-    &.green{
-        color: ${props => props.theme.primary};
-    }
-    > a{
-        font-size: 12px;
-    }
-    &.right{
-        text-align: right;
-    }
-    .labelGrey{
-       
-        font-size: 18px;
-        font-weight: 300;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: -0.13px;
+> tbody > tr {
         color: #4a4a4a;
-    }
-    .labelBlue{
-        font-size: 20px;
-        font-weight: bold;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: -0.1px;
-        color: #4a90e2;
-    }
-    .labelSmallGrey{
-        font-size: 12px;
+        &.red {
+          color: #FF0000;
+        }
+    >td {
+        font-size: 16px;
         font-weight: 300;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: -0.13px;
-        color: #4a4a4a;
+        text-align: ${props => props.textAlign ? props.textAlign : 'center' };
+        padding: ${props => props.smallTd ? '10px' : '14px 22px' };
+        background-color: rgba(81, 111, 10, 0.01);
+        position:relative;
+        &.green{
+            color: ${props => props.theme.primary};
+        }
+        > a{
+            font-size: 12px;
+        }
+        &.right{
+            text-align: right;
+        }
+        .labelGrey{
+            font-size: 18px;
+            font-weight: 300;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: -0.13px;
+            color: #4a4a4a;
+        }
+        .labelBlue{
+            font-size: 20px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: -0.1px;
+            color: #4a90e2;
+        }
+        .labelSmallGrey{
+            font-size: 12px;
+            font-weight: 300;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: -0.13px;
+            color: #4a4a4a;
+        }
     }
-}
-td > .material-icons{
-    font-size: 19px;
-    font-weight:bold;
-    color:${props => props.theme.primary};
-}
->
-.bold{
-    font-weight:bold;
+    td > .material-icons{
+        font-size: 19px;
+        font-weight:bold;
+        color:${props => props.theme.primary};
+    }
+    >
+    .bold{
+        font-weight:bold;
+    }
 }
 
 .popMenuTrigger{
