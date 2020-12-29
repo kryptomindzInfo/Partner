@@ -948,7 +948,7 @@ const CashierToWalletForm = ({ close }) => {
                         onChange={handleFeeTypeChange(values.interbank, values.amount)
                         }
                       />
-                      <span>Receiver can recieve from any bank</span>
+                      <span>Is receivers from different bank ?</span>
                     </div>
                     <Typography
                       style={{
