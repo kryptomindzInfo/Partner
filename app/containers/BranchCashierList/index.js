@@ -303,7 +303,7 @@ export default class BranchCashierList extends Component {
   };
   startTimer = () => {
     var dis = this;
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
       if (dis.state.timer <= 0) {
         clearInterval(timer);
         dis.setState({ resend: true });
@@ -365,7 +365,7 @@ export default class BranchCashierList extends Component {
               {
                 notification: 'Cashier updated successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getCashiers();
@@ -405,7 +405,7 @@ export default class BranchCashierList extends Component {
               {
                 notification: 'Opening balance submitted successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getCashiers();
@@ -429,10 +429,10 @@ export default class BranchCashierList extends Component {
       });
   };
 
-  releaseCashier = (id) => {    
+  releaseCashier = (id) => {
     console.log(id);
     axios
-      .put(`${API_URL}/updateOne`, {page:"cashier", token: token, type: "branch", page_id: id, updateData: {is_closed: false} })
+      .put(`${API_URL}/updateOne`, { page: "cashier", token: token, type: "branch", page_id: id, updateData: { is_closed: false } })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -442,7 +442,7 @@ export default class BranchCashierList extends Component {
               {
                 notification: 'Cashier Access Re-opened!',
               },
-              function() {
+              function () {
                 this.success();
                 this.getCashiers();
               },
@@ -568,14 +568,14 @@ export default class BranchCashierList extends Component {
       .post(`${API_URL}/partnerBranch/getAll`, {
         page: 'partnerUser',
         token: token,
-        where: {partner_id: partnerid},
+        where: { partner_id: partnerid },
       })
       .then(res => {
         if (res.status == 200) {
           this.setState({ loading: false, users: res.data.rows });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   getCashiers = () => {
@@ -591,7 +591,7 @@ export default class BranchCashierList extends Component {
           this.setState({ loading: false, branches: res.data.rows });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   componentDidMount() {
@@ -669,68 +669,68 @@ export default class BranchCashierList extends Component {
                       <th>Assigned to</th>
                       <th>Status</th>
                       <th>Transaction Count</th>
-                      
+
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.branches && this.state.branches.length > 0 && this.state.users
                       ? this.state.branches.map(b => {
-                          return (
-                            <tr key={b._id}>
-                              <td>{b.name}</td>
-                              <td className="tac">
-                                {CURRENCY}{' '}
-                                {(
-                                  b.opening_balance +
-                                  (b.cash_received - b.cash_paid)
-                                ).toFixed(2)}
-                              </td>
-                              <td>
-                                {this.state.users.filter(
+                        return (
+                          <tr key={b._id}>
+                            <td>{b.name}</td>
+                            <td className="tac">
+                              {CURRENCY}{' '}
+                              {(
+                                b.opening_balance +
+                                (b.cash_received - b.cash_paid)
+                              ).toFixed(2)}
+                            </td>
+                            <td>
+                              {this.state.users.filter(
+                                u => u._id == b.partner_user_id,
+                              )[0]
+                                ? this.state.users.filter(
                                   u => u._id == b.partner_user_id,
-                                )[0]
-                                  ? this.state.users.filter(
-                                      u => u._id == b.partner_user_id,
-                                    )[0].name
-                                  : ''}
-                              </td>
-                              <td style = {{color: b.is_closed ? 'red' : 'green' }}>
-                                   {b.is_closed  ? 
-                                      "Closed"
-                                   : "Opened" }
-                              </td>
-                              <td className="tac bold green">
-                                {b.total_trans}
-                                <span className="absoluteMiddleRight primary popMenuTrigger">
-                                  <i className="material-icons ">more_vert</i>
-                                  <div className="popMenu">
-                                    <A
-                                      href={
-                                        '/branch/' +
-                                        dis.props.match.params.bank +
-                                        '/cashier/' +
-                                        b._id
-                                      }
-                                    >
-                                      Cashier Info
+                                )[0].name
+                                : ''}
+                            </td>
+                            <td style={{ color: b.is_closed ? 'red' : 'green' }}>
+                              {b.is_closed ?
+                                "Closed"
+                                : "Opened"}
+                            </td>
+                            <td className="tac bold green">
+                              {b.total_trans}
+                              <span className="absoluteMiddleRight primary popMenuTrigger">
+                                <i className="material-icons ">more_vert</i>
+                                <div className="popMenu">
+                                  <A
+                                    href={
+                                      '/branch/' +
+                                      dis.props.match.params.bank +
+                                      '/cashier/' +
+                                      b._id
+                                    }
+                                  >
+                                    Cashier Info
                                     </A>
-                                    <span onClick={() => dis.showEditPopup(b)}>
-                                      Edit
+                                  <span onClick={() => dis.showEditPopup(b)}>
+                                    Edit
                                     </span>
+                                  <span
+                                    onClick={() => dis.showAssignPopup(b)}
+                                  >
+                                    Assign User
+                                    </span>
+                                  {b.is_closed ? (
                                     <span
-                                      onClick={() => dis.showAssignPopup(b)}
+                                      onClick={() => dis.releaseCashier(b._id)}
                                     >
-                                      Assign User
+                                      Re-open Access
                                     </span>
-                                     {b.is_closed  ? (
-                                      <span
-                                        onClick={() => dis.releaseCashier(b._id)}
-                                      >
-                                        Re-open Access
-                                      </span>
-                                    ) : null
+                                  ) : null
                                   }
-                                    {/*b.opening_balance > 0 ? null : (
+                                  {/*b.opening_balance > 0 ? null : (
                                       <span
                                         onClick={() => dis.showOpeningPopup(b)}
                                       >
@@ -738,15 +738,15 @@ export default class BranchCashierList extends Component {
                                       </span>
                                     )*/}
 
-                                    {b.status == -1 ? (
-                                      <span
-                                        onClick={() =>
-                                          dis.blockBranch(b._id, 1)
-                                        }
-                                      >
-                                        Unblock
-                                      </span>
-                                    ) : (
+                                  {b.status == -1 ? (
+                                    <span
+                                      onClick={() =>
+                                        dis.blockBranch(b._id, 1)
+                                      }
+                                    >
+                                      Unblock
+                                    </span>
+                                  ) : (
                                       <span
                                         onClick={() =>
                                           dis.blockBranch(b._id, -1)
@@ -755,13 +755,13 @@ export default class BranchCashierList extends Component {
                                         Block
                                       </span>
                                     )}
-                                  </div>
-                                </span>
-                              </td>
-                              
-                            </tr>
-                          );
-                        })
+                                </div>
+                              </span>
+                            </td>
+
+                          </tr>
+                        );
+                      })
                       : null}
                   </tbody>
                 </Table>
@@ -814,7 +814,7 @@ export default class BranchCashierList extends Component {
                   required
                 >
                   <option value="">Select User</option>
-                  {this.state.users.map(function(b) {
+                  {this.state.users.map(function (b) {
                     return <option value={b._id}>{b.name}</option>;
                   })}
                 </SelectInput>
@@ -825,10 +825,10 @@ export default class BranchCashierList extends Component {
                   <Loader />
                 </Button>
               ) : (
-                <Button filledBtn marginTop="50px">
-                  <span>Assign User</span>
-                </Button>
-              )}
+                  <Button filledBtn marginTop="50px">
+                    <span>Assign User</span>
+                  </Button>
+                )}
             </form>
           </Popup>
         ) : null}
@@ -859,12 +859,12 @@ export default class BranchCashierList extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -874,120 +874,120 @@ export default class BranchCashierList extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Create Cashier</h1>
-                <form action="" method="post" onSubmit={this.addBranch}>
-                  <FormGroup>
-                    <label>Cashier Name*</label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Cashier Code*</label>
-                    <TextInput
-                      type="text"
-                      name="code"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.code}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <label>Working Hours</label>
-                  <Row>
-                    <Col cW="30%" mR="2%">
-                      <FormGroup>
-                        <label>From*</label>
-                        <TextInput
-                          type="text"
-                          name="working_from"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.working_from}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col cW="68%">
-                      <FormGroup>
-                        <label>To*</label>
-                        <TextInput
-                          type="text"
-                          title="10 Digit numeric value"
-                          name="working_to"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.working_to}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <FormGroup>
-                    <label>Maximum per transaction amount*</label>
-                    <TextInput
-                      type="text"
-                      name="per_trans_amt"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.per_trans_amt}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Maximum daily transaction amount*</label>
-                    <TextInput
-                      type="text"
-                      name="max_trans_amt"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.max_trans_amt}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Maximum daily transaction count*</label>
-                    <TextInput
-                      type="text"
-                      name="max_trans_count"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.max_trans_count}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                <div>
+                  <h1>Create Cashier</h1>
+                  <form action="" method="post" onSubmit={this.addBranch}>
+                    <FormGroup>
+                      <label>Cashier Name*</label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Cashier Code*</label>
+                      <TextInput
+                        type="text"
+                        name="code"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.code}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <label>Working Hours</label>
+                    <Row>
+                      <Col cW="30%" mR="2%">
+                        <FormGroup>
+                          <label>From*</label>
+                          <TextInput
+                            type="text"
+                            name="working_from"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.working_from}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col cW="68%">
+                        <FormGroup>
+                          <label>To*</label>
+                          <TextInput
+                            type="text"
+                            title="10 Digit numeric value"
+                            name="working_to"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.working_to}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <FormGroup>
+                      <label>Maximum per transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="per_trans_amt"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.per_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_amt"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.max_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction count*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_count"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.max_trans_count}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  {this.state.addBranchLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Create Cashier</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                    {this.state.addBranchLoading ? (
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="50px">
+                          <span>Create Cashier</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -1018,12 +1018,12 @@ export default class BranchCashierList extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1033,126 +1033,126 @@ export default class BranchCashierList extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Edit Cashier</h1>
-                <form action="" method="post" onSubmit={this.editCashier}>
-                  <FormGroup>
-                    <label>Cashier Name*</label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      autoFocus
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Cashier Code*</label>
-                    <TextInput
-                      type="text"
-                      autoFocus
-                      name="code"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.code}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <label>Working Hours</label>
-                  <Row>
-                    <Col cW="30%" mR="2%">
-                      <FormGroup>
-                        <label>From*</label>
-                        <TextInput
-                          type="text"
-                          autoFocus
-                          name="working_from"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.working_from}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col cW="68%">
-                      <FormGroup>
-                        <label>To*</label>
-                        <TextInput
-                          type="text"
-                          autoFocus
-                          title="10 Digit numeric value"
-                          name="working_to"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.working_to}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <FormGroup>
-                    <label>Maximum per transaction amount*</label>
-                    <TextInput
-                      type="text"
-                      name="per_trans_amt"
-                      autoFocus
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.per_trans_amt}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Maximum daily transaction amount*</label>
-                    <TextInput
-                      type="text"
-                      name="max_trans_amt"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      autoFocus
-                      value={this.state.max_trans_amt}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Maximum daily transaction count*</label>
-                    <TextInput
-                      type="text"
-                      name="max_trans_count"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.max_trans_count}
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  {this.state.editBranchLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Update Cashier</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                <div>
+                  <h1>Edit Cashier</h1>
+                  <form action="" method="post" onSubmit={this.editCashier}>
+                    <FormGroup>
+                      <label>Cashier Name*</label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        autoFocus
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Cashier Code*</label>
+                      <TextInput
+                        type="text"
+                        autoFocus
+                        name="code"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.code}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <label>Working Hours</label>
+                    <Row>
+                      <Col cW="30%" mR="2%">
+                        <FormGroup>
+                          <label>From*</label>
+                          <TextInput
+                            type="text"
+                            autoFocus
+                            name="working_from"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.working_from}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col cW="68%">
+                        <FormGroup>
+                          <label>To*</label>
+                          <TextInput
+                            type="text"
+                            autoFocus
+                            title="10 Digit numeric value"
+                            name="working_to"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.working_to}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <FormGroup>
+                      <label>Maximum per transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="per_trans_amt"
+                        autoFocus
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.per_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_amt"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        autoFocus
+                        value={this.state.max_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction count*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_count"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.max_trans_count}
+                        autoFocus
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    {this.state.editBranchLoading ? (
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="50px">
+                          <span>Update Cashier</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -1183,12 +1183,12 @@ export default class BranchCashierList extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1198,163 +1198,163 @@ export default class BranchCashierList extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Enter your opening balance</h1>
-                <form action="" method="post" onSubmit={this.addOpeningBalance}>
-                  <FormGroup>
+                <div>
+                  <h1>Enter your opening balance</h1>
+                  <form action="" method="post" onSubmit={this.addOpeningBalance}>
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 10</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom10"
+                            autoFocus
+                            value={this.state.denom10}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 20</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom20"
+                            autoFocus
+                            value={this.state.denom20}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 50</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom50"
+                            autoFocus
+                            value={this.state.denom50}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 100</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom100"
+                            autoFocus
+                            value={this.state.denom100}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 1000</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom1000"
+                            autoFocus
+                            value={this.state.denom1000}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Row>
+                        <Col cW="15%" textAlign="right">
+                          <strong>{CURRENCY} 2000</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          X
+                      </Col>
+                        <Col cW="35%">
+                          <TextInput
+                            marginTop
+                            type="text"
+                            name="denom2000"
+                            autoFocus
+                            value={this.state.denom2000}
+                            onChange={this.handleAmountChange}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
                     <Row>
                       <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 10</strong>
+                        <strong>TOTAL</strong>
                       </Col>
                       <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom10"
-                          autoFocus
-                          value={this.state.denom10}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Row>
-                      <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 20</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom20"
-                          autoFocus
-                          value={this.state.denom20}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Row>
-                      <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 50</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom50"
-                          autoFocus
-                          value={this.state.denom50}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Row>
-                      <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 100</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom100"
-                          autoFocus
-                          value={this.state.denom100}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Row>
-                      <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 1000</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom1000"
-                          autoFocus
-                          value={this.state.denom1000}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Row>
-                      <Col cW="15%" textAlign="right">
-                        <strong>{CURRENCY} 2000</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        X
-                      </Col>
-                      <Col cW="35%">
-                        <TextInput
-                          marginTop
-                          type="text"
-                          name="denom2000"
-                          autoFocus
-                          value={this.state.denom2000}
-                          onChange={this.handleAmountChange}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-
-                  <Row>
-                    <Col cW="15%" textAlign="right">
-                      <strong>TOTAL</strong>
+                        =
                     </Col>
-                    <Col cW="20%" textAlign="center">
-                      =
-                    </Col>
-                    <Col cW="35%">{this.state.total}</Col>
-                  </Row>
+                      <Col cW="35%">{this.state.total}</Col>
+                    </Row>
 
-                  {this.state.editBranchLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Submit</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                    {this.state.editBranchLoading ? (
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="50px">
+                          <span>Submit</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
       </Wrapper>
