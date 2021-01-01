@@ -114,15 +114,17 @@ export default class PartnerDashboard extends Component {
                   <div className="cardValue">{this.state.totalBranches}</div>
                 </Card>
               </A>
-              <Card
-                horizontalMargin="7px"
-                cardWidth="151px"
-                textAlign="center"
-                col
-              >
-                <h4><FormattedMessage {...messages.box3} /></h4>
-                <div className="cardValue">{this.state.totalUsers}</div>
-              </Card>
+              <A href="/users" float="left">
+                <Card
+                  horizontalMargin="7px"
+                  cardWidth="151px"
+                  textAlign="center"
+                  col
+                >
+                  <h4><FormattedMessage {...messages.box3} /></h4>
+                  <div className="cardValue">{this.state.totalUsers}</div>
+                </Card>
+              </A>
               <Card
                 horizontalMargin="7px"
                 cardWidth="151px"
