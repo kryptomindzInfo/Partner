@@ -501,7 +501,7 @@ export default class PartnerBranchInfo extends Component {
       .then(res => {
         if (res.status == 200) {
           console.log(res);
-          this.setState({ loading: false, banks: res.data.branch, name: res.data.branch.name, bcode: res.data.branch.code, credit_limit: res.data.branch.credit_limit, username: res.data.branch.username, address1: res.data.branch.address, state: res.data.branch.state, zip: res.data.branch.zip, country: res.data.branch.country, ccode: res.data.branch.ccode, mobile: res.data.branch.mobile, email: res.data.branch.email, branch_id: res.data.branch._id, status: res.data.branch.status });
+          this.setState({ loading: false, banks: res.data.branch, name: res.data.branch.name, bcode: res.data.branch.code, credit_limit: res.data.branch.credit_limit, username: res.data.branch.username, address1: res.data.branch.address, state: res.data.branch.state, zip: res.data.branch.zip, country: res.data.branch.country, ccode: res.data.branch.ccode, mobile: res.data.branch.mobile, email: res.data.branch.email, branch_id: res.data.branch._id, status: res.data.branch.status, working_from: res.data.branch.working_from, working_to: res.data.branch.working_to });
         }
       })
       .catch(err => {
@@ -728,6 +728,30 @@ export default class PartnerBranchInfo extends Component {
                 </Col>
                   <Col className="infoRight">
                     {this.state.mobile}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="infoLeft">
+                    Working Hours
+                </Col>
+                  <Col className="infoRight">
+                    {/* {this.state.mobile} */}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="infoLeft">
+                    From
+                </Col>
+                  <Col className="infoRight">
+                    {this.state.working_from}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="infoLeft">
+                    To
+                </Col>
+                  <Col className="infoRight">
+                    {this.state.working_to}
                   </Col>
                 </Row>
 

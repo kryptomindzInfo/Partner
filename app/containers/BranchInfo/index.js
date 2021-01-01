@@ -484,9 +484,9 @@ export default class BranchInfo extends Component {
                     {this.state.mobile}
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col className="infoLeft">
-                    Bank Users
+                    Bank Users1
                 </Col>
                   <Col className="infoRight">
                     {
@@ -498,7 +498,7 @@ export default class BranchInfo extends Component {
                         null
                     }
                   </Col>
-                </Row>
+                </Row> */}
 
 
               </div>
