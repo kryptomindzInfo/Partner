@@ -18,6 +18,11 @@ import {
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
+const NavTag = styled.nav`
+  float: left;
+  
+`;
+
 const Link = styled.span`
     color: #fff;
     font-size: 18px;
@@ -28,6 +33,16 @@ const Link = styled.span`
     border-radius: 8px;
     border: solid 2px #ffffff;
     padding: 5px 20px;
+`;
+const Link1 = styled.span`
+    color: #fff;
+    font-size: 18px;
+    // margin: 0 40px 0 0;
+    padding-bottom: 7px;
+    display: block;
+    font-weight: normal;
+   
+    padding: 5px 15px;
 `;
 
 
@@ -48,7 +63,7 @@ class BranchHeader extends Component {
 
 
   componentDidMount() {
-    
+
   }
 
   // componentWillUnmount() {
@@ -60,20 +75,20 @@ class BranchHeader extends Component {
     const page = this.props.page;
     return (
       <TopBar>
-        <Welcome from="branch" bankName={this.props.bankName}/>
+        <Welcome from="branch" bankName={this.props.bankName} />
         <Container>
           {
             page == 'branch' ?
-            <A href={this.props.goto} float="left">
-            <Link>
-              Back
+              <A href={this.props.goto} float="left">
+                <Link>
+                  Back
             </Link>
-          </A>
-            :
-            null
+              </A>
+              :
+              null
           }
 
-          <A href={"/branch/"+this.props.bankName+"/dashboard"} float="left">
+          <A href={"/branch/" + this.props.bankName + "/dashboard"} float="left">
             <div className="bankLogo">
               <img src={this.props.bankLogo} />
             </div>
@@ -82,15 +97,34 @@ class BranchHeader extends Component {
           </A>
           {
             this.props.middleTitle ?
-            <div className="middleTitle">{this.props.middleTitle}</div>
-            :
-            null
+              <div className="middleTitle">{this.props.middleTitle}</div>
+              :
+              null
           }
           {
             page == 'branch' ?
-            null
-            :
-            <BranchNav active={this.props.active} bankName={this.props.bankName} />
+              <NavTag>
+                <A href={"/branch/" + this.props.bankName + "/cashiers"}>
+                  <Link1 >
+                    Cashier
+                  </Link1>
+                </A>
+                <A >
+                  <Link1 >
+                    Reports
+                  </Link1>
+                </A>
+              </NavTag>
+
+
+              :
+              null
+          }
+          {
+            page == 'branch' ?
+              null
+              :
+              <BranchNav active={this.props.active} bankName={this.props.bankName} />
           }
 
         </Container>

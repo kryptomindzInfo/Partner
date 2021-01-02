@@ -29,15 +29,15 @@ class BranchNav extends Component {
     return (
       <React.Fragment>
         <NavTag>
-          <A href={"/branch/"+bankName+"/dashboard"}>
+          <A href={"/branch/" + bankName + "/dashboard"}>
             <Link
               active={dashboard}
-              // style={`${props => props.theme.secondary}`}
+            // style={`${props => props.theme.secondary}`}
             >
               <FormattedMessage {...messages.menu1} />
             </Link>
           </A>
-          <A href={"/branch/"+bankName+"/cashiers"}>
+          <A href={"/branch/" + bankName + "/cashiers"}>
             <Link active={cashier}>
               Cashier
             </Link>

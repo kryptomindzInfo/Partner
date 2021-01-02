@@ -68,6 +68,7 @@ export default class BranchCashierList extends Component {
       token,
       otpEmail: email,
       otpMobile: mobile,
+      copybranches: []
     };
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -588,7 +589,7 @@ export default class BranchCashierList extends Component {
       .then(res => {
         if (res.status == 200) {
           console.log(res.data);
-          this.setState({ loading: false, branches: res.data.rows });
+          this.setState({ loading: false, branches: res.data.rows, copybranches: res.data.rows });
         }
       })
       .catch(err => { });
@@ -597,6 +598,17 @@ export default class BranchCashierList extends Component {
   componentDidMount() {
     this.getCashiers();
     this.getUsers();
+  }
+
+  searchlistfunction = (value) => {
+    console.log(value)
+    // console.log(this.state.searchrules)
+    const newfilterdata = this.state.copybranches.filter(element =>
+      element.name.toLowerCase().includes(value.toLowerCase()),
+    );
+
+    this.setState({ branches: newfilterdata })
+
   }
 
   render() {
@@ -641,7 +653,9 @@ export default class BranchCashierList extends Component {
             >
               <div className="iconedInput fl">
                 <i className="material-icons">search</i>
-                <input type="text" placeholder="Search Branches" />
+                <input type="text" placeholder="Search Cashier" onChange={(e) => {
+                  this.searchlistfunction(e.target.value)
+                }} />
               </div>
 
               {/*<Button className="addBankButton" flex onClick={this.showPopup}>

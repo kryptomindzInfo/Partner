@@ -30,8 +30,14 @@ import Col from 'components/Col';
 import A from 'components/A';
 import Loader from 'components/Loader';
 import history from 'utils/history';
+import CloseIcon from '@material-ui/icons/Visibility';
+import OpenIcon from '@material-ui/icons/VisibilityOff';
+import TextField from '@material-ui/core/TextField';
+
 
 import { API_URL, STATIC_URL } from '../App/constants';
+
+
 
 import 'react-toastify/dist/ReactToastify.css';
 toast.configure({
@@ -54,6 +60,7 @@ export default class CashierLogin extends Component {
       notification: '',
       loading: true,
       redirect: false,
+      visiblity: false
     };
     this.error = this.error.bind(this);
   }
@@ -80,10 +87,10 @@ export default class CashierLogin extends Component {
       .post(`${API_URL}/partnerCashier/login`, this.state)
       .then(res => {
         if (res.status == 200) {
-          if(res.data.status == 0){
+          if (res.data.status == 0) {
             throw res.data.message;
           }
-          else{
+          else {
             localStorage.setItem('cashierLogged', res.data.token);
             localStorage.setItem('cashierName', res.data.name);
             localStorage.setItem('cashierUserName', res.data.username);
@@ -93,7 +100,7 @@ export default class CashierLogin extends Component {
             localStorage.setItem('cashierEmail', res.data.email);
             localStorage.setItem('cashierMobile', res.data.mobile);
             localStorage.setItem('bankId', res.data.bank_id);
-            window.location.href = '/cashier/'+this.props.match.params.bank+'/dashboard';
+            window.location.href = '/cashier/' + this.props.match.params.bank + '/dashboard';
           }
         } else {
           throw res.data.error;
@@ -113,11 +120,11 @@ export default class CashierLogin extends Component {
 
   componentDidMount() {
     axios
-      .post(`${API_URL}/getPartnerBranchByName`, {name: this.props.match.params.bank})
+      .post(`${API_URL}/getPartnerBranchByName`, { name: this.props.match.params.bank })
       .then(res => {
         if (res.status == 200) {
           console.log(res);
-          this.setState({ bank: res.data.branch, loading:false });
+          this.setState({ bank: res.data.branch, loading: false });
         } else {
           throw res.data.error;
         }
@@ -153,10 +160,10 @@ export default class CashierLogin extends Component {
           <meta charSet="utf-8" />
           <title>E-WALLET | CASHIER | LOGIN</title>
         </Helmet>
-        <FrontLeftSection from="cashier" title={this.state.bank.name} logo={STATIC_URL+this.state.bank.logo}></FrontLeftSection>
+        <FrontLeftSection from="cashier" title={this.state.bank.name} logo={STATIC_URL + this.state.bank.logo}></FrontLeftSection>
         <FrontRightSection>
           <LoginHeader>
-          <FormattedMessage {...messages.pagetitle} />
+            <FormattedMessage {...messages.pagetitle} />
           </LoginHeader>
           <FrontFormTitle><FormattedMessage {...messages.title} /></FrontFormTitle>
           <FrontFormSubTitle><FormattedMessage {...messages.subtitle2} /></FrontFormSubTitle>
@@ -174,7 +181,7 @@ export default class CashierLogin extends Component {
                   required
                 />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <label><FormattedMessage {...messages.password} />*</label>
                 <TextInput
                   type="password"
@@ -185,20 +192,56 @@ export default class CashierLogin extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
+              </FormGroup> */}
+              <FormGroup>
+                <div style={{ backgroundColor: "" }}>
+                  <TextField
+                    name="password"
+                    label="Password"
+                    style={{ width: "100%" }}
+                    value={this.state.password}
+                    type={this.state.visiblity ? 'text' : 'password'}
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleInputChange}
+                    required
+                  />
+                  <span
+                    onClick={() => {
+                      this.setState({ visiblity: !this.state.visiblity })
+                    }}
+
+                    style={{
+                      position: 'relative',
+                      top: '-40px',
+                      left: "90%",
+
+                    }}
+                  >
+                    <i>
+                      {/* < CloseIcon /> */}
+                      {this.state.visiblity ? (
+                        < CloseIcon />
+                      ) : (
+                          <OpenIcon />
+                        )}
+                    </i>
+                  </span>
+                </div>
               </FormGroup>
             </InputsWrap>
             {
               this.loginLoading ?
-              <PrimaryBtn disabled><Loader /></PrimaryBtn>
-              :
-              <PrimaryBtn><FormattedMessage {...messages.pagetitle} /></PrimaryBtn>
+                <PrimaryBtn disabled><Loader /></PrimaryBtn>
+                :
+                <PrimaryBtn><FormattedMessage {...messages.pagetitle} /></PrimaryBtn>
             }
 
           </form>
           <Row marginTop>
             <Col />
             <Col textRight>
-              <A href={"/cashier/"+this.props.match.params.bank+"/forgot-password"}><FormattedMessage {...messages.forgotpassword} /></A>
+              <A href={"/cashier/" + this.props.match.params.bank + "/forgot-password"}><FormattedMessage {...messages.forgotpassword} /></A>
             </Col>
           </Row>
         </FrontRightSection>

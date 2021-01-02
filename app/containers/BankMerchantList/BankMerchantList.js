@@ -100,8 +100,8 @@ function BankMerchantList(props) {
               {merchant.status === -1 ? (
                 <span>Unblock</span>
               ) : (
-                <span>Block</span>
-              )}
+                  <span>Block</span>
+                )}
             </div>
           </span>
         </div>
