@@ -125,6 +125,7 @@ const PayBillsInvoiceList = props => {
     props.showOTPPopup(obj,payingInvoiceList);
   };
   
+  
   const getInvoiceList = () =>
     invoiceList.map((invoice,index) => (
       <tr key={invoice._id} className={ penaltyList[index] > 0 ? 'red' : ''}>

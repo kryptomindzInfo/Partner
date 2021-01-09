@@ -714,7 +714,7 @@ class CashierTransactionLimit extends Component {
   startClaiming = event => {
     this.setState({
       claimMoneyLoading: true,
-      receiptvalues:{...this.state}
+      receiptvalues:{...this.state, type: "Claim Money"}
     });
     let API = "";
     if (this.state.interbankclaim){
@@ -774,7 +774,7 @@ class CashierTransactionLimit extends Component {
     this.setState({
       verifySendMoneyOTPLoading: true,
     });
-    const values = { ...this.state }
+    const values = { ...this.state,type: 'Non Wallet to Non Wallet Send Money' }
     this.setState({
       receiptvalues: values,
     });
@@ -824,9 +824,13 @@ class CashierTransactionLimit extends Component {
   verifySendMoneyToWallet = event => {
     event.preventDefault();
     const { toWalletFormValues } = this.state;
+    const values = {
+      ...toWalletFormValues,
+      type: "Non Wallet to Wallet Send Money",
+    }
     this.setState({
       verifySendMoneyOTPLoading: true,
-      receiptvalues: toWalletFormValues,
+      receiptvalues: values,
     });
     toWalletFormValues.token = token;
     let API = '';

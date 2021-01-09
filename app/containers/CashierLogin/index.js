@@ -84,6 +84,7 @@ export default class CashierLogin extends Component {
             throw res.data.message;
           }
           else{
+            console.log(res);
             localStorage.setItem('cashierLogged', res.data.token);
             localStorage.setItem('cashierName', res.data.name);
             localStorage.setItem('cashierUserName', res.data.username);
@@ -93,6 +94,8 @@ export default class CashierLogin extends Component {
             localStorage.setItem('cashierEmail', res.data.email);
             localStorage.setItem('cashierMobile', res.data.mobile);
             localStorage.setItem('bankId', res.data.bank_id);
+            localStorage.setItem('branchName', res.data.branch_name);
+            localStorage.setItem('partnerName', res.data.partner_name);
             window.location.href = '/cashier/'+this.props.match.params.bank+'/dashboard';
           }
         } else {

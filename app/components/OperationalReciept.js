@@ -4,9 +4,10 @@ import Col from './Col';
 import Container from './Container';
 
 const username = localStorage.getItem('cashierUserName');
-
+const partnerName = localStorage.getItem('partnerName');
+const branchName = localStorage.getItem('branchName');
 const cashier = localStorage.getItem('cashierName');
-const date = new Date()
+const date = new Date();
 
 export class OperationalReiept extends Component {
   componentDidMount() {
@@ -38,9 +39,9 @@ export class OperationalReiept extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col className="popInfoLeft">Bank Name :</Col>
+                <Col className="popInfoLeft">Bank Partner Name :</Col>
                 <Col className="popInfoRight">
-                   ------------------
+                  {partnerName}
                 </Col>
               </Row>
             </Col>
@@ -48,7 +49,7 @@ export class OperationalReiept extends Component {
               <Row>
                 <Col className="popInfoLeft">Branch Name :</Col>
                   <Col className="popInfoRight">
-                    ------------------
+                    {branchName}
                 </Col>
               </Row>
               <Row>
