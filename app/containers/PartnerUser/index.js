@@ -94,6 +94,7 @@ export default class PartnerUser extends Component {
       otpId: '',
       banks: [],
       users: [],
+      copyusers: [],
       roles: [],
       profiles: [],
       otp: '',
@@ -115,13 +116,13 @@ export default class PartnerUser extends Component {
 
   handleInputChange = event => {
     const { value, name } = event.target;
-    if (name === 'name'){
+    if (name === 'name') {
       this.setState({
-        [name]:value.trim(),
+        [name]: value.trim(),
       });
     } else {
       this.setState({
-        [name]:value,
+        [name]: value,
       });
     }
   };
@@ -179,55 +180,55 @@ export default class PartnerUser extends Component {
 
   verifyOTP = event => {
     event.preventDefault();
-      this.setState({
-        addUserLoading: true,
-      });
-      axios
-        .post(`${API_URL}/partner/addUser`, {
-          name: this.state.name,
-          email: this.state.email,
-          mobile: this.state.mobile,
-          username: this.state.username,
-          password: this.state.password,
-          ccode: this.state.ccode,
-          branch_id: this.state.branch_id,
-          logo: this.state.logo,
-          token,
-        })
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.status === 0) {
-              throw res.data.message;
-            } else {
-              this.setState(
-                {
-                  notification: 'User added successfully!',
-                },
-                () => {
-                  this.success();
-                  this.closePopup();
-                  this.getUsers();
-                },
-              );
-            }
+    this.setState({
+      addUserLoading: true,
+    });
+    axios
+      .post(`${API_URL}/partner/addUser`, {
+        name: this.state.name,
+        email: this.state.email,
+        mobile: this.state.mobile,
+        username: this.state.username,
+        password: this.state.password,
+        ccode: this.state.ccode,
+        branch_id: this.state.branch_id,
+        logo: this.state.logo,
+        token,
+      })
+      .then(res => {
+        if (res.status == 200) {
+          if (res.data.status === 0) {
+            throw res.data.message;
           } else {
-            const error = new Error(res.data.error);
-            throw error;
+            this.setState(
+              {
+                notification: 'User added successfully!',
+              },
+              () => {
+                this.success();
+                this.closePopup();
+                this.getUsers();
+              },
+            );
           }
-          this.setState({
-            addUserLoading: false,
-          });
-        })
-        .catch(err => {
-          this.setState({
-            notification: err.response
-              ? err.response.data.error
-              : err.toString(),
-            addUserLoading: false,
-          });
-          this.error();
+        } else {
+          const error = new Error(res.data.error);
+          throw error;
+        }
+        this.setState({
+          addUserLoading: false,
         });
-    
+      })
+      .catch(err => {
+        this.setState({
+          notification: err.response
+            ? err.response.data.error
+            : err.toString(),
+          addUserLoading: false,
+        });
+        this.error();
+      });
+
   };
 
   editUser = event => {
@@ -282,7 +283,7 @@ export default class PartnerUser extends Component {
   };
   startTimer = () => {
     var dis = this;
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
       if (dis.state.timer <= 0) {
         clearInterval(timer);
         dis.setState({ resend: true });
@@ -357,7 +358,7 @@ export default class PartnerUser extends Component {
               {
                 notification: 'Bank User updated successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getUsers();
@@ -412,10 +413,10 @@ export default class PartnerUser extends Component {
     };
 
     axios
-      .post(`${API_URL}/partner/imageUpload?token=${token}`,formData, config)
+      .post(`${API_URL}/partner/imageUpload?token=${token}`, formData, config)
       .then(res => {
         console.log('res');
-        console.log('res',res);
+        console.log('res', res);
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
@@ -442,7 +443,7 @@ export default class PartnerUser extends Component {
       .post(`${API_URL}/partner/listUsers`, { token })
       .then(res => {
         if (res.status == 200) {
-          this.setState({ loading: false, users: res.data.users });
+          this.setState({ loading: false, users: res.data.users, copyusers: res.data.users });
         }
       })
       .catch(err => {
@@ -491,6 +492,17 @@ export default class PartnerUser extends Component {
     }
   }
 
+  searchlistfunction = (value) => {
+    console.log(value)
+    // console.log(this.state.searchrules)
+    const newfilterdata = this.state.copyusers.filter(element =>
+      element.name.toLowerCase().includes(value.toLowerCase()),
+    );
+
+    this.setState({ users: newfilterdata })
+
+  }
+
   render() {
     const ep = this;
     function inputFocus(e) {
@@ -530,7 +542,9 @@ export default class PartnerUser extends Component {
             >
               <div className="iconedInput fl">
                 <i className="material-icons">search</i>
-                <input type="text" placeholder="Search Bank User" />
+                <input type="text" placeholder="Search Partner User" onChange={(e) => {
+                  this.searchlistfunction(e.target.value)
+                }} />
               </div>
 
               <Button className="addBankButton" flex onClick={this.showPopup}>
@@ -540,40 +554,40 @@ export default class PartnerUser extends Component {
             </ActionBar>
             <div className="cardBody clr">
               {this.state.users && this.state.users.length > 0
-                ? this.state.users.map(function(b) {
-                    if (!b.isAdmin) {
-                      var pic =
-                        b.logo && b.logo != '' && b.logo != undefined
-                          ? STATIC_URL + b.logo
-                          : CONTRACT_URL + 'main/default-profile.png';
-                      return (
-                        <Card
-                          key={b._id}
-                          col
-                          horizontalMargin="10px"
-                          cardWidth="192px"
-                        >
-                          <div className="profile">
-                            <img src={pic} />
-                          </div>
-                          <Row>
-                            <Col cW="80%">
-                              <h4 className="hh">{b.name}</h4>
-                            </Col>
-                            <Col cW="20%">
-                              <Button
-                                noMin
-                                className="fr"
-                                onClick={() => ep.showEditPopup(b)}
-                              >
-                                Edit
+                ? this.state.users.map(function (b) {
+                  if (!b.isAdmin) {
+                    var pic =
+                      b.logo && b.logo != '' && b.logo != undefined
+                        ? STATIC_URL + b.logo
+                        : CONTRACT_URL + 'main/default-profile.png';
+                    return (
+                      <Card
+                        key={b._id}
+                        col
+                        horizontalMargin="10px"
+                        cardWidth="192px"
+                      >
+                        <div className="profile">
+                          <img src={pic} />
+                        </div>
+                        <Row>
+                          <Col cW="80%">
+                            <h4 className="hh">{b.name}</h4>
+                          </Col>
+                          <Col cW="20%">
+                            <Button
+                              noMin
+                              className="fr"
+                              onClick={() => ep.showEditPopup(b)}
+                            >
+                              Edit
                               </Button>
-                            </Col>
-                          </Row>
-                        </Card>
-                      );
-                    }
-                  })
+                          </Col>
+                        </Row>
+                      </Card>
+                    );
+                  }
+                })
                 : null}
             </div>
           </Main>
@@ -581,212 +595,212 @@ export default class PartnerUser extends Component {
         {this.state.popup ? (
           <Popup close={this.closePopup.bind(this)} accentedH1>
             {this.state.showOtp ? (
-             <div>
-              <h1 ><FormattedMessage {...messages.verify} /></h1>
-            <form action="" method="post" onSubmit={this.verifyOTP} >
-              <FormGroup>
-                <label><FormattedMessage {...messages.otp} />*</label>
-                <TextInput
-                  type="text"
-                  name="otp"
-                  onFocus={inputFocus}
-                  onBlur={inputBlur}
-                  value={this.state.otp}
-                  onChange={this.handleInputChange}
-                  required
-                />
-              </FormGroup>
-              {
-                this.state.addBranchLoading ?
-                <Button filledBtn marginTop="50px" disabled>
-                <Loader />
-              </Button>
-                :
-                <Button filledBtn marginTop="50px">
-                <span><FormattedMessage {...messages.verify} /></span>
-              </Button>
-              }
+              <div>
+                <h1 ><FormattedMessage {...messages.verify} /></h1>
+                <form action="" method="post" onSubmit={this.verifyOTP} >
+                  <FormGroup>
+                    <label><FormattedMessage {...messages.otp} />*</label>
+                    <TextInput
+                      type="text"
+                      name="otp"
+                      onFocus={inputFocus}
+                      onBlur={inputBlur}
+                      value={this.state.otp}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </FormGroup>
+                  {
+                    this.state.addBranchLoading ?
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                      :
+                      <Button filledBtn marginTop="50px">
+                        <span><FormattedMessage {...messages.verify} /></span>
+                      </Button>
+                  }
 
 
-              <p className="resend">Wait for <span className="timer">{this.state.timer}</span> to { this.state.resend ? <span className="go" onClick={this.generateOTP}>Resend</span> : <span>Resend</span> }</p>
+                  <p className="resend">Wait for <span className="timer">{this.state.timer}</span> to {this.state.resend ? <span className="go" onClick={this.generateOTP}>Resend</span> : <span>Resend</span>}</p>
 
 
-              </form>
+                </form>
               </div>
             ) : (
-              <div>
-                <h1>Create User</h1>
-                <form action="" method="post" onSubmit={this.addUser}>
-                  <FormGroup>
-                    <label>
-                      <FormattedMessage {...messages.popup1} />*
-                    </label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      pattern=".{4,15}"
-                      title="Minimum 4 characters"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Email*</label>
-                    <TextInput
-                      type="email"
-                      name="email"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.email}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-
-                  <Row>
-                    <Col cW="30%" mR="2%">
-                      <FormGroup>
+                <div>
+                  <h1>Create User</h1>
+                  <form action="" method="post" onSubmit={this.addUser}>
+                    <FormGroup>
                       <label>
-                          Country Code*
+                        <FormattedMessage {...messages.popup1} />*
+                    </label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        pattern=".{4,15}"
+                        title="Minimum 4 characters"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Email*</label>
+                      <TextInput
+                        type="email"
+                        name="email"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.email}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+
+                    <Row>
+                      <Col cW="30%" mR="2%">
+                        <FormGroup>
+                          <label>
+                            Country Code*
                         </label>
-                        <TextInput
-                          type="text"
-                          name="ccode"
-                          
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.ccode}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col cW="68%">
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup7} />*
+                          <TextInput
+                            type="text"
+                            name="ccode"
+
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.ccode}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col cW="68%">
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup7} />*
                         </label>
-                        <TextInput
-                          type="text"
-                          pattern="[0-9]{10}"
-                          title="10 Digit numeric value"
-                          name="mobile"
-                          
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.mobile}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                          <TextInput
+                            type="text"
+                            pattern="[0-9]{10}"
+                            title="10 Digit numeric value"
+                            name="mobile"
 
-                  <FormGroup>
-                    <label>User Id*</label>
-                    <TextInput
-                      type="text"
-                      name="username"
-                      pattern=".{4,15}"
-                      title="Minimum 4 characters"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.username}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.mobile}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
-                  <FormGroup>
-                    <label>Temporary Password*</label>
-                    <TextInput
-                      type="password"
-                      pattern=".{8,}"
-                      title="Minimum 8 Characters"
-                      name="password"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.password}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                    <FormGroup>
+                      <label>User Id*</label>
+                      <TextInput
+                        type="text"
+                        name="username"
+                        pattern=".{4,15}"
+                        title="Minimum 4 characters"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  <FormGroup>
-                    <SelectInput
-                      type="text"
-                      name="branch_id"
-                      value={this.state.branch_id}
-                      onChange={this.handleInputChange}
-                      required
-                    >
-                      <option value="">Select Branch*</option>
-                      {this.state.branches && this.state.branches.length > 0
-                        ? this.state.branches.map(function(b) {
+                    <FormGroup>
+                      <label>Temporary Password*</label>
+                      <TextInput
+                        type="password"
+                        pattern=".{8,}"
+                        title="Minimum 8 Characters"
+                        name="password"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.password}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <SelectInput
+                        type="text"
+                        name="branch_id"
+                        value={this.state.branch_id}
+                        onChange={this.handleInputChange}
+                        required
+                      >
+                        <option value="">Select Branch*</option>
+                        {this.state.branches && this.state.branches.length > 0
+                          ? this.state.branches.map(function (b) {
                             return <option value={b._id} key={b._id}>{b.name}</option>;
                           })
-                        : null}
-                    </SelectInput>
-                  </FormGroup>
+                          : null}
+                      </SelectInput>
+                    </FormGroup>
 
-                  <FormGroup>
-                    {/* <UploadedFile>
+                    <FormGroup>
+                      {/* <UploadedFile>
 
                       <i className="material-icons" onClick={() => this.removeFile('logo')}>close</i>
                     </UploadedFile>
                   : */}
-                    <UploadArea bgImg={STATIC_URL + this.state.logo}>
-                      {this.state.logo ? (
-                        <a
-                          className="uploadedImg"
-                          href={STATIC_URL + this.state.logo}
-                          target="_BLANK"
-                        />
-                      ) : (
-                        ' '
-                      )}
-                      <div
-                        className="uploadTrigger"
-                        onClick={() => this.triggerBrowse('logo')}
-                      >
-                        <input
-                          type="file"
-                          id="logo"
-                          onChange={this.onChange}
-                          data-key="logo"
-                        />
-                        {!this.state.logo ? (
-                          <i className="material-icons">cloud_upload</i>
+                      <UploadArea bgImg={STATIC_URL + this.state.logo}>
+                        {this.state.logo ? (
+                          <a
+                            className="uploadedImg"
+                            href={STATIC_URL + this.state.logo}
+                            target="_BLANK"
+                          />
                         ) : (
-                          ' '
-                        )}
-                        <label>
-                          {this.state.logo == '' ? (
-                            <span>Profile Photo</span>
-                          ) : (
-                            <span>Change Profile Photo</span>
+                            ' '
                           )}
+                        <div
+                          className="uploadTrigger"
+                          onClick={() => this.triggerBrowse('logo')}
+                        >
+                          <input
+                            type="file"
+                            id="logo"
+                            onChange={this.onChange}
+                            data-key="logo"
+                          />
+                          {!this.state.logo ? (
+                            <i className="material-icons">cloud_upload</i>
+                          ) : (
+                              ' '
+                            )}
+                          <label>
+                            {this.state.logo == '' ? (
+                              <span>Profile Photo</span>
+                            ) : (
+                                <span>Change Profile Photo</span>
+                              )}
                           *
                         </label>
-                      </div>
-                    </UploadArea>
-                  </FormGroup>
-                  <Icon className="material-icons">fingerprint</Icon>
-                  {this.state.addUserLoading ? (
-                    <Button filledBtn marginTop="20px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="20px">
-                      <span>Add User</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                        </div>
+                      </UploadArea>
+                    </FormGroup>
+                    <Icon className="material-icons">fingerprint</Icon>
+                    {this.state.addUserLoading ? (
+                      <Button filledBtn marginTop="20px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="20px">
+                          <span>Add User</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -817,12 +831,12 @@ export default class PartnerUser extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -832,184 +846,184 @@ export default class PartnerUser extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Edit User</h1>
-                <form action="" method="post" onSubmit={this.editUser}>
-                  <FormGroup>
-                    <label>
-                      <FormattedMessage {...messages.popup1} />*
-                    </label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      pattern=".{4,15}"
-                      title="Minimum 8 Characters"
-                      onFocus={inputFocus}
-                      autoFocus
-                      onBlur={inputBlur}
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Email*</label>
-                    <TextInput
-                      type="email"
-                      name="email"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      autoFocus
-                      value={this.state.email}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-
-               <Row>
-                    <Col cW="30%" mR="2%">
-                      <FormGroup>
+                <div>
+                  <h1>Edit User</h1>
+                  <form action="" method="post" onSubmit={this.editUser}>
+                    <FormGroup>
                       <label>
-                          Country Code*
+                        <FormattedMessage {...messages.popup1} />*
+                    </label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        pattern=".{4,15}"
+                        title="Minimum 8 Characters"
+                        onFocus={inputFocus}
+                        autoFocus
+                        onBlur={inputBlur}
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Email*</label>
+                      <TextInput
+                        type="email"
+                        name="email"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        autoFocus
+                        value={this.state.email}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+
+                    <Row>
+                      <Col cW="30%" mR="2%">
+                        <FormGroup>
+                          <label>
+                            Country Code*
                         </label>
-                        <TextInput
-                          type="text"
-                          name="ccode"
-                          autoFocus
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.ccode}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col cW="68%">
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup7} />*
+                          <TextInput
+                            type="text"
+                            name="ccode"
+                            autoFocus
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.ccode}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col cW="68%">
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup7} />*
                         </label>
-                        <TextInput
-                          type="text"
-                          pattern="[0-9]{10}"
-                          title="10 Digit numeric value"
-                          name="mobile"
-                          autoFocus
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.mobile}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                          <TextInput
+                            type="text"
+                            pattern="[0-9]{10}"
+                            title="10 Digit numeric value"
+                            name="mobile"
+                            autoFocus
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.mobile}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
-                  <FormGroup>
-                    <label>User Id*</label>
-                    <TextInput
-                      type="text"
-                      pattern=".{4,15}"
-                      title="Minimum 4 Characters"
-                      name="username"
-                      onFocus={inputFocus}
-                      autoFocus
-                      onBlur={inputBlur}
-                      value={this.state.username}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                    <FormGroup>
+                      <label>User Id*</label>
+                      <TextInput
+                        type="text"
+                        pattern=".{4,15}"
+                        title="Minimum 4 Characters"
+                        name="username"
+                        onFocus={inputFocus}
+                        autoFocus
+                        onBlur={inputBlur}
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  <FormGroup>
-                    <label>Temporary Password*</label>
-                    <TextInput
-                      type="password"
-                      pattern=".{8,}"
-                      title="Minimum 8 Characters"
-                      name="password"
-                      onFocus={inputFocus}
-                      autoFocus
-                      onBlur={inputBlur}
-                      value={this.state.password}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                    <FormGroup>
+                      <label>Temporary Password*</label>
+                      <TextInput
+                        type="password"
+                        pattern=".{8,}"
+                        title="Minimum 8 Characters"
+                        name="password"
+                        onFocus={inputFocus}
+                        autoFocus
+                        onBlur={inputBlur}
+                        value={this.state.password}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  <FormGroup>
-                    <SelectInput
-                      type="text"
-                      name="branch_id"
-                      value={this.state.branch_id}
-                      onChange={this.handleInputChange}
-                      required
-                    >
-                      <option value="">Select Branch*</option>
-                      {this.state.branches && this.state.branches.length > 0
-                        ? this.state.branches.map(function(b) {
+                    <FormGroup>
+                      <SelectInput
+                        type="text"
+                        name="branch_id"
+                        value={this.state.branch_id}
+                        onChange={this.handleInputChange}
+                        required
+                      >
+                        <option value="">Select Branch*</option>
+                        {this.state.branches && this.state.branches.length > 0
+                          ? this.state.branches.map(function (b) {
                             return <option value={b._id} key={b._id}>{b.name}</option>;
                           })
-                        : null}
-                    </SelectInput>
-                  </FormGroup>
+                          : null}
+                      </SelectInput>
+                    </FormGroup>
 
-                  <FormGroup>
-                    {/* <UploadedFile>
+                    <FormGroup>
+                      {/* <UploadedFile>
 
                       <i className="material-icons" onClick={() => this.removeFile('logo')}>close</i>
                     </UploadedFile>
                   : */}
-                    <UploadArea bgImg={STATIC_URL + this.state.logo}>
-                      {this.state.logo ? (
-                        <a
-                          className="uploadedImg"
-                          href={STATIC_URL + this.state.logo}
-                          target="_BLANK"
-                        />
-                      ) : (
-                        ' '
-                      )}
-                      <div
-                        className="uploadTrigger"
-                        onClick={() => this.triggerBrowse('logo')}
-                      >
-                        <input
-                          type="file"
-                          id="logo"
-                          onChange={this.onChange}
-                          data-key="logo"
-                        />
-                        {!this.state.logo ? (
-                          <i className="material-icons">cloud_upload</i>
+                      <UploadArea bgImg={STATIC_URL + this.state.logo}>
+                        {this.state.logo ? (
+                          <a
+                            className="uploadedImg"
+                            href={STATIC_URL + this.state.logo}
+                            target="_BLANK"
+                          />
                         ) : (
-                          ' '
-                        )}
-                        <label>
-                          {this.state.logo == '' ? (
-                            <span>Profile Photo</span>
-                          ) : (
-                            <span>Change Profile Photo</span>
+                            ' '
                           )}
+                        <div
+                          className="uploadTrigger"
+                          onClick={() => this.triggerBrowse('logo')}
+                        >
+                          <input
+                            type="file"
+                            id="logo"
+                            onChange={this.onChange}
+                            data-key="logo"
+                          />
+                          {!this.state.logo ? (
+                            <i className="material-icons">cloud_upload</i>
+                          ) : (
+                              ' '
+                            )}
+                          <label>
+                            {this.state.logo == '' ? (
+                              <span>Profile Photo</span>
+                            ) : (
+                                <span>Change Profile Photo</span>
+                              )}
                           *
                         </label>
-                      </div>
-                    </UploadArea>
-                  </FormGroup>
-                  <Icon className="material-icons">fingerprint</Icon>
+                        </div>
+                      </UploadArea>
+                    </FormGroup>
+                    <Icon className="material-icons">fingerprint</Icon>
 
-                  <Button filledBtn marginTop="20px">
-                    <span>Update User</span>
-                  </Button>
-                </form>
-              </div>
-            )}
+                    <Button filledBtn marginTop="20px">
+                      <span>Update User</span>
+                    </Button>
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
       </Wrapper>

@@ -109,8 +109,8 @@ export default class BranchDashboard extends Component {
     this.getTransHistory(v.master_code);
   };
 
-    showPending = v => {
-      console.log(v);
+  showPending = v => {
+    console.log(v);
     this.setState({
       selectedCashier: v,
       pendingPop: true,
@@ -139,14 +139,14 @@ export default class BranchDashboard extends Component {
 
     var dis = this;
     for (var key in items) {
-    if (items.hasOwnProperty(key)) {
+      if (items.hasOwnProperty(key)) {
         console.log(key + " -> " + items[key]);
         this.setState({
-          [key] : items[key]
+          [key]: items[key]
         });
 
+      }
     }
-}
     this.setState({
       selectedId: id,
       popupClaimMoney: true
@@ -271,7 +271,7 @@ export default class BranchDashboard extends Component {
   };
   startTimer = () => {
     var dis = this;
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
       if (dis.state.timer <= 0) {
         clearInterval(timer);
         dis.setState({ resend: true });
@@ -334,7 +334,7 @@ export default class BranchDashboard extends Component {
               {
                 notification: 'Cashier updated successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getBranches();
@@ -365,7 +365,7 @@ export default class BranchDashboard extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/updateCashierTransferStatus`, {token: this.state.token, cashier_id: this.state.selectedCashier,  transfer_id: this.state.selectedId, status: 1})
+      .post(`${API_URL}/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: 1 })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -375,9 +375,9 @@ export default class BranchDashboard extends Component {
               {
                 notification: 'Transfer updated successfully!',
               },
-              function() {
+              function () {
                 this.success();
-              //  this.closePopup();
+                //  this.closePopup();
                 this.getCashiers();
               },
             );
@@ -399,13 +399,13 @@ export default class BranchDashboard extends Component {
       });
   };
 
-   rejectTransfer = event => {
+  rejectTransfer = event => {
     this.setState({
       claimMoneyLoading: false,
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/updateCashierTransferStatus`, {token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: -1})
+      .post(`${API_URL}/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: -1 })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -415,7 +415,7 @@ export default class BranchDashboard extends Component {
               {
                 notification: 'Transfer updated successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getCashiers();
@@ -634,7 +634,7 @@ export default class BranchDashboard extends Component {
           });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   getPendingHistory = id => {
@@ -643,7 +643,7 @@ export default class BranchDashboard extends Component {
         token: token,
         type: 'branch',
         page: 'cashierpending',
-        where: {cashier_id: id}
+        where: { cashier_id: id }
       })
       .then(res => {
         if (res.status == 200) {
@@ -659,7 +659,7 @@ export default class BranchDashboard extends Component {
           });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
   showHistory = () => {
     this.setState({ history: [] }, () => {
@@ -674,7 +674,7 @@ export default class BranchDashboard extends Component {
       }
       this.setState({ history: out }, () => {
         let dis = this;
-        setTimeout(function() {
+        setTimeout(function () {
           dis.getHistory();
         }, 5000);
       });
@@ -694,7 +694,7 @@ export default class BranchDashboard extends Component {
         if (res.status == 200) {
           var notification = {};
           var result = res.data.history1.concat(res.data.history2);
-          result.sort(function(a, b) {
+          result.sort(function (a, b) {
             return (
               new Date(b.created_at).getTime() -
               new Date(a.created_at).getTime()
@@ -716,13 +716,13 @@ export default class BranchDashboard extends Component {
           );
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   filterData = e => {
     this.setState({ filter: e });
   };
-  getBanks = () => {};
+  getBanks = () => { };
 
   getBranches = () => {
     axios
@@ -737,7 +737,7 @@ export default class BranchDashboard extends Component {
           this.setState({ loading: false, branches: res.data.rows });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
   getStats = () => {
     axios
@@ -759,7 +759,7 @@ export default class BranchDashboard extends Component {
           });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
   getBranchByName = () => {
     axios
@@ -774,7 +774,7 @@ export default class BranchDashboard extends Component {
           });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
   formatDate = date => {
     var months = [
@@ -817,10 +817,10 @@ export default class BranchDashboard extends Component {
           this.setState({ loading: false, cashiers: res.data.rows });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
-    getUsers = () => {
+  getUsers = () => {
     axios
       .post(`${API_URL}/partnerBranch/getAll`, {
         page: 'partnerUser',
@@ -833,7 +833,7 @@ export default class BranchDashboard extends Component {
           this.setState({ loading: false, users: res.data.rows });
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   componentDidMount() {
@@ -900,9 +900,9 @@ export default class BranchDashboard extends Component {
                   bigPadding
                   smallValue
                 >
-                  <h4>Total Cashier</h4>
+                  <center><h4>Total Cashier</h4></center>
 
-                  <div className="cardValue">{this.state.totalCashier}</div>
+                  <div className="cardValue"><center>{this.state.totalCashier}</center></div>
                 </Card>
               </Col>
               <Col></Col>
@@ -919,7 +919,7 @@ export default class BranchDashboard extends Component {
                 </div>
               </div>
               <div className="cardBody">
-              <Table marginTop="34px" smallTd>
+                <Table marginTop="34px" smallTd>
                   <thead>
                     <tr>
                       <th>Cashier Name</th>
@@ -936,48 +936,48 @@ export default class BranchDashboard extends Component {
                   <tbody>
                     {this.state.cashiers && this.state.cashiers.length > 0 && this.state.users
                       ? this.state.cashiers.map(b => {
-                          return (
-                            <tr key={b._id}>
-                              <td>{b.name}</td>
-                              <td className="tac">
+                        return (
+                          <tr key={b._id}>
+                            <td>{b.name}</td>
+                            <td className="tac">
 
-                                {(
-                                  b.opening_balance +
-                                  (b.cash_received - b.cash_paid)
-                                ).toFixed(2)}
-                              </td>
-                              <td>
-                                {this.state.users.filter(
+                              {(
+                                b.opening_balance +
+                                (b.cash_received - b.cash_paid)
+                              ).toFixed(2)}
+                            </td>
+                            <td>
+                              {this.state.users.filter(
+                                u => u._id == b.partner_user_id,
+                              )[0]
+                                ? this.state.users.filter(
                                   u => u._id == b.partner_user_id,
-                                )[0]
-                                  ? this.state.users.filter(
-                                      u => u._id == b.partner_user_id,
-                                    )[0].name
-                                  : ''}
-                              </td>
-                              <td>
+                                )[0].name
+                                : ''}
+                            </td>
+                            <td>
                               {b.cash_received.toFixed(2)}
-                              </td>
-                              <td>
+                            </td>
+                            <td>
                               {b.cash_paid.toFixed(2)}
-                              </td>
-                              <td>
+                            </td>
+                            <td>
                               {b.fee_generated.toFixed(2)}
-                              </td>
+                            </td>
 
-                              <td style = {{color: b.is_closed ? 'red' : 'green' }}>
-                                   {b.is_closed  ?
-                                      "Close"
-                                   : "Open" }
-                              </td>
-                              <td className="tac bold green">
-                                <span onClick={() => this.showPending(b._id)}> {b.pending_trans}</span>
+                            <td style={{ color: b.is_closed ? 'red' : 'green' }}>
+                              {b.is_closed ?
+                                "Close"
+                                : "Open"}
+                            </td>
+                            <td className="tac bold green">
+                              <span onClick={() => this.showPending(b._id)}> {b.pending_trans}</span>
 
-                              </td>
+                            </td>
 
-                            </tr>
-                          );
-                        })
+                          </tr>
+                        );
+                      })
                       : null}
                   </tbody>
                 </Table>
@@ -1012,12 +1012,12 @@ export default class BranchDashboard extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1027,405 +1027,405 @@ export default class BranchDashboard extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Add Branch</h1>
-                <form action="" method="post" onSubmit={this.addBranch}>
-                  <FormGroup>
-                    <label>Branch Name*</label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Branch ID*</label>
-                    <TextInput
-                      type="text"
-                      name="bcode"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.bcode}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Branch Admin: User ID*</label>
-                    <TextInput
-                      type="text"
-                      name="username"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.username}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                <div>
+                  <h1>Add Branch</h1>
+                  <form action="" method="post" onSubmit={this.addBranch}>
+                    <FormGroup>
+                      <label>Branch Name*</label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Branch ID*</label>
+                      <TextInput
+                        type="text"
+                        name="bcode"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.bcode}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Branch Admin: User ID*</label>
+                      <TextInput
+                        type="text"
+                        name="username"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  <FormGroup>
-                    <label>Credit Limit</label>
-                    <TextInput
-                      type="text"
-                      name="credit_limit"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.credit_limit}
-                      onChange={this.handleInputChange}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Address*</label>
-                    <TextInput
-                      type="text"
-                      name="address1"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.address1}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
+                    <FormGroup>
+                      <label>Credit Limit</label>
+                      <TextInput
+                        type="text"
+                        name="credit_limit"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.credit_limit}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Address*</label>
+                      <TextInput
+                        type="text"
+                        name="address1"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.address1}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
 
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup3} />*
+                    <Row>
+                      <Col>
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup3} />*
                         </label>
-                        <TextInput
-                          type="text"
-                          name="state"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.state}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col>
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup4} />*
+                          <TextInput
+                            type="text"
+                            name="state"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.state}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup4} />*
                         </label>
-                        <TextInput
-                          type="text"
-                          name="zip"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.zip}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <SelectInput
-                          type="text"
-                          name="country"
-                          value={this.state.country}
-                          onChange={this.countryChange}
-                          required
-                        >
-                          <option title="" value="">
-                            Select Country*
+                          <TextInput
+                            type="text"
+                            name="zip"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.zip}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <FormGroup>
+                          <SelectInput
+                            type="text"
+                            name="country"
+                            value={this.state.country}
+                            onChange={this.countryChange}
+                            required
+                          >
+                            <option title="" value="">
+                              Select Country*
                           </option>
-                          <option title="+213">Algeria</option>
-                          <option title="+376">Andorra</option>
-                          <option title="+244">Angola</option>
-                          <option title="+1264">Anguilla</option>
-                          <option title="+1268">Antigua &amp; Barbuda</option>
-                          <option title="+54">Argentina</option>
-                          <option title="+374">Armenia</option>
-                          <option title="+297">Aruba</option>
-                          <option title="+61">Australia</option>
-                          <option title="+43">Austria</option>
-                          <option title="+994">Azerbaijan</option>
-                          <option title="+1242">Bahamas</option>
-                          <option title="+973">Bahrain</option>
-                          <option title="+880">Bangladesh</option>
-                          <option title="+1246">Barbados</option>
-                          <option title="+375">Belarus</option>
-                          <option title="+32">Belgium</option>
-                          <option title="+501">Belize</option>
-                          <option title="+229">Benin</option>
-                          <option title="+1441">Bermuda</option>
-                          <option title="+975">Bhutan</option>
-                          <option title="+591">Bolivia</option>
-                          <option title="+387">Bosnia Herzegovina</option>
-                          <option title="+267">Botswana</option>
-                          <option title="+55">Brazil</option>
-                          <option title="+673">Brunei</option>
-                          <option title="+359">Bulgaria</option>
-                          <option title="+226">Burkina Faso</option>
-                          <option title="+257">Burundi</option>
-                          <option title="+855">Cambodia</option>
-                          <option title="+237">Cameroon</option>
-                          <option title="+1">Canada</option>
-                          <option title="+238">Cape Verde Islands</option>
-                          <option title="+1345">Cayman Islands</option>
-                          <option title="+236">Central African Republic</option>
-                          <option title="+56">Chile</option>
-                          <option title="+86">China</option>
-                          <option title="+57">Colombia</option>
-                          <option title="+269">Comoros</option>
-                          <option title="+242">Congo</option>
-                          <option title="+682">Cook Islands</option>
-                          <option title="+506">Costa Rica</option>
-                          <option title="+385">Croatia</option>
-                          <option title="+53">Cuba</option>
-                          <option title="+90392">Cyprus North</option>
-                          <option title="+357">Cyprus South</option>
-                          <option title="+42">Czech Republic</option>
-                          <option title="+45">Denmark</option>
-                          <option title="+253">Djibouti</option>
-                          <option title="+1809">Dominica</option>
-                          <option title="+1809">Dominican Republic</option>
-                          <option title="+593">Ecuador</option>
-                          <option title="+20">Egypt</option>
-                          <option title="+503">El Salvador</option>
-                          <option title="+240">Equatorial Guinea</option>
-                          <option title="+291">Eritrea</option>
-                          <option title="+372">Estonia</option>
-                          <option title="+251">Ethiopia</option>
-                          <option title="+500">Falkland Islands</option>
-                          <option title="+298">Faroe Islands</option>
-                          <option title="+679">Fiji</option>
-                          <option title="+358">Finland</option>
-                          <option title="+33">France</option>
-                          <option title="+594">French Guiana</option>
-                          <option title="+689">French Polynesia</option>
-                          <option title="+241">Gabon</option>
-                          <option title="+220">Gambia</option>
-                          <option title="+7880">Georgia</option>
-                          <option title="+49">Germany</option>
-                          <option title="+233">Ghana</option>
-                          <option title="+350">Gibraltar</option>
-                          <option title="+30">Greece</option>
-                          <option title="+299">Greenland</option>
-                          <option title="+1473">Grenada</option>
-                          <option title="+590">Guadeloupe</option>
-                          <option title="+671">Guam</option>
-                          <option title="+502">Guatemala</option>
-                          <option title="+224">Guinea</option>
-                          <option title="+245">Guinea - Bissau</option>
-                          <option title="+592">Guyana</option>
-                          <option title="+509">Haiti</option>
-                          <option title="+504">Honduras</option>
-                          <option title="+852">Hong Kong</option>
-                          <option title="+36">Hungary</option>
-                          <option title="+354">Iceland</option>
-                          <option title="+91">India</option>
-                          <option title="+62">Indonesia</option>
-                          <option title="+98">Iran</option>
-                          <option title="+964">Iraq</option>
-                          <option title="+353">Ireland</option>
-                          <option title="+972">Israel</option>
-                          <option title="+39">Italy</option>
-                          <option title="+1876">Jamaica</option>
-                          <option title="+81">Japan</option>
-                          <option title="+962">Jordan</option>
-                          <option title="+7">Kazakhstan</option>
-                          <option title="+254">Kenya</option>
-                          <option title="+686">Kiribati</option>
-                          <option title="+850">Korea North</option>
-                          <option title="+82">Korea South</option>
-                          <option title="+965">Kuwait</option>
-                          <option title="+996">Kyrgyzstan</option>
-                          <option title="+856">Laos</option>
-                          <option title="+371">Latvia</option>
-                          <option title="+961">Lebanon</option>
-                          <option title="+266">Lesotho</option>
-                          <option title="+231">Liberia</option>
-                          <option title="+218">Libya</option>
-                          <option title="+417">Liechtenstein</option>
-                          <option title="+370">Lithuania</option>
-                          <option title="+352">Luxembourg</option>
-                          <option title="+853">Macao</option>
-                          <option title="+389">Macedonia</option>
-                          <option title="+261">Madagascar</option>
-                          <option title="+265">Malawi</option>
-                          <option title="+60">Malaysia</option>
-                          <option title="+960">Maldives</option>
-                          <option title="+223">Mali</option>
-                          <option title="+356">Malta</option>
-                          <option title="+692">Marshall Islands</option>
-                          <option title="+596">Martinique</option>
-                          <option title="+222">Mauritania</option>
-                          <option title="+269">Mayotte</option>
-                          <option title="+52">Mexico</option>
-                          <option title="+691">Micronesia</option>
-                          <option title="+373">Moldova</option>
-                          <option title="+377">Monaco</option>
-                          <option title="+976">Mongolia</option>
-                          <option title="+1664">Montserrat</option>
-                          <option title="+212">Morocco</option>
-                          <option title="+258">Mozambique</option>
-                          <option title="+95">Myanmar</option>
-                          <option title="+264">Namibia</option>
-                          <option title="+674">Nauru</option>
-                          <option title="+977">Nepal</option>
-                          <option title="+31">Netherlands</option>
-                          <option title="+687">New Caledonia</option>
-                          <option title="+64">New Zealand</option>
-                          <option title="+505">Nicaragua</option>
-                          <option title="+227">Niger</option>
-                          <option title="+234">Nigeria</option>
-                          <option title="+683">Niue</option>
-                          <option title="+672">Norfolk Islands</option>
-                          <option title="+670">Northern Marianas</option>
-                          <option title="+47">Norway</option>
-                          <option title="+968">Oman</option>
-                          <option title="+680">Palau</option>
-                          <option title="+507">Panama</option>
-                          <option title="+675">Papua New Guinea</option>
-                          <option title="+595">Paraguay</option>
-                          <option title="+51">Peru</option>
-                          <option title="+63">Philippines</option>
-                          <option title="+48">Poland</option>
-                          <option title="+351">Portugal</option>
-                          <option title="+1787">Puerto Rico</option>
-                          <option title="+974">Qatar</option>
-                          <option title="+262">Reunion</option>
-                          <option title="+40">Romania</option>
-                          <option title="+7">Russia</option>
-                          <option title="+250">Rwanda</option>
-                          <option title="+378">San Marino</option>
-                          <option title="+239">Sao Tome &amp; Principe</option>
-                          <option title="+966">Saudi Arabia</option>
-                          <option title="+221">Senegal</option>
-                          <option title="+381">Serbia</option>
-                          <option title="+248">Seychelles</option>
-                          <option title="+232">Sierra Leone</option>
-                          <option title="+65">Singapore</option>
-                          <option title="+421">Slovak Republic</option>
-                          <option title="+386">Slovenia</option>
-                          <option title="+677">Solomon Islands</option>
-                          <option title="+252">Somalia</option>
-                          <option title="+27">South Africa</option>
-                          <option title="+34">Spain</option>
-                          <option title="+94">Sri Lanka</option>
-                          <option title="+290">St. Helena</option>
-                          <option title="+1869">St. Kitts</option>
-                          <option title="+1758">St. Lucia</option>
-                          <option title="+249">Sudan</option>
-                          <option title="+597">Suriname</option>
-                          <option title="+268">Swaziland</option>
-                          <option title="+46">Sweden</option>
-                          <option title="+41">Switzerland</option>
-                          <option title="+963">Syria</option>
-                          <option title="+886">Taiwan</option>
-                          <option title="+7">Tajikstan</option>
-                          <option title="+66">Thailand</option>
-                          <option title="+228">Togo</option>
-                          <option title="+676">Tonga</option>
-                          <option title="+1868">Trinidad &amp; Tobago</option>
-                          <option title="+216">Tunisia</option>
-                          <option title="+90">Turkey</option>
-                          <option title="+7">Turkmenistan</option>
-                          <option title="+993">Turkmenistan</option>
-                          <option title="+1649">
-                            Turks &amp; Caicos Islands
+                            <option title="+213">Algeria</option>
+                            <option title="+376">Andorra</option>
+                            <option title="+244">Angola</option>
+                            <option title="+1264">Anguilla</option>
+                            <option title="+1268">Antigua &amp; Barbuda</option>
+                            <option title="+54">Argentina</option>
+                            <option title="+374">Armenia</option>
+                            <option title="+297">Aruba</option>
+                            <option title="+61">Australia</option>
+                            <option title="+43">Austria</option>
+                            <option title="+994">Azerbaijan</option>
+                            <option title="+1242">Bahamas</option>
+                            <option title="+973">Bahrain</option>
+                            <option title="+880">Bangladesh</option>
+                            <option title="+1246">Barbados</option>
+                            <option title="+375">Belarus</option>
+                            <option title="+32">Belgium</option>
+                            <option title="+501">Belize</option>
+                            <option title="+229">Benin</option>
+                            <option title="+1441">Bermuda</option>
+                            <option title="+975">Bhutan</option>
+                            <option title="+591">Bolivia</option>
+                            <option title="+387">Bosnia Herzegovina</option>
+                            <option title="+267">Botswana</option>
+                            <option title="+55">Brazil</option>
+                            <option title="+673">Brunei</option>
+                            <option title="+359">Bulgaria</option>
+                            <option title="+226">Burkina Faso</option>
+                            <option title="+257">Burundi</option>
+                            <option title="+855">Cambodia</option>
+                            <option title="+237">Cameroon</option>
+                            <option title="+1">Canada</option>
+                            <option title="+238">Cape Verde Islands</option>
+                            <option title="+1345">Cayman Islands</option>
+                            <option title="+236">Central African Republic</option>
+                            <option title="+56">Chile</option>
+                            <option title="+86">China</option>
+                            <option title="+57">Colombia</option>
+                            <option title="+269">Comoros</option>
+                            <option title="+242">Congo</option>
+                            <option title="+682">Cook Islands</option>
+                            <option title="+506">Costa Rica</option>
+                            <option title="+385">Croatia</option>
+                            <option title="+53">Cuba</option>
+                            <option title="+90392">Cyprus North</option>
+                            <option title="+357">Cyprus South</option>
+                            <option title="+42">Czech Republic</option>
+                            <option title="+45">Denmark</option>
+                            <option title="+253">Djibouti</option>
+                            <option title="+1809">Dominica</option>
+                            <option title="+1809">Dominican Republic</option>
+                            <option title="+593">Ecuador</option>
+                            <option title="+20">Egypt</option>
+                            <option title="+503">El Salvador</option>
+                            <option title="+240">Equatorial Guinea</option>
+                            <option title="+291">Eritrea</option>
+                            <option title="+372">Estonia</option>
+                            <option title="+251">Ethiopia</option>
+                            <option title="+500">Falkland Islands</option>
+                            <option title="+298">Faroe Islands</option>
+                            <option title="+679">Fiji</option>
+                            <option title="+358">Finland</option>
+                            <option title="+33">France</option>
+                            <option title="+594">French Guiana</option>
+                            <option title="+689">French Polynesia</option>
+                            <option title="+241">Gabon</option>
+                            <option title="+220">Gambia</option>
+                            <option title="+7880">Georgia</option>
+                            <option title="+49">Germany</option>
+                            <option title="+233">Ghana</option>
+                            <option title="+350">Gibraltar</option>
+                            <option title="+30">Greece</option>
+                            <option title="+299">Greenland</option>
+                            <option title="+1473">Grenada</option>
+                            <option title="+590">Guadeloupe</option>
+                            <option title="+671">Guam</option>
+                            <option title="+502">Guatemala</option>
+                            <option title="+224">Guinea</option>
+                            <option title="+245">Guinea - Bissau</option>
+                            <option title="+592">Guyana</option>
+                            <option title="+509">Haiti</option>
+                            <option title="+504">Honduras</option>
+                            <option title="+852">Hong Kong</option>
+                            <option title="+36">Hungary</option>
+                            <option title="+354">Iceland</option>
+                            <option title="+91">India</option>
+                            <option title="+62">Indonesia</option>
+                            <option title="+98">Iran</option>
+                            <option title="+964">Iraq</option>
+                            <option title="+353">Ireland</option>
+                            <option title="+972">Israel</option>
+                            <option title="+39">Italy</option>
+                            <option title="+1876">Jamaica</option>
+                            <option title="+81">Japan</option>
+                            <option title="+962">Jordan</option>
+                            <option title="+7">Kazakhstan</option>
+                            <option title="+254">Kenya</option>
+                            <option title="+686">Kiribati</option>
+                            <option title="+850">Korea North</option>
+                            <option title="+82">Korea South</option>
+                            <option title="+965">Kuwait</option>
+                            <option title="+996">Kyrgyzstan</option>
+                            <option title="+856">Laos</option>
+                            <option title="+371">Latvia</option>
+                            <option title="+961">Lebanon</option>
+                            <option title="+266">Lesotho</option>
+                            <option title="+231">Liberia</option>
+                            <option title="+218">Libya</option>
+                            <option title="+417">Liechtenstein</option>
+                            <option title="+370">Lithuania</option>
+                            <option title="+352">Luxembourg</option>
+                            <option title="+853">Macao</option>
+                            <option title="+389">Macedonia</option>
+                            <option title="+261">Madagascar</option>
+                            <option title="+265">Malawi</option>
+                            <option title="+60">Malaysia</option>
+                            <option title="+960">Maldives</option>
+                            <option title="+223">Mali</option>
+                            <option title="+356">Malta</option>
+                            <option title="+692">Marshall Islands</option>
+                            <option title="+596">Martinique</option>
+                            <option title="+222">Mauritania</option>
+                            <option title="+269">Mayotte</option>
+                            <option title="+52">Mexico</option>
+                            <option title="+691">Micronesia</option>
+                            <option title="+373">Moldova</option>
+                            <option title="+377">Monaco</option>
+                            <option title="+976">Mongolia</option>
+                            <option title="+1664">Montserrat</option>
+                            <option title="+212">Morocco</option>
+                            <option title="+258">Mozambique</option>
+                            <option title="+95">Myanmar</option>
+                            <option title="+264">Namibia</option>
+                            <option title="+674">Nauru</option>
+                            <option title="+977">Nepal</option>
+                            <option title="+31">Netherlands</option>
+                            <option title="+687">New Caledonia</option>
+                            <option title="+64">New Zealand</option>
+                            <option title="+505">Nicaragua</option>
+                            <option title="+227">Niger</option>
+                            <option title="+234">Nigeria</option>
+                            <option title="+683">Niue</option>
+                            <option title="+672">Norfolk Islands</option>
+                            <option title="+670">Northern Marianas</option>
+                            <option title="+47">Norway</option>
+                            <option title="+968">Oman</option>
+                            <option title="+680">Palau</option>
+                            <option title="+507">Panama</option>
+                            <option title="+675">Papua New Guinea</option>
+                            <option title="+595">Paraguay</option>
+                            <option title="+51">Peru</option>
+                            <option title="+63">Philippines</option>
+                            <option title="+48">Poland</option>
+                            <option title="+351">Portugal</option>
+                            <option title="+1787">Puerto Rico</option>
+                            <option title="+974">Qatar</option>
+                            <option title="+262">Reunion</option>
+                            <option title="+40">Romania</option>
+                            <option title="+7">Russia</option>
+                            <option title="+250">Rwanda</option>
+                            <option title="+378">San Marino</option>
+                            <option title="+239">Sao Tome &amp; Principe</option>
+                            <option title="+966">Saudi Arabia</option>
+                            <option title="+221">Senegal</option>
+                            <option title="+381">Serbia</option>
+                            <option title="+248">Seychelles</option>
+                            <option title="+232">Sierra Leone</option>
+                            <option title="+65">Singapore</option>
+                            <option title="+421">Slovak Republic</option>
+                            <option title="+386">Slovenia</option>
+                            <option title="+677">Solomon Islands</option>
+                            <option title="+252">Somalia</option>
+                            <option title="+27">South Africa</option>
+                            <option title="+34">Spain</option>
+                            <option title="+94">Sri Lanka</option>
+                            <option title="+290">St. Helena</option>
+                            <option title="+1869">St. Kitts</option>
+                            <option title="+1758">St. Lucia</option>
+                            <option title="+249">Sudan</option>
+                            <option title="+597">Suriname</option>
+                            <option title="+268">Swaziland</option>
+                            <option title="+46">Sweden</option>
+                            <option title="+41">Switzerland</option>
+                            <option title="+963">Syria</option>
+                            <option title="+886">Taiwan</option>
+                            <option title="+7">Tajikstan</option>
+                            <option title="+66">Thailand</option>
+                            <option title="+228">Togo</option>
+                            <option title="+676">Tonga</option>
+                            <option title="+1868">Trinidad &amp; Tobago</option>
+                            <option title="+216">Tunisia</option>
+                            <option title="+90">Turkey</option>
+                            <option title="+7">Turkmenistan</option>
+                            <option title="+993">Turkmenistan</option>
+                            <option title="+1649">
+                              Turks &amp; Caicos Islands
                           </option>
-                          <option title="+688">Tuvalu</option>
-                          <option title="+256">Uganda</option>
-                          <option title="+44">UK</option>
-                          <option title="+380">Ukraine</option>
-                          <option title="+971">United Arab Emirates</option>
-                          <option title="+598">Uruguay</option>
-                          <option title="+1">USA</option>
-                          <option title="+7">Uzbekistan</option>
-                          <option title="+678">Vanuatu</option>
-                          <option title="+379">Vatican City</option>
-                          <option title="+58">Venezuela</option>
-                          <option title="+84">Vietnam</option>
-                          <option title="+84">Virgin Islands - British</option>
-                          <option title="+84">Virgin Islands - US</option>
-                          <option title="+681">Wallis &amp; Futuna</option>
-                          <option title="+969">Yemen</option>
-                          <option title="+967">Yemen</option>
-                          <option title="+260">Zambia</option>
-                          <option title="+263">Zimbabwe</option>
-                        </SelectInput>
-                      </FormGroup>
-                    </Col>
+                            <option title="+688">Tuvalu</option>
+                            <option title="+256">Uganda</option>
+                            <option title="+44">UK</option>
+                            <option title="+380">Ukraine</option>
+                            <option title="+971">United Arab Emirates</option>
+                            <option title="+598">Uruguay</option>
+                            <option title="+1">USA</option>
+                            <option title="+7">Uzbekistan</option>
+                            <option title="+678">Vanuatu</option>
+                            <option title="+379">Vatican City</option>
+                            <option title="+58">Venezuela</option>
+                            <option title="+84">Vietnam</option>
+                            <option title="+84">Virgin Islands - British</option>
+                            <option title="+84">Virgin Islands - US</option>
+                            <option title="+681">Wallis &amp; Futuna</option>
+                            <option title="+969">Yemen</option>
+                            <option title="+967">Yemen</option>
+                            <option title="+260">Zambia</option>
+                            <option title="+263">Zimbabwe</option>
+                          </SelectInput>
+                        </FormGroup>
+                      </Col>
 
-                    <Col>
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup8} />*
+                      <Col>
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup8} />*
                         </label>
-                        <TextInput
-                          type="email"
-                          name="email"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.email}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col cW="20%" mR="2%">
-                      <FormGroup>
-                        <TextInput
-                          type="text"
-                          name="ccode"
-                          readOnly
-                          value={this.state.ccode}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col cW="78%">
-                      <FormGroup>
-                        <label>
-                          <FormattedMessage {...messages.popup7} />*
+                          <TextInput
+                            type="email"
+                            name="email"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.email}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col cW="20%" mR="2%">
+                        <FormGroup>
+                          <TextInput
+                            type="text"
+                            name="ccode"
+                            readOnly
+                            value={this.state.ccode}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col cW="78%">
+                        <FormGroup>
+                          <label>
+                            <FormattedMessage {...messages.popup7} />*
                         </label>
-                        <TextInput
-                          type="text"
-                          pattern="[0-9]{10}"
-                          title="10 Digit numeric value"
-                          name="mobile"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.mobile}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                          <TextInput
+                            type="text"
+                            pattern="[0-9]{10}"
+                            title="10 Digit numeric value"
+                            name="mobile"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.mobile}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
-                  {this.state.addBranchLoading ? (
-                    <Button filledBtn marginTop="10px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="10px">
-                      <span>Add Branch</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                    {this.state.addBranchLoading ? (
+                      <Button filledBtn marginTop="10px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="10px">
+                          <span>Add Branch</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -1456,12 +1456,12 @@ export default class BranchDashboard extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>
-                        <FormattedMessage {...messages.verify} />
-                      </span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>
+                          <FormattedMessage {...messages.verify} />
+                        </span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1471,157 +1471,157 @@ export default class BranchDashboard extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Edit Cashier</h1>
-                <form action="" method="post" onSubmit={this.editCashier}>
-                  <FormGroup>
-                    <label>Cashier Name*</label>
-                    <TextInput
-                      type="text"
-                      name="name"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      autoFocus
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Cashier Code*</label>
-                    <TextInput
-                      type="text"
-                      autoFocus
-                      name="bcode"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.bcode}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  <label>Working Hours</label>
-                  <Row>
-                    <Col cW="30%" mR="2%">
-                      <FormGroup>
-                        <label>From*</label>
-                        <TextInput
-                          type="text"
-                          autoFocus
-                          name="working_from"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.working_from}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <label>Cashier Code*</label>
-                        <TextInput
-                          type="text"
-                          autoFocus
-                          name="bcode"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.bcode}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                      <label>Working Hours</label>
-                      <Row>
-                        <Col cW="30%" mR="2%">
-                          <FormGroup>
-                            <label>From*</label>
-                            <TextInput
-                              type="text"
-                              autoFocus
-                              name="working_from"
-                              onFocus={inputFocus}
-                              onBlur={inputBlur}
-                              value={this.state.working_from}
-                              onChange={this.handleInputChange}
-                              required
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col cW="68%">
-                          <FormGroup>
-                            <label>To*</label>
-                            <TextInput
-                              type="text"
-                              autoFocus
-                              title="10 Digit numeric value"
-                              name="working_to"
-                              onFocus={inputFocus}
-                              onBlur={inputBlur}
-                              value={this.state.working_to}
-                              onChange={this.handleInputChange}
-                              required
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <FormGroup>
-                        <label>Maximum per transaction amount*</label>
-                        <TextInput
-                          type="text"
-                          name="per_trans_amt"
-                          autoFocus
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.per_trans_amt}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <label>Maximum daily transaction amount*</label>
-                        <TextInput
-                          type="text"
-                          name="max_trans_amt"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          autoFocus
-                          value={this.state.max_trans_amt}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <label>Maximum daily transaction count*</label>
-                        <TextInput
-                          type="text"
-                          name="max_trans_count"
-                          onFocus={inputFocus}
-                          onBlur={inputBlur}
-                          value={this.state.max_trans_count}
-                          autoFocus
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </FormGroup>
-                      {this.state.editBranchLoading ? (
-                        <Button filledBtn marginTop="50px" disabled>
-                          <Loader />
-                        </Button>
-                      ) : (
-                        <Button filledBtn marginTop="50px">
-                          <span>Update Cashier</span>
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </form>
-              </div>
-            )}
+                <div>
+                  <h1>Edit Cashier</h1>
+                  <form action="" method="post" onSubmit={this.editCashier}>
+                    <FormGroup>
+                      <label>Cashier Name*</label>
+                      <TextInput
+                        type="text"
+                        name="name"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        autoFocus
+                        value={this.state.name}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Cashier Code*</label>
+                      <TextInput
+                        type="text"
+                        autoFocus
+                        name="bcode"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.bcode}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <label>Working Hours</label>
+                    <Row>
+                      <Col cW="30%" mR="2%">
+                        <FormGroup>
+                          <label>From*</label>
+                          <TextInput
+                            type="text"
+                            autoFocus
+                            name="working_from"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.working_from}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <label>Cashier Code*</label>
+                          <TextInput
+                            type="text"
+                            autoFocus
+                            name="bcode"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.bcode}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                        <label>Working Hours</label>
+                        <Row>
+                          <Col cW="30%" mR="2%">
+                            <FormGroup>
+                              <label>From*</label>
+                              <TextInput
+                                type="text"
+                                autoFocus
+                                name="working_from"
+                                onFocus={inputFocus}
+                                onBlur={inputBlur}
+                                value={this.state.working_from}
+                                onChange={this.handleInputChange}
+                                required
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col cW="68%">
+                            <FormGroup>
+                              <label>To*</label>
+                              <TextInput
+                                type="text"
+                                autoFocus
+                                title="10 Digit numeric value"
+                                name="working_to"
+                                onFocus={inputFocus}
+                                onBlur={inputBlur}
+                                value={this.state.working_to}
+                                onChange={this.handleInputChange}
+                                required
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <FormGroup>
+                          <label>Maximum per transaction amount*</label>
+                          <TextInput
+                            type="text"
+                            name="per_trans_amt"
+                            autoFocus
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.per_trans_amt}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <label>Maximum daily transaction amount*</label>
+                          <TextInput
+                            type="text"
+                            name="max_trans_amt"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            autoFocus
+                            value={this.state.max_trans_amt}
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <label>Maximum daily transaction count*</label>
+                          <TextInput
+                            type="text"
+                            name="max_trans_count"
+                            onFocus={inputFocus}
+                            onBlur={inputBlur}
+                            value={this.state.max_trans_count}
+                            autoFocus
+                            onChange={this.handleInputChange}
+                            required
+                          />
+                        </FormGroup>
+                        {this.state.editBranchLoading ? (
+                          <Button filledBtn marginTop="50px" disabled>
+                            <Loader />
+                          </Button>
+                        ) : (
+                            <Button filledBtn marginTop="50px">
+                              <span>Update Cashier</span>
+                            </Button>
+                          )}
+                      </Col>
+                    </Row>
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -1634,10 +1634,10 @@ export default class BranchDashboard extends Component {
                   <Loader />
                 </Button>
               ) : (
-                <Table marginTop="34px" smallTd textAlign="left">
-                  <tbody>
-                    {this.state.popresult && this.state.popresult.length > 0
-                      ? this.state.popresult.map(function(b) {
+                  <Table marginTop="34px" smallTd textAlign="left">
+                    <tbody>
+                      {this.state.popresult && this.state.popresult.length > 0
+                        ? this.state.popresult.map(function (b) {
                           var isoformat = new Date(
                             b.tx_data.tx_timestamp.seconds * 1000,
                           ).toISOString();
@@ -1645,37 +1645,37 @@ export default class BranchDashboard extends Component {
 
                           return dis.state.filter == b.tx_data.tx_type ||
                             dis.state.filter == '' ? (
-                            <tr key={b.tx_data.tx_id}>
-                              <td>
-                                <div className="labelGrey">{fulldate}</div>
-                              </td>
-                              <td>
-                                <div className="labelBlue">
-                                  {b.tx_data.tx_details}
-                                </div>{' '}
-                                <div className="labelSmallGrey">Completed</div>
-                              </td>
-                              <td className="right">
-                                <div className="labelGrey">
-                                  {b.tx_data.tx_type == 'DR' ? (
-                                    <span>
-                                      {CURRENCY} -{b.amount}
-                                    </span>
-                                  ) : (
-                                    <span>
-                                      {CURRENCY} {b.amount}
-                                    </span>
-                                  )}
-                                </div>
-                              </td>
-                              <td>{b.tx_data.child_id}</td>
-                            </tr>
-                          ) : null;
+                              <tr key={b.tx_data.tx_id}>
+                                <td>
+                                  <div className="labelGrey">{fulldate}</div>
+                                </td>
+                                <td>
+                                  <div className="labelBlue">
+                                    {b.tx_data.tx_details}
+                                  </div>{' '}
+                                  <div className="labelSmallGrey">Completed</div>
+                                </td>
+                                <td className="right">
+                                  <div className="labelGrey">
+                                    {b.tx_data.tx_type == 'DR' ? (
+                                      <span>
+                                        {CURRENCY} -{b.amount}
+                                      </span>
+                                    ) : (
+                                        <span>
+                                          {CURRENCY} {b.amount}
+                                        </span>
+                                      )}
+                                  </div>
+                                </td>
+                                <td>{b.tx_data.child_id}</td>
+                              </tr>
+                            ) : null;
                         })
-                      : null}
-                  </tbody>
-                </Table>
-              )}
+                        : null}
+                    </tbody>
+                  </Table>
+                )}
             </div>
           </Popup>
         ) : null}
@@ -1689,15 +1689,15 @@ export default class BranchDashboard extends Component {
                   <Loader />
                 </Button>
               ) : (
-                <Table marginTop="34px" smallTd textAlign="left">
-                  <tbody>
-                {
+                  <Table marginTop="34px" smallTd textAlign="left">
+                    <tbody>
+                      {
 
-                      this.state.pending && this.state.pending.length > 0
-                      ? this.state.pending.map(function(b) {
+                        this.state.pending && this.state.pending.length > 0
+                          ? this.state.pending.map(function (b) {
 
-                        var fulldate = dis.formatDate(b.created_at);
-                        return  <tr key={b._id}>
+                            var fulldate = dis.formatDate(b.created_at);
+                            return <tr key={b._id}>
                               <td>
                                 <div className="labelGrey">{fulldate}</div>
                               </td>
@@ -1706,24 +1706,24 @@ export default class BranchDashboard extends Component {
                                   className="labelBlue"
                                 >
 
-                                    <span onClick={() => dis.showPendingDetails(b._id, JSON.parse(b.transaction_details))}>
-                                      Cash sent from{' '}
-                                      {b.sender_name}{' '}
+                                  <span onClick={() => dis.showPendingDetails(b._id, JSON.parse(b.transaction_details))}>
+                                    Cash sent from{' '}
+                                    {b.sender_name}{' '}
                                       to{' '}
-                                      {b.receiver_name}
-                                    </span>
+                                    {b.receiver_name}
+                                  </span>
 
                                 </div>
                                 <div className="labelSmallGrey">
                                   {b.status == 1 ?
                                     <span>Approved</span>
-                                  :
-                                  b.status == 0 ?
-                                    <span>Pending</span>
+                                    :
+                                    b.status == 0 ?
+                                      <span>Pending</span>
 
-                                  :
+                                      :
 
-                                    <span className="red">Rejected</span>
+                                      <span className="red">Rejected</span>
                                   }
                                 </div>
                               </td>
@@ -1734,288 +1734,288 @@ export default class BranchDashboard extends Component {
                                 </div>
                               </td>
                             </tr>
-                      })
-                      : null
-                    }
-                      </tbody>
-                </Table>
-              )}
+                          })
+                          : null
+                      }
+                    </tbody>
+                  </Table>
+                )}
             </div>
           </Popup>
         ) : null}
 
 
-         {this.state.popupClaimMoney ? (
+        {this.state.popupClaimMoney ? (
           <Popup bigBody close={this.closePopup.bind(this)} accentedH1>
 
-                <div>
-                  <h1>Transaction Details</h1>
+            <div>
+              <h1>Transaction Details</h1>
 
-                    <Container>
-                      <Row vAlign="flex-start">
-                        <Col sm="12" md="4">
-                          <div
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 'bold',
-                              padding: '13px 0px',
-                              color: '#417505',
-                            }}
-                          >
-                            Sender's Info
+              <Container>
+                <Row vAlign="flex-start">
+                  <Col sm="12" md="4">
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        padding: '13px 0px',
+                        color: '#417505',
+                      }}
+                    >
+                      Sender's Info
                           </div>
-                          <Row>
-                            <Col className="popInfoLeft">Mobile Number</Col>
-                            <Col className="popInfoRight">
-                              {this.state.mobile}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Given Name</Col>
-                            <Col className="popInfoRight">
-                              {this.state.givenname}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Family Name</Col>
-                            <Col className="popInfoRight">
-                              {this.state.familyname}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Address</Col>
-                            <Col className="popInfoRight">
-                              {this.state.address1}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">State</Col>
-                            <Col className="popInfoRight">
-                              {this.state.state}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Zip Code</Col>
-                            <Col className="popInfoRight">{this.state.zip}</Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Country</Col>
-                            <Col className="popInfoRight">
-                              {this.state.country}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Email ID</Col>
-                            <Col className="popInfoRight">
-                              {this.state.email}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Notes</Col>
-                            <Col className="popInfoRight">
-                              {this.state.note}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col sm="12" md="4">
-                          <div
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 'bold',
-                              padding: '13px 0px',
-                              color: '#417505',
-                            }}
-                          >
-                            Receiver's Info
+                    <Row>
+                      <Col className="popInfoLeft">Mobile Number</Col>
+                      <Col className="popInfoRight">
+                        {this.state.mobile}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Given Name</Col>
+                      <Col className="popInfoRight">
+                        {this.state.givenname}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Family Name</Col>
+                      <Col className="popInfoRight">
+                        {this.state.familyname}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Address</Col>
+                      <Col className="popInfoRight">
+                        {this.state.address1}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">State</Col>
+                      <Col className="popInfoRight">
+                        {this.state.state}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Zip Code</Col>
+                      <Col className="popInfoRight">{this.state.zip}</Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Country</Col>
+                      <Col className="popInfoRight">
+                        {this.state.country}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Email ID</Col>
+                      <Col className="popInfoRight">
+                        {this.state.email}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Notes</Col>
+                      <Col className="popInfoRight">
+                        {this.state.note}
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col sm="12" md="4">
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        padding: '13px 0px',
+                        color: '#417505',
+                      }}
+                    >
+                      Receiver's Info
                           </div>
-                          <Row>
-                            <Col className="popInfoLeft">Mobile Number</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverMobile}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Given Name</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverGivenName}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Family Name</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverFamilyName}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Country</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverCountry}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Email ID</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverEmail}
-                            </Col>
-                          </Row>
-                          <Row /> <Row /> <Row />
-                        </Col>
-                        <Col sm="12" md="4">
-                          <div
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 'bold',
-                              padding: '13px 0px',
-                              color: '#417505',
-                            }}
-                          >
-                            &nbsp;
+                    <Row>
+                      <Col className="popInfoLeft">Mobile Number</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverMobile}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Given Name</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverGivenName}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Family Name</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverFamilyName}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Country</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverCountry}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Email ID</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverEmail}
+                      </Col>
+                    </Row>
+                    <Row /> <Row /> <Row />
+                  </Col>
+                  <Col sm="12" md="4">
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        padding: '13px 0px',
+                        color: '#417505',
+                      }}
+                    >
+                      &nbsp;
                           </div>
-                          <Row>
-                            <Col className="popInfoLeft">Amount</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverIdentificationAmount}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Date</Col>
-                            <Col className="popInfoRight">
-                              {this.state.dateClaimMoney}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Transaction ID</Col>
-                            <Col className="popInfoRight">
-                              {this.state.transferCode}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">ID required</Col>
-                            <Col className="popInfoRight">
-                              {this.state.withoutID ? 'No' : 'Yes'}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">OTP required</Col>
-                            <Col className="popInfoRight">
-                              {this.state.requireOTP ? 'Yes' : 'No'}
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                      <Row vAlign="flex-start">
-                        <Col>
-                          <div
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 'bold',
-                              padding: '13px 0px',
-                            }}
-                          >
-                            Sender's Identification
+                    <Row>
+                      <Col className="popInfoLeft">Amount</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverIdentificationAmount}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Date</Col>
+                      <Col className="popInfoRight">
+                        {this.state.dateClaimMoney}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Transaction ID</Col>
+                      <Col className="popInfoRight">
+                        {this.state.transferCode}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">ID required</Col>
+                      <Col className="popInfoRight">
+                        {this.state.withoutID ? 'No' : 'Yes'}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">OTP required</Col>
+                      <Col className="popInfoRight">
+                        {this.state.requireOTP ? 'Yes' : 'No'}
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row vAlign="flex-start">
+                  <Col>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        padding: '13px 0px',
+                      }}
+                    >
+                      Sender's Identification
                           </div>
-                          <Row>
-                            <Col className="popInfoLeft">Country</Col>
-                            <Col className="popInfoRight">
-                              {this.state.senderIdentificationCountry}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Type</Col>
-                            <Col className="popInfoRight">
-                              {this.state.senderIdentificationType}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Number</Col>
-                            <Col className="popInfoRight">
-                              {this.state.senderIdentificationNumber}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Valid till</Col>
-                            <Col className="popInfoRight">
-                              {this.state.senderIdentificationValidTill}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col>
-                          <div
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 'bold',
-                              padding: '13px 0px',
-                            }}
-                          >
-                            Receiver's Identification
+                    <Row>
+                      <Col className="popInfoLeft">Country</Col>
+                      <Col className="popInfoRight">
+                        {this.state.senderIdentificationCountry}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Type</Col>
+                      <Col className="popInfoRight">
+                        {this.state.senderIdentificationType}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Number</Col>
+                      <Col className="popInfoRight">
+                        {this.state.senderIdentificationNumber}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Valid till</Col>
+                      <Col className="popInfoRight">
+                        {this.state.senderIdentificationValidTill}
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        padding: '13px 0px',
+                      }}
+                    >
+                      Receiver's Identification
                           </div>
-                          <Row>
-                            <Col className="popInfoLeft">Country</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverIdentificationCountry}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Type</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverIdentificationType}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Number</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverIdentificationNumber}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="popInfoLeft">Valid till</Col>
-                            <Col className="popInfoRight">
-                              {this.state.receiverIdentificationValidTill}
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col>
+                    <Row>
+                      <Col className="popInfoLeft">Country</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverIdentificationCountry}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Type</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverIdentificationType}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Number</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverIdentificationNumber}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="popInfoLeft">Valid till</Col>
+                      <Col className="popInfoRight">
+                        {this.state.receiverIdentificationValidTill}
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col>
 
-                       <Row>
-                       <Col cW="49%" mR="2%">
-                       {this.state.claimMoneyLoading ? (
-                            <Button filledBtn marginTop="20px" disabled>
-                              <Loader />
-                            </Button>
-                          ) : (
+                    <Row>
+                      <Col cW="49%" mR="2%">
+                        {this.state.claimMoneyLoading ? (
+                          <Button filledBtn marginTop="20px" disabled>
+                            <Loader />
+                          </Button>
+                        ) : (
                             <Button type="button" filledBtn marginTop="20px" onClick={this.approveTransfer}>
                               <span>
                                 Approve
                               </span>
                             </Button>
                           )}
-                       </Col>
-                       <Col cW="49%">
-                       {this.state.claimMoneyLoading ? (
-                            <Button filledBtn marginTop="20px" disabled  style={{backgroundColor: '#111111'}} >
-                              <Loader />
-                            </Button>
-                          ) : (
-                            <Button type="button" filledBtn marginTop="20px" style={{backgroundColor: '#111111'}} onClick={this.rejectTransfer}>
+                      </Col>
+                      <Col cW="49%">
+                        {this.state.claimMoneyLoading ? (
+                          <Button filledBtn marginTop="20px" disabled style={{ backgroundColor: '#111111' }} >
+                            <Loader />
+                          </Button>
+                        ) : (
+                            <Button type="button" filledBtn marginTop="20px" style={{ backgroundColor: '#111111' }} onClick={this.rejectTransfer}>
                               <span>
                                 Reject
                               </span>
                             </Button>
                           )}
-                       </Col>
-                       </Row>
+                      </Col>
+                    </Row>
 
 
-                          <br />
-                          {/* <p className="note">
+                    <br />
+                    {/* <p className="note">
                       <span style={{ color: 'red' }}>* </span>
                       Total fee $200 will be charged
                     </p> */}
-                        </Col>
-                      </Row>
-                    </Container>
+                  </Col>
+                </Row>
+              </Container>
 
-                </div>
+            </div>
 
           </Popup>
         ) : null}

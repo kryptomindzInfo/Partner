@@ -115,7 +115,7 @@ class CashierClosingBalance extends Component {
       })
       .then(res => {
         if (res.status == 200) {
-          const history =  res.data.rows.reverse()
+          const history = res.data.rows.reverse()
           this.setState(
             {
               history: history,
@@ -126,7 +126,7 @@ class CashierClosingBalance extends Component {
           );
         }
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   handleAmountChange = event => {
@@ -219,7 +219,7 @@ class CashierClosingBalance extends Component {
   };
   startTimer = () => {
     var dis = this;
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
       if (dis.state.timer <= 0) {
         clearInterval(timer);
         dis.setState({ resend: true });
@@ -280,7 +280,7 @@ class CashierClosingBalance extends Component {
             },
             () => {
               var dis = this;
-              setTimeout(function() {
+              setTimeout(function () {
                 dis.getStats();
               }, 3000);
             },
@@ -289,7 +289,7 @@ class CashierClosingBalance extends Component {
       })
       .catch(err => {
         var dis = this;
-        setTimeout(function() {
+        setTimeout(function () {
           dis.getStats();
         }, 3000);
       });
@@ -348,7 +348,7 @@ class CashierClosingBalance extends Component {
               {
                 notification: 'Closing balance submitted successfully!',
               },
-              function() {
+              function () {
                 this.success();
                 this.closePopup();
                 this.getStats();
@@ -417,7 +417,8 @@ class CashierClosingBalance extends Component {
     const { classes } = this.props;
     const dis = this;
     return (
-      <Card marginBottom="54px" buttonMarginTop="32px" bigPadding smallValue>
+      // <Card marginBottom="54px" buttonMarginTop="32px" bigPadding smallValue>
+      <Card marginBottom="54px" buttonMarginTop="32px" smallValue>
         <h3>
           Closing Balance
           <span
@@ -445,17 +446,17 @@ class CashierClosingBalance extends Component {
           </Col>
         </Row>
         {
-          this.state.transactionStarted && !this.state.isClosed? (
-          <button className="sendMoneyButton" onClick={this.showOpeningPopup}>
-            <i className="material-icons">send</i>
+          this.state.transactionStarted && !this.state.isClosed ? (
+            <button className="sendMoneyButton" onClick={this.showOpeningPopup}>
+              <i className="material-icons">send</i>
             Close my day
-          </button>
-        ) : (
-          <button className="sendMoneyButton" disabled>
-            <i className="material-icons">send</i>
+            </button>
+          ) : (
+              <button className="sendMoneyButton" disabled>
+                <i className="material-icons">send</i>
             Close my day
-          </button>
-        )}
+              </button>
+            )}
 
         {this.state.openingPopup ? (
           <Popup close={this.closePopup.bind(this)} accentedH1>
@@ -480,10 +481,10 @@ class CashierClosingBalance extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Verify</span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px">
+                        <span>Verify</span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -493,153 +494,153 @@ class CashierClosingBalance extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
             ) : (
-              <div>
-                <h1>Enter Real Closing Bills & Coins count</h1>
-                <form action="" method="post" onSubmit={this.addOpeningBalance}>
-                  <FormGroup>
-                    <Grid container>
-                      {this.state.denomination.map((element, index) => (
-                        <Grid
-                          item
-                          key={`text-field-${index}`}
-                          xs={12}
-                          container
-                          alignItems="center"
-                          style={{ textAlign: 'center' }}
+                <div>
+                  <h1>Enter Real Closing Bills & Coins count</h1>
+                  <form action="" method="post" onSubmit={this.addOpeningBalance}>
+                    <FormGroup>
+                      <Grid container>
+                        {this.state.denomination.map((element, index) => (
+                          <Grid
+                            item
+                            key={`text-field-${index}`}
+                            xs={12}
+                            container
+                            alignItems="center"
+                            style={{ textAlign: 'center' }}
                           // spacing={8}
-                        >
-                          <Grid item xs={3}>
-                            <Typography
-                              className={classes.currencyElement}
-                              key={`text-field-${index}`}
-                              style={{
-                                fontWeight: 600,
-                                fontSize: '14px',
-                                textAlign: 'right',
-                              }}
-                            >
-                              {this.state.currency} {element.val}
-                            </Typography>
-                          </Grid>
-
-                          <Grid item xs={2}>
-                            <Typography
-                              style={{
-                                fontSize: '14px',
-                                textAlign: 'right',
-                                paddingRight: '3px',
-                              }}
-                            >
-                              X
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={7}>
-                            <Col cW="60%" style={{ marginLeft: '18%' }}>
-                              <TextInput
-                                marginTop
-                                type="text"
-                                // name={this.state.denominationValue[index]}
-                                autoFocus
-                                value={this.state.denomination[index].num}
-                                onChange={e => {
-                                  const value = e.target.value;
-                                  this.setState(prevState => {
-                                    const { denomination } = prevState;
-                                    denomination[index].num = value;
-                                    return { ...prevState, denomination };
-                                  });
+                          >
+                            <Grid item xs={3}>
+                              <Typography
+                                className={classes.currencyElement}
+                                key={`text-field-${index}`}
+                                style={{
+                                  fontWeight: 600,
+                                  fontSize: '14px',
+                                  textAlign: 'right',
                                 }}
-                              />
-                            </Col>
+                              >
+                                {this.state.currency} {element.val}
+                              </Typography>
+                            </Grid>
+
+                            <Grid item xs={2}>
+                              <Typography
+                                style={{
+                                  fontSize: '14px',
+                                  textAlign: 'right',
+                                  paddingRight: '3px',
+                                }}
+                              >
+                                X
+                            </Typography>
+                            </Grid>
+                            <Grid item xs={7}>
+                              <Col cW="60%" style={{ marginLeft: '18%' }}>
+                                <TextInput
+                                  marginTop
+                                  type="text"
+                                  // name={this.state.denominationValue[index]}
+                                  autoFocus
+                                  value={this.state.denomination[index].num}
+                                  onChange={e => {
+                                    const value = e.target.value;
+                                    this.setState(prevState => {
+                                      const { denomination } = prevState;
+                                      denomination[index].num = value;
+                                      return { ...prevState, denomination };
+                                    });
+                                  }}
+                                />
+                              </Col>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </FormGroup>
-                  <FormGroup>
-                    <Row style={{ marginTop: '5%' }}>
-                      <Col cW="15%" textAlign="right">
-                        <strong>TOTAL</strong>
+                        ))}
+                      </Grid>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row style={{ marginTop: '5%' }}>
+                        <Col cW="15%" textAlign="right">
+                          <strong>TOTAL</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          =
                       </Col>
-                      <Col cW="20%" textAlign="center">
-                        =
+                        <Col cW="35%">
+                          {
+                            (this.state.total = this.state.denomination.reduce(
+                              (a, c) => Number(c.num * c.val || 0) + a,
+                              0,
+                            ))
+                          }
+                        </Col>
+                      </Row>
+                      <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
+                        <Col cW="20%" textAlign="right">
+                          <strong>Cash in Hand</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          =
                       </Col>
-                      <Col cW="35%">
-                        {
-                          (this.state.total = this.state.denomination.reduce(
-                            (a, c) => Number(c.num * c.val || 0) + a,
-                            0,
-                          ))
-                        }
+                        <Col cW="35%">{this.state.cashInHand}</Col>
+                      </Row>
+                      <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
+                        <Col cW="20%" textAlign="right">
+                          <strong>Discrepancy</strong>
+                        </Col>
+                        <Col cW="20%" textAlign="center">
+                          =
                       </Col>
-                    </Row>
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-                      <Col cW="20%" textAlign="right">
-                        <strong>Cash in Hand</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        =
-                      </Col>
-                      <Col cW="35%">{this.state.cashInHand}</Col>
-                    </Row>
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-                      <Col cW="20%" textAlign="right">
-                        <strong>Discrepancy</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        =
-                      </Col>
-                      <Col cW="35%">
-                        {this.state.total - this.state.cashInHand}
-                      </Col>
-                    </Row>
-                  </FormGroup>
-                  <FormGroup>
-                    <TextInput
-                      marginTop
-                      type="text"
-                      name="note"
-                      autoFocus
-                      placeholder="Remarks"
-                      value={this.state.note}
-                      onChange={this.handleInputChange}
-                    />
-                  </FormGroup>
-                  <div
-                    style={{
-                      marginTop: '20px',
-                      fontSize: '18px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      name="agree"
-                      value={this.state.agree}
-                      checked={this.state.agree}
-                      onClick={this.handleCheckbox}
-                    />{' '}
+                        <Col cW="35%">
+                          {this.state.total - this.state.cashInHand}
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <TextInput
+                        marginTop
+                        type="text"
+                        name="note"
+                        autoFocus
+                        placeholder="Remarks"
+                        value={this.state.note}
+                        onChange={this.handleInputChange}
+                      />
+                    </FormGroup>
+                    <div
+                      style={{
+                        marginTop: '20px',
+                        fontSize: '18px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        name="agree"
+                        value={this.state.agree}
+                        checked={this.state.agree}
+                        onClick={this.handleCheckbox}
+                      />{' '}
                     Close accounts for the day?
                   </div>
 
-                  {this.state.editBranchLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Submit</span>
-                    </Button>
-                  )}
-                </form>
-              </div>
-            )}
+                    {this.state.editBranchLoading ? (
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="50px">
+                          <span>Submit</span>
+                        </Button>
+                      )}
+                  </form>
+                </div>
+              )}
           </Popup>
         ) : null}
 
@@ -652,19 +653,19 @@ class CashierClosingBalance extends Component {
                   <Loader />
                 </Button>
               ) : (
-                <Table marginTop="34px" smallTd>
-                  <thead>
-                    <tr>
-                      <th>Amount</th>
-                      <th>Added On</th>
-                       <th>Denomination</th>
-                       <th>Note</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.history && this.state.history.length > 0
-                      ? this.state.history.map(function(b) {
-                        var td = JSON.parse(b.transaction_details);
+                  <Table marginTop="34px" smallTd>
+                    <thead>
+                      <tr>
+                        <th>Amount</th>
+                        <th>Added On</th>
+                        <th>Denomination</th>
+                        <th>Note</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.history && this.state.history.length > 0
+                        ? this.state.history.map(function (b) {
+                          var td = JSON.parse(b.transaction_details);
                           var fulldate = dis.formatDate(b.created_at);
                           return (
                             <tr key={b._id}>
@@ -674,17 +675,17 @@ class CashierClosingBalance extends Component {
                               <td>
                                 <div className="labelGrey">{fulldate}</div>
                               </td>
-                              <td>{ td.denomination ? td.denomination.map(function(v){
-                                return( v.num != '' ? <div>{v.val} : {v.num}</div> : null)
+                              <td>{td.denomination ? td.denomination.map(function (v) {
+                                return (v.num != '' ? <div>{v.val} : {v.num}</div> : null)
                               }) : null}</td>
-                               <td>{td.note}</td>
+                              <td>{td.note}</td>
                             </tr>
                           );
                         })
-                      : null}
-                  </tbody>
-                </Table>
-              )}
+                        : null}
+                    </tbody>
+                  </Table>
+                )}
             </div>
           </Popup>
         ) : null}

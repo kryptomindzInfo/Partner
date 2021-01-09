@@ -15,7 +15,7 @@ import PayBillPopup from './PayBillPopup';
 import TransactionReceipt from './TransactionReciept';
 import Button from '../../components/Button';
 import { isNull } from 'lodash';
-import { API_URL} from '../App/constants';
+import { API_URL } from '../App/constants';
 import axios from 'axios';
 
 function CashierMerchantListPage(props) {
@@ -24,6 +24,7 @@ function CashierMerchantListPage(props) {
   const [receiptPopup, setReceiptPopup] = React.useState(false);
   const [payBillsPopup, setPayBillsPopup] = React.useState(false);
   const [merchantList, setMerchantList] = React.useState([]);
+  const [copyMerchantList, setcopyMerchantList] = React.useState([]);
   const [popupType, setPopupType] = React.useState('new');
   const [editingMerchant, setEditingMerchant] = React.useState({});
   const [isLoading, setLoading] = React.useState(false);
@@ -66,28 +67,43 @@ function CashierMerchantListPage(props) {
       .then(data => {
         setMerchantList(data.list);
         setLoading(data.loading);
+        setcopyMerchantList(data.list);
+
       })
       .catch(error => setLoading(false));
   };
 
   const getStats = () => {
-    const getStatus = setInterval(function(){
+    const getStatus = setInterval(function () {
       axios
-      .post(`${API_URL}/partnerCashier/getDashStats`, {
-        token: token
-      })
-      .then(res => {
-        if (res.status == 200) {
-          setIsClosed(res.data.isClosed);  
-        }
-      })
-    },2000)
+        .post(`${API_URL}/partnerCashier/getDashStats`, {
+          token: token
+        })
+        .then(res => {
+          if (res.status == 200) {
+            setIsClosed(res.data.isClosed);
+          }
+        })
+    }, 2000)
   };
 
   useEffect(() => {
     getMerchantList();
     getStats();
   }, []); // Or [] if effect doesn't need props or state
+
+  const searchlistfunction = (value) => {
+    console.log(value)
+    // console.log(this.state.searchrules)
+    const newfilterdata = copyMerchantList.filter(element =>
+      element.name.toLowerCase().includes(value.toLowerCase()),
+    );
+
+    setMerchantList(newfilterdata)
+
+    // this.setState({ branches: newfilterdata })
+
+  }
 
   const getMerchants = () =>
     merchantList.map(merchant => (
@@ -101,18 +117,18 @@ function CashierMerchantListPage(props) {
         </td>
         <td className="tac">{merchant.name}</td>
         <td className="tac" style={{ cursor: 'pointer', color: '#417505' }}>
-          { isClosed ? (
+          {isClosed ? (
             <div>Casier Closed</div>
           ) : (
-            <div
-              onClick={() => {
-                setEditingMerchant(merchant);
-                setPayBillsPopup(true);
-              }}
-            >
-              Select Merchant
-            </div>
-          )}
+              <div
+                onClick={() => {
+                  setEditingMerchant(merchant);
+                  setPayBillsPopup(true);
+                }}
+              >
+                Select Merchant
+              </div>
+            )}
         </td>
       </tr>
     ));
@@ -134,13 +150,15 @@ function CashierMerchantListPage(props) {
       <Container verticalMargin>
         <SidebarCashier
           branchName={props.match.params.bank}
-          refresh={() => {}}
+          refresh={() => { }}
         />
         <Main>
           <ActionBar marginBottom="33px" className="clr">
             <div className="iconedInput fl">
               <i className="material-icons">search</i>
-              <input type="text" placeholder="Search Merchants" />
+              <input type="text" placeholder="Search Merchants" onChange={(e) => {
+                searchlistfunction(e.target.value)
+              }} />
             </div>
           </ActionBar>
           <Card bigPadding>
@@ -175,9 +193,9 @@ function CashierMerchantListPage(props) {
 
       {receiptPopup ? (
         <TransactionReceipt
-        values={receiptvalues}
-        close={() => onReceiptClose()} 
-      />
+          values={receiptvalues}
+          close={() => onReceiptClose()}
+        />
       ) : (
           ''
         )}
@@ -193,8 +211,8 @@ function CashierMerchantListPage(props) {
           show={onReceiptPopupOpen}
         />
       ) : (
-        ''
-      )}
+          ''
+        )}
     </Wrapper>
   );
 }

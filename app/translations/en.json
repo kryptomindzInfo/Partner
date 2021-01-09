@@ -3,7 +3,6 @@
   "boilerplate.containers.LocaleToggle.fr": "FR",
   "boilerplate.containers.All.search": "Search",
   "boilerplate.containers.All.update": "Update",
-
   "boilerplate.components.FrontLeftSection.infra": "Infra",
   "boilerplate.components.FrontLeftSection.bank": "Bank",
   "boilerplate.components.FrontLeftSection.user": "User",
@@ -11,7 +10,6 @@
   "boilerplate.components.FrontLeftSection.subTitle1": "Welcome to E-wallet!",
   "boilerplate.components.FrontLeftSection.subTitle2": "Create your wallet for easy transferring of",
   "boilerplate.components.FrontLeftSection.subTitle3": "money to your friends and family",
-
   "boilerplate.containers.HomePage.pagetitle": "Sign In",
   "boilerplate.containers.HomePage.title": "Log in to your account",
   "boilerplate.containers.HomePage.subtitle": "Use your email id to log in",
@@ -20,34 +18,28 @@
   "boilerplate.containers.HomePage.email": "Email",
   "boilerplate.containers.HomePage.password": "Password",
   "boilerplate.containers.HomePage.forgotpassword": "Forgot Password?",
-
   "boilerplate.components.Header.logo": "E-WALLET",
   "boilerplate.components.Header.menu1": "Dashboard",
   "boilerplate.components.Header.menu2": "Bank",
   "boilerplate.components.Header.menu3": "Merchant",
   "boilerplate.components.Header.menu4": "Reports",
   "boilerplate.components.Header.welcome": "Welcome",
-
   "boilerplate.components.PartnerHeader.menu1": "Branches",
   "boilerplate.components.PartnerHeader.menu2": "Partners",
   "boilerplate.components.PartnerHeader.menu3": "Users",
-
   "boilerplate.containers.ForgotPage.pagetitle": "Forgot Password",
   "boilerplate.containers.ForgotPage.title": "Enter your mobile number",
   "boilerplate.containers.ForgotPage.mobile": "Mobile Number",
   "boilerplate.containers.ForgotPage.getotp": "Get OTP",
-
   "boilerplate.containers.OTPPage.pagetitle": "OTP",
   "boilerplate.containers.OTPPage.title": "Enter OTP for",
   "boilerplate.containers.OTPPage.submit": "Submit",
-
   "boilerplate.components.Sidebar.operational": "Operational Wallet",
   "boilerplate.components.Sidebar.available": "Available",
   "boilerplate.components.Sidebar.sendmoney": "Send Money",
   "boilerplate.components.Sidebar.master": "Master Wallet",
   "boilerplate.components.Sidebar.escrow": "Escrow Wallet",
   "boilerplate.components.Sidebar.activate": "Activate",
-
   "boilerplate.containers.DashboardPage.box1": "Total Banks",
   "boilerplate.containers.DashboardPage.box2": "Total Merchants",
   "boilerplate.containers.DashboardPage.box3": "Total Users",
@@ -56,13 +48,10 @@
   "boilerplate.containers.DashboardPage.box6": "Total Merchant Branches",
   "boilerplate.containers.DashboardPage.box7": "Total Bank Partners",
   "boilerplate.containers.DashboardPage.box8": "Total Merchant Partners",
-
   "boilerplate.containers.BankDashboardPage.box1": "Total Branches",
   "boilerplate.containers.BankDashboardPage.box5": "Total Partners",
-
   "boilerplate.containers.BankPage.addbank": "Add Bank",
   "boilerplate.containers.BankFee.createFee": "Create Fee",
-
   "boilerplate.containers.BankPage.title": "Bank List",
   "boilerplate.containers.BankPage.subtitle": "Your Friends and Family",
   "boilerplate.containers.BankPage.th1": "Bank Name",
@@ -85,14 +74,12 @@
   "boilerplate.containers.BankPage.popup10": "Upload Contract",
   "boilerplate.containers.BankPage.verify": "Verify OTP",
   "boilerplate.containers.BankPage.otp": "OTP",
-
   "boilerplate.containers.BankSetup.pagetitle": "Change Password",
   "boilerplate.containers.BankSetup.title": "Type your password",
   "boilerplate.containers.BankSetup.userid": "User Id",
   "boilerplate.containers.BankSetup.newpass": "Password",
   "boilerplate.containers.BankSetup.confirm": "Confirm Password",
   "boilerplate.containers.BankSetup.forgotpassword": "Forgot Password?",
-
   "boilerplate.containers.BankActivate.pagetitle": "Contract with Infra",
   "boilerplate.containers.BankActivate.title": "Please review the below contract submitted by Infra",
   "boilerplate.containers.BankActivate.confirm": "Agree to the contract",

@@ -27,40 +27,40 @@ class Nav extends Component {
     const reports = this.props.active == 'reports' ? 'true' : '';
     const name = localStorage.getItem("name");
     const isAdmin = localStorage.getItem("isAdmin");
-  
+
     return (
       <React.Fragment>
         <NavTag>
           <A href="/dashboard" >
-          <Link active={dashboard}>
-          <FormattedMessage {...messages.menu1} /> 
-          </Link>
+            <Link active={dashboard}>
+              <FormattedMessage {...messages.menu1} />
+            </Link>
           </A>
           {
-          isAdmin != 'false' ?
-          <A href="/user">
-          <Link 
-           active={user}>
-            Infra User
+            isAdmin != 'false' ?
+              <A href="/user">
+                <Link
+                  active={user}>
+                  Infra User
           </Link>
-          </A>
-          :
-          null
+              </A>
+              :
+              null
           }
           <A href="/banks">
-          <Link active={bank}>
-          <FormattedMessage {...messages.menu2} /> 
-          </Link>         
+            <Link active={bank}>
+              <FormattedMessage {...messages.menu2} />
+            </Link>
           </A>
           <A >
-          <Link active={merchants}>
-          <FormattedMessage {...messages.menu3} /> 
-          </Link>
+            <Link active={merchants}>
+              <FormattedMessage {...messages.menu3} />
+            </Link>
           </A>
           <A >
-          <Link active={reports}>
-          <FormattedMessage {...messages.menu4} /> 
-          </Link>
+            <Link active={reports}>
+              <FormattedMessage {...messages.menu4} />
+            </Link>
           </A>
         </NavTag>
       </React.Fragment>

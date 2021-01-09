@@ -29,6 +29,9 @@ import Row from 'components/Row';
 import Col from 'components/Col';
 import A from 'components/A';
 import Loader from 'components/Loader';
+import CloseIcon from '@material-ui/icons/Visibility';
+import OpenIcon from '@material-ui/icons/VisibilityOff';
+import TextField from '@material-ui/core/TextField';
 
 
 import { API_URL } from '../App/constants';
@@ -52,6 +55,7 @@ export default class BankLoginPage extends Component {
       notification: '',
       loading: true,
       redirect: false,
+      visiblity: false
     };
     this.error = this.error.bind(this);
   }
@@ -86,11 +90,11 @@ export default class BankLoginPage extends Component {
             localStorage.setItem('partnerLogo', res.data.logo);
             localStorage.setItem('partnerId', res.data.id);
             localStorage.setItem('partnerPhone', res.data.mobile);
-            if(res.data.status == 0 && res.data.message === "Incorrect username or password") {
+            if (res.data.status == 0 && res.data.message === "Incorrect username or password") {
               throw res.data.message;
             }
             else if (!res.data.initial_setup) {
-              window.location.href ='/setup';
+              window.location.href = '/setup';
               console.log(res.data.initial_setup);
             }
             else if (
@@ -98,9 +102,9 @@ export default class BankLoginPage extends Component {
               res.data.status == 0 ||
               res.data.status == ''
             ) {
-              window.location.href ='/activate';
+              window.location.href = '/activate';
             } else {
-              window.location.href ='/dashboard';
+              window.location.href = '/dashboard';
             }
           } else {
             throw res.data.error;
@@ -183,7 +187,7 @@ export default class BankLoginPage extends Component {
                   required
                 />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <label>
                   <FormattedMessage {...messages.password} />*
                 </label>
@@ -196,6 +200,42 @@ export default class BankLoginPage extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
+              </FormGroup> */}
+              <FormGroup>
+                <div style={{ backgroundColor: "" }}>
+                  <TextField
+                    name="password"
+                    label="Password"
+                    style={{ width: "100%" }}
+                    value={this.state.password}
+                    type={this.state.visiblity ? 'text' : 'password'}
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleInputChange}
+                    required
+                  />
+                  <span
+                    onClick={() => {
+                      this.setState({ visiblity: !this.state.visiblity })
+                    }}
+
+                    style={{
+                      position: 'relative',
+                      top: '-40px',
+                      left: "90%",
+
+                    }}
+                  >
+                    <i>
+                      {/* < CloseIcon /> */}
+                      {this.state.visiblity ? (
+                        < CloseIcon />
+                      ) : (
+                          <OpenIcon />
+                        )}
+                    </i>
+                  </span>
+                </div>
               </FormGroup>
             </InputsWrap>
             {this.loginLoading ? (
@@ -203,10 +243,10 @@ export default class BankLoginPage extends Component {
                 <Loader />
               </PrimaryBtn>
             ) : (
-              <PrimaryBtn>
-                <FormattedMessage {...messages.pagetitle} />
-              </PrimaryBtn>
-            )}
+                <PrimaryBtn>
+                  <FormattedMessage {...messages.pagetitle} />
+                </PrimaryBtn>
+              )}
           </form>
           <Row marginTop>
             <Col />
