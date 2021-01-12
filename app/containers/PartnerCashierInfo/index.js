@@ -142,8 +142,8 @@ export default class PartnerCashierInfo extends Component {
       token,
       type_id: this.state.cashier_id,
       status : s,
-      page: 'cashier',
-      type: 'bank'
+      page: 'partnerCashier',
+      type: 'partner'
     })
     .then(res => {
       if(res.status == 200){
@@ -520,7 +520,7 @@ export default class PartnerCashierInfo extends Component {
       <Wrapper  from="bank">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Branch | INFRA | E-WALLET</title>
+          <title>Partner | INFRA | E-WALLET</title>
         </Helmet>
         <PartnerHeader page="branch"  goto={"/bank/cashiers/"+this.props.match.params.branch} middleTitle={this.state.name} />
         <Container verticalMargin>

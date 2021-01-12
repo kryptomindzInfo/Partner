@@ -574,7 +574,7 @@ export default class CashierInfo extends Component {
       <Wrapper  from="bank">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Branch | INFRA | E-WALLET</title>
+          <title>Partner | CASHIERS | E-WALLET</title>
         </Helmet>
         <CashierHeader active="cashier" middleTitle={this.state.name} page="branch" goto={"/cashier/"+this.props.match.params.bank+"/dashboard"} bankName={this.props.match.params.bank} bankLogo={STATIC_URL+logo} />
         <Container verticalMargin>
