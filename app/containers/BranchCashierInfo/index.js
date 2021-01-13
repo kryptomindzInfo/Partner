@@ -158,8 +158,8 @@ export default class BranchCashierInfo extends Component {
       token,
       type_id: this.state.cashier_id,
       status : s,
-      page: 'cashier',
-      type: 'bank'
+      page: 'partnerCashier',
+      type: 'partnerBranch',
     })
     .then(res => {
       if(res.status == 200){
