@@ -504,73 +504,60 @@ class CashierCashInHand extends Component {
     var dis = this;
     return (
       <Card marginBottom="54px" buttonMarginTop="32px" bigPadding>
-        <h3> Cash in Hand </h3>
-        <h5>
-          <FormattedMessage {...messages.available} />
-        </h5>
-        <div className="cardValue">
-          {CURRENCY}
+        <h3 style ={{textAlign:'center'}}> Cash in Hand </h3>
+        <div style ={{textAlign:'center', fontSize:'20px'}} className="cardValue">
+          {CURRENCY} {this.state.balance.toFixed(2)}
         </div>
-        <h3>
+        
+         <Row  style={{marginTop:'10px'}}>
+          <Col cW="100%">
           {
-            this.state.transactionStarted && !this.state.isClosed ?
-              <span style={{ float: "right", position: "relative", color: "#555", marginRight: '-20px',cursor: "pointer", right: '141px', fontSize: '16px' }} onClick={this.showIncoming}>
-                 <span>Pending</span>
-                <span style={{
-                  fontSize: "16px",
-                  color: "#ff1818",
-                  fontWeight: "bold",
-                  marginLeft: '10px',
-                }}>{this.state.incoming.length}</span>
-                {/* <i class="material-icons">notifications</i> */}
-
-              </span>
-              :
-              <span style={{ float: "right", position: "relative", color: "#555", marginRight: '-20px', cursor: "pointer", right: '141px', fontSize: '16px' }} disabled>
-                <span>Pending</span>
-                 <span style={{
-                   fontSize: "16px",
-                   color: "#ff1818",
-                   fontWeight: "bold",
-                   marginLeft: '10px',
-                 }}>{this.state.incoming.length}</span>
-                {/* <i class="material-icons">notifications</i> */}
-
-              </span>
-          }
-
-        </h3>
-        <div className="cardValue">
-         {this.state.balance.toFixed(2)}
-        </div>
-        {
           this.state.transactionStarted && !this.state.isClosed ?
             <Button
-              className="sendMoneybutton"
-              noMin
+              dashBtn
               onClick={this.showPopupSendMoney}
 
             >
               <i className="material-icons">send</i> Cashier to Cashier Transfer
             </Button>
             :
-            <Button
+            <Button 
+              dashBtn
               disabled
-              className="sendMoneybutton"
-              noMin
-
             >
               <i className="material-icons">send</i> Cashier to Cashier Transfer
             </Button>
         }
-
-        <span
-          className="anchor history"
-          onClick={this.showHistory}
-          style= {{right: '30px', bottom: '60px'}}
-        >
-          History
-                      </span>
+          </Col>
+         </Row>
+         <Row style={{marginTop:'10px'}}>
+          <Col>
+          {
+            this.state.transactionStarted && !this.state.isClosed ?
+            <Button
+              smallDashBtn
+              onClick={this.showIncoming}
+            >
+                {this.state.incoming.length} Pending
+            </Button>
+              :
+              <Button
+                smallDashBtn
+                disabled
+             >
+                {this.state.incoming.length} Pending 
+              </Button>
+          }
+          </Col>
+          <Col>
+          <Button
+              smallDashBtn
+              onClick={this.showHistory}
+            >
+                History
+            </Button>
+          </Col>
+        </Row>
         {this.state.popupSendMoney ? (
 
           <Popup

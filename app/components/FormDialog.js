@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
+import DashButton from './Button'
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -270,14 +271,12 @@ export default function FormDialog() {
 
   return (
     <Fragment>
-      <Button
-        variant="outlined"
-        color="primary"
-        style={{ textTransform: 'initial', fontSize: '11px' }}
+      <DashButton
+        dashBtn
         onClick={handleClickOpen}
       >
-        Verify User
-      </Button>
+        Enroll Wallet User
+      </DashButton>
       <Dialog
         maxWidth={user ? 'md' : 'sm'}
         fullWidth
