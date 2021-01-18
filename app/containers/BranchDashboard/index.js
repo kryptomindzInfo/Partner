@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Wrapper from 'components/Wrapper';
 import A from 'components/A';
 import BranchHeader from 'components/Header/BranchHeader';
@@ -63,8 +63,11 @@ export default class BranchDashboard extends Component {
       token,
       otpEmail: email,
       otpMobile: mobile,
-      cashReceived: 0,
+      feeGenerated: 0,
+      openingBalance: 0,
+      commissionGenerated: 0,
       cashPaid: 0,
+      cashReceived: 0,
       totalCashier: 0,
       cashInHand: 0,
       perPage: 20,
@@ -156,6 +159,7 @@ export default class BranchDashboard extends Component {
     this.setState({
       popup: false,
       editPopup: false,
+      assignPop: false,
       historyPop: false,
       pendingPop: false,
       popupClaimMoney: false,
@@ -255,6 +259,22 @@ export default class BranchDashboard extends Component {
         this.error();
       });
   };
+
+  showAssignPopup = v => {
+    this.setState({
+      assignPop: true,
+      name: v.name,
+      code: v.code,
+      working_from: v.working_from,
+      working_to: v.working_to,
+      per_trans_amt: v.per_trans_amt,
+      max_trans_amt: v.max_trans_amt,
+      max_trans_count: v.max_trans_count,
+      cashier_id: v._id,
+      bank_user_id: v.bank_user_id,
+    });
+  };
+
   editCashier = event => {
     event.preventDefault();
 
@@ -446,20 +466,60 @@ export default class BranchDashboard extends Component {
         token,
         type_id: e,
         status: s,
-        page: 'cashier',
-        type: 'branch',
+        page: 'partnerCashier',
+        type: 'partnerBranch'
       })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
             throw res.data.error;
           } else {
-            var n = s == 1 ? 'Unblocked' : 'Blocked';
+            var n = (s == 1) ? 'Unblocked' : 'Blocked';
             this.setState({
-              notification: 'Cashier ' + n,
+              notification: 'Cashier ' + n
             });
             this.success();
-            this.getBranches();
+            this.getCashiers();
+          }
+        } else {
+          const error = new Error(res.data.error);
+          throw error;
+        }
+      })
+      .catch(err => {
+        this.setState({
+          notification: (err.response) ? err.response.data.error : err.toString()
+        });
+        this.error();
+      });
+
+  };
+
+  assignUser = event => {
+    event.preventDefault();
+
+    this.setState({
+      assignLoading: true,
+    });
+
+    axios
+      .post(`${API_URL}/partnerBranch/updateCashierUser`, {
+        cashier_id: this.state.cashier_id,
+        user_id: this.state.bank_user_id,
+        token: token,
+      })
+      .then(res => {
+        if (res.status == 200) {
+          if (res.data.error) {
+            throw res.data.error;
+          } else {
+            this.setState({
+              notification: 'User Assigned successfully!',
+              assignLoading: false,
+            });
+            this.success();
+            this.closePopup();
+            this.getCashiers();
           }
         } else {
           const error = new Error(res.data.error);
@@ -469,6 +529,7 @@ export default class BranchDashboard extends Component {
       .catch(err => {
         this.setState({
           notification: err.response ? err.response.data.error : err.toString(),
+          assignLoading: false,
         });
         this.error();
       });
@@ -496,7 +557,7 @@ export default class BranchDashboard extends Component {
               () => {
                 this.success();
                 this.closeMiniPopUp();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -539,7 +600,7 @@ export default class BranchDashboard extends Component {
               () => {
                 this.success();
                 this.closeMiniPopUp();
-                this.getBranches();
+                this.getCashiers();
               },
             );
           }
@@ -753,9 +814,12 @@ export default class BranchDashboard extends Component {
           this.setState({
             loading: false,
             totalCashier: total,
-            cashReceived: received,
-            cashPaid: paid,
-            cashInHand: res.data.cashInHand
+            cashReceived: received.toFixed(2),
+            cashPaid: paid.toFixed(2),
+            cashInHand: res.data.cashInHand.toFixed(2),
+            feeGenerated:res.data.feeGenerated.toFixed(2),
+            commissionGenerated:res.data.commissionGenerated.toFixed(2),
+            openingBalance:res.data.openingBalance.toFixed(2),
           },
           () => {
             var dis = this;
@@ -901,10 +965,11 @@ export default class BranchDashboard extends Component {
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Cash in Hand</h4>
 
-                  <div className="cardValue">{CURRENCY} {this.state.cashInHand.toFixed(2)}</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
                 </Card>
               </Col>
               <Col>
@@ -913,10 +978,11 @@ export default class BranchDashboard extends Component {
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Opening Balance</h4>
 
-                  <div className="cardValue">0</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
                 </Card>
               </Col>
               <Col>
@@ -925,10 +991,11 @@ export default class BranchDashboard extends Component {
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Paid in Cash</h4>
 
-                  <div className="cardValue">{this.state.cashPaid}</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashPaid}</div>
                 </Card>
               </Col>
               <Col>
@@ -937,10 +1004,25 @@ export default class BranchDashboard extends Component {
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Cash Recieved</h4>
 
-                  <div className="cardValue">{this.state.cashReceived}</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashReceived}</div>
+                </Card>
+              </Col>
+            </Row>
+            <Row style={{marginTop:'30px'}}>
+            <Col>
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                  style={{display:'contents'}}
+                >
+                  <h4>Number of Cashier</h4>
+                  <div className="cardValue">{this.state.totalCashier}</div>
                 </Card>
               </Col>
               <Col>
@@ -949,55 +1031,48 @@ export default class BranchDashboard extends Component {
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
-                >
-                  <h4>Total Cashier</h4>
-                  <div className="cardValue">{this.state.totalCashier}</div>
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col cW="25%">
-              <Card
-                  marginBottom="54px"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Fee Generated</h4>
-                  <div className="cardValue">0</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
                 </Card>
               </Col>
-              <Col cW="25%"> 
+              <Col> 
               <Card
                   marginBottom="54px"
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
                   <h4>Commission Generated</h4>
-                  <div className="cardValue">0</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
                 </Card>
               </Col>
-              <Col cW="25%">
+              <Col>
               <Card
                   marginBottom="54px"
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
+                  style={{display:'contents'}}
                 >
-                  <h4>Pending Requests</h4>
-                  <div className="cardValue">0</div>
-                </Card>
-              </Col>
-              <Col cW="25%">
-              <Card
-                  marginBottom="54px"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
-                >
-                  <h4>Approved Requests</h4>
-                  <div className="cardValue">0</div>
+                  <h4>Authorisation Requests</h4>
+                  <Row>
+                    <Col>
+                      <h5>Approved</h5>
+                      <div className="cardValue">0</div>
+                    </Col>
+                    <Col>
+                      <h5>Declined</h5>
+                      <div className="cardValue">0</div>
+                    </Col>
+                    <Col>
+                      <h5>Pending</h5>
+                      <div className="cardValue">0</div>
+                    </Col>
+                  </Row>
+                  
                 </Card>
               </Col>
             </Row>
@@ -1022,9 +1097,8 @@ export default class BranchDashboard extends Component {
                       <th>Input amount</th>
                       <th>Withdrawal</th>
                       <th>Fee collected</th>
-                      <th>Status</th>
                       <th>Pending Trans. Count</th>
-
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1032,7 +1106,11 @@ export default class BranchDashboard extends Component {
                       ? this.state.cashiers.map(b => {
                         return (
                           <tr key={b._id}>
-                            <td>{b.name}</td>
+                             <td style={{display:"inline-flex"}}>
+                                  <FiberManualRecordIcon  fontSize="small" color={b.is_closed ? "secondary" : "primary"}/>
+
+                                {b.name}
+                              </td>
                             <td className="tac">
 
                               {(
@@ -1059,14 +1137,62 @@ export default class BranchDashboard extends Component {
                               {b.fee_generated.toFixed(2)}
                             </td>
 
-                            <td style={{ color: b.is_closed ? 'red' : 'green' }}>
-                              {b.is_closed ?
-                                "Close"
-                                : "Open"}
-                            </td>
                             <td className="tac bold green">
                               <span onClick={() => this.showPending(b._id)}> {b.pending_trans}</span>
 
+                            </td>
+                            <td className="tac bold green">
+                                <Button
+                                  className="sendMoneyButton"
+                                >
+                                  <A
+                                    href={
+                                      '/branch/' +
+                                      dis.props.match.params.bank +
+                                      '/cashier/' +
+                                      b._id
+                                    }
+                                  >
+                                    View
+                                  </A>
+                              </Button>
+                              <span className="absoluteMiddleRight primary popMenuTrigger">
+                                <i className="material-icons ">more_vert</i>
+                                <div className="popMenu">
+                                  <span onClick={() => dis.showEditPopup(b)}>
+                                    Edit
+                                    </span>
+                                  <span
+                                    onClick={() => dis.showAssignPopup(b)}
+                                  >
+                                    Assign User
+                                    </span>
+                                  {/* {b.is_closed ? (
+                                    <span
+                                      onClick={() => dis.releaseCashier(b._id)}
+                                    >
+                                      Re-open Access
+                                    </span>
+                                  ) : null} */}
+                                  {b.status == -1 ? (
+                                    <span
+                                      onClick={() =>
+                                        dis.blockBranch(b._id, 1)
+                                      }
+                                    >
+                                      Unblock
+                                    </span>
+                                  ) : (
+                                      <span
+                                        onClick={() =>
+                                          dis.blockBranch(b._id, -1)
+                                        }
+                                      >
+                                        Block
+                                      </span>
+                                    )}
+                                </div>
+                              </span>
                             </td>
 
                           </tr>
@@ -1592,10 +1718,10 @@ export default class BranchDashboard extends Component {
                       <TextInput
                         type="text"
                         autoFocus
-                        name="bcode"
+                        name="code"
                         onFocus={inputFocus}
                         onBlur={inputBlur}
-                        value={this.state.bcode}
+                        value={this.state.code}
                         onChange={this.handleInputChange}
                         required
                       />
@@ -1616,103 +1742,72 @@ export default class BranchDashboard extends Component {
                             required
                           />
                         </FormGroup>
+                      </Col>
+                      <Col cW="68%">
                         <FormGroup>
-                          <label>Cashier Code*</label>
+                          <label>To*</label>
                           <TextInput
                             type="text"
                             autoFocus
-                            name="bcode"
+                            title="10 Digit numeric value"
+                            name="working_to"
                             onFocus={inputFocus}
                             onBlur={inputBlur}
-                            value={this.state.bcode}
+                            value={this.state.working_to}
                             onChange={this.handleInputChange}
                             required
                           />
                         </FormGroup>
-                        <label>Working Hours</label>
-                        <Row>
-                          <Col cW="30%" mR="2%">
-                            <FormGroup>
-                              <label>From*</label>
-                              <TextInput
-                                type="text"
-                                autoFocus
-                                name="working_from"
-                                onFocus={inputFocus}
-                                onBlur={inputBlur}
-                                value={this.state.working_from}
-                                onChange={this.handleInputChange}
-                                required
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col cW="68%">
-                            <FormGroup>
-                              <label>To*</label>
-                              <TextInput
-                                type="text"
-                                autoFocus
-                                title="10 Digit numeric value"
-                                name="working_to"
-                                onFocus={inputFocus}
-                                onBlur={inputBlur}
-                                value={this.state.working_to}
-                                onChange={this.handleInputChange}
-                                required
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                        <FormGroup>
-                          <label>Maximum per transaction amount*</label>
-                          <TextInput
-                            type="text"
-                            name="per_trans_amt"
-                            autoFocus
-                            onFocus={inputFocus}
-                            onBlur={inputBlur}
-                            value={this.state.per_trans_amt}
-                            onChange={this.handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                        <FormGroup>
-                          <label>Maximum daily transaction amount*</label>
-                          <TextInput
-                            type="text"
-                            name="max_trans_amt"
-                            onFocus={inputFocus}
-                            onBlur={inputBlur}
-                            autoFocus
-                            value={this.state.max_trans_amt}
-                            onChange={this.handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                        <FormGroup>
-                          <label>Maximum daily transaction count*</label>
-                          <TextInput
-                            type="text"
-                            name="max_trans_count"
-                            onFocus={inputFocus}
-                            onBlur={inputBlur}
-                            value={this.state.max_trans_count}
-                            autoFocus
-                            onChange={this.handleInputChange}
-                            required
-                          />
-                        </FormGroup>
-                        {this.state.editBranchLoading ? (
-                          <Button filledBtn marginTop="50px" disabled>
-                            <Loader />
-                          </Button>
-                        ) : (
-                            <Button filledBtn marginTop="50px">
-                              <span>Update Cashier</span>
-                            </Button>
-                          )}
                       </Col>
                     </Row>
+                    <FormGroup>
+                      <label>Maximum per transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="per_trans_amt"
+                        autoFocus
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.per_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction amount*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_amt"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        autoFocus
+                        value={this.state.max_trans_amt}
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Maximum daily transaction count*</label>
+                      <TextInput
+                        type="text"
+                        name="max_trans_count"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.max_trans_count}
+                        autoFocus
+                        onChange={this.handleInputChange}
+                        required
+                      />
+                    </FormGroup>
+                    {this.state.editBranchLoading ? (
+                      <Button filledBtn marginTop="50px" disabled>
+                        <Loader />
+                      </Button>
+                    ) : (
+                        <Button filledBtn marginTop="50px">
+                          <span>Update Cashier</span>
+                        </Button>
+                      )}
                   </form>
                 </div>
               )}
@@ -2113,7 +2208,69 @@ export default class BranchDashboard extends Component {
 
           </Popup>
         ) : null}
+        {this.state.assignPop ? (
+          <Popup close={this.closePopup.bind(this)} accentedH1>
+            <h1>Assign User</h1>
+            <form action="" method="post" onSubmit={this.assignUser}>
+              <FormGroup>
+                <label>Cashier Name*</label>
+                <TextInput
+                  type="text"
+                  name="name"
+                  onFocus={inputFocus}
+                  onBlur={inputBlur}
+                  value={this.state.name}
+                  readOnly
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <label>Cashier Code*</label>
+                <TextInput
+                  type="text"
+                  name="code"
+                  autoFocus
+                  onFocus={inputFocus}
+                  onBlur={inputBlur}
+                  value={this.state.code}
+                  onChange={this.handleInputChange}
+                  readOnly
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <label>Assign User*</label>
+                <SelectInput
+                  onFocus={inputFocus}
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  onBlur={inputBlur}
+                  value={this.state.bank_user_id}
+                  name="bank_user_id"
+                  placeholder="Assign User*"
+                  required
+                >
+                  <option value="">Select User</option>
+                  {this.state.users.map(function (b) {
+                    return <option value={b._id}>{b.name}</option>;
+                  })}
+                </SelectInput>
+              </FormGroup>
 
+              {this.state.assignLoading ? (
+                <Button filledBtn marginTop="50px" disabled>
+                  <Loader />
+                </Button>
+              ) : (
+                  <Button filledBtn marginTop="50px">
+                    <span>Assign User</span>
+                  </Button>
+                )}
+            </form>
+          </Popup>
+        ) : null}
       </Wrapper>
     );
   }

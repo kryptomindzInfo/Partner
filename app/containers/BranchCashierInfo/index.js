@@ -583,7 +583,7 @@ export default class BranchCashierInfo extends Component {
           <meta charSet="utf-8" />
           <title>Branch | INFRA | E-WALLET</title>
         </Helmet>
-        <BranchHeader active="cashier" middleTitle={this.state.name} page="branch" goto={"/branch/"+this.props.match.params.bank+"/cashiers"} bankName={this.props.match.params.bank} bankLogo={STATIC_URL+logo} />  
+        <BranchHeader active="cashier" middleTitle={this.state.name} page="branch" goto={"/branch/"+this.props.match.params.bank+"/dashboard"} bankName={this.props.match.params.bank} bankLogo={STATIC_URL+logo} />  
         <Container verticalMargin>
           
           <BankSidebarCashier active="info" blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={this.state.name}/>
