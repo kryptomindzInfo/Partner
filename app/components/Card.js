@@ -197,6 +197,7 @@ const Card = styled.div`
     font-size: ${props => props.smallValue ? '20px' : '32px'};
     font-weight: bold;
     color: ${props => props.theme.primary};
+    word-break: initial;
   }
 
  > button, .sendMoneyButton{

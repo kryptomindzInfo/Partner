@@ -756,10 +756,22 @@ export default class BranchDashboard extends Component {
             cashReceived: received,
             cashPaid: paid,
             cashInHand: res.data.cashInHand
-          });
+          },
+          () => {
+            var dis = this;
+            setTimeout(function () {
+              dis.getStats();
+            }, 10000);
+          },
+          );
         }
       })
-      .catch(err => { });
+      .catch(err => {
+        var dis = this;
+        setTimeout(function () {
+          dis.getStats();
+        }, 10000);
+      });
   };
   getBranchByName = () => {
     axios
@@ -833,7 +845,9 @@ export default class BranchDashboard extends Component {
           this.setState({ loading: false, users: res.data.rows });
         }
       })
-      .catch(err => { });
+      .catch(err => {
+        
+      });
   };
 
   componentDidMount() {
@@ -880,7 +894,7 @@ export default class BranchDashboard extends Component {
         <Container verticalMargin>
           <SidebarBranch bankName={this.props.match.params.bank} />
           <Main>
-            <Row>
+          <Row>
               <Col>
                 <Card
                   marginBottom="54px"
@@ -900,14 +914,94 @@ export default class BranchDashboard extends Component {
                   bigPadding
                   smallValue
                 >
-                  <center><h4>Total Cashier</h4></center>
+                  <h4>Opening Balance</h4>
 
-                  <div className="cardValue"><center>{this.state.totalCashier}</center></div>
+                  <div className="cardValue">0</div>
                 </Card>
               </Col>
-              <Col></Col>
-              <Col></Col>
+              <Col>
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Paid in Cash</h4>
+
+                  <div className="cardValue">{this.state.cashPaid}</div>
+                </Card>
+              </Col>
+              <Col>
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash Recieved</h4>
+
+                  <div className="cardValue">{this.state.cashReceived}</div>
+                </Card>
+              </Col>
+              <Col>
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Total Cashier</h4>
+                  <div className="cardValue">{this.state.totalCashier}</div>
+                </Card>
+              </Col>
             </Row>
+            <Row>
+              <Col cW="25%">
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Fee Generated</h4>
+                  <div className="cardValue">0</div>
+                </Card>
+              </Col>
+              <Col cW="25%"> 
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Commission Generated</h4>
+                  <div className="cardValue">0</div>
+                </Card>
+              </Col>
+              <Col cW="25%">
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Pending Requests</h4>
+                  <div className="cardValue">0</div>
+                </Card>
+              </Col>
+              <Col cW="25%">
+              <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Approved Requests</h4>
+                  <div className="cardValue">0</div>
+                </Card>
+              </Col>
+            </Row>
+            
             <Card bigPadding>
               <div className="cardHeader">
                 <div className="cardHeaderLeft">

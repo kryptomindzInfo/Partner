@@ -4,6 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import axios from 'axios';
 import Card from 'components/Card';
+import Button from 'components/Button';
+import Row from 'components/Row';
+import Col from 'components/Col';
 import SendToOperationalPopup from './SendToOperationalPopup';
 import A from 'components/A';
 
@@ -122,13 +125,16 @@ class BranchMasterWallet extends Component {
         <div className="cardValue">
         {this.state.balance ?  `${CURRENCY} ${this.state.balance.toFixed(2)}` : `${CURRENCY} 0`}
         </div>
-        <button
-          onClick={this.handlePopupOpen}
-          className="sendMoneyButton"
-        >
-          <i className="material-icons">send</i>{' '}
-          <FormattedMessage {...messages.sendmoney} />
-        </button>
+        <Row>
+          <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
+            <Button
+              dashBtn
+              onClick={this.handlePopupOpen}
+            >
+              <FormattedMessage {...messages.sendmoney} />
+            </Button>
+          </Col>
+        </Row>
         {this.state.popup ? (
           <SendToOperationalPopup
             close={this.handlePopupClose}
