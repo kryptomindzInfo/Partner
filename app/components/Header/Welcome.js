@@ -110,7 +110,7 @@ class Welcome extends Component {
             ) : this.props.from == 'branch' ? (
               <>
                 <Name>
-                  <span>Agencies:</span> {name}
+                  <span>Agency:</span> {name}
                 </Name>
                 <SubNav className="infraSubNav">
                   {/* { isAdmin ?  */}

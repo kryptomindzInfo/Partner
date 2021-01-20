@@ -973,19 +973,6 @@ export default class BranchDashboard extends Component {
                   smallValue
                   style={{display:'contents'}}
                 >
-                  <h4>Cash in Hand</h4>
-
-                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
-                </Card>
-              </Col>
-              <Col>
-                <Card
-                  marginBottom="54px"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
-                  style={{display:'contents'}}
-                >
                   <h4>Opening Balance</h4>
 
                   <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
@@ -1017,9 +1004,20 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{CURRENCY}: {this.state.cashReceived}</div>
                 </Card>
               </Col>
-            </Row>
-            <Row style={{marginTop:'30px'}}>
-            <Col>
+              <Col>
+                <Card
+                  marginBottom="54px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                  style={{display:'contents'}}
+                >
+                  <h4>Cash in Hand</h4>
+
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                </Card>
+              </Col>
+              <Col>
               <Card
                   marginBottom="54px"
                   buttonMarginTop="32px"
@@ -1031,7 +1029,10 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{this.state.totalCashier}</div>
                 </Card>
               </Col>
-              <Col>
+            </Row>
+            <Row style={{marginTop:'35px',marginBottom:'35px'}}>
+            
+              <Col cW='60%'>
               <Card
                   marginBottom="54px"
                   buttonMarginTop="32px"
@@ -1039,23 +1040,24 @@ export default class BranchDashboard extends Component {
                   smallValue
                   style={{display:'contents'}}
                 >
-                  <h4>Fee Generated</h4>
-                  <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
+                  <h4>Revenue Collected</h4>
+                  <Row>
+                    <Col>
+                      <h5>Fee</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
+                    </Col>
+                    <Col>
+                      <h5>Commission</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
+                    </Col>
+                    <Col>
+                      <h5>Total</h5>
+                      <div className="cardValue">{CURRENCY}: {parseInt(this.state.commissionGenerated, 10)+parseInt(this.state.feeGenerated, 10)}</div>
+                    </Col>
+                  </Row>
                 </Card>
               </Col>
-              <Col> 
-              <Card
-                  marginBottom="54px"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
-                  style={{display:'contents'}}
-                >
-                  <h4>Commission Generated</h4>
-                  <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
-                </Card>
-              </Col>
-              <Col>
+              <Col cW='40%'>
               <Card
                   marginBottom="54px"
                   buttonMarginTop="32px"
@@ -1102,8 +1104,8 @@ export default class BranchDashboard extends Component {
                       <th>Assigned to</th>
                       <th>Input amount</th>
                       <th>Withdrawal</th>
-                      <th>Fee collected</th>
-                      <th>Pending Trans. Count</th>
+                      <th>Revenue Generated</th>
+                      <th>Pending Transaction</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -1140,7 +1142,7 @@ export default class BranchDashboard extends Component {
                               {b.cash_paid.toFixed(2)}
                             </td>
                             <td>
-                              {b.fee_generated.toFixed(2)}
+                            {parseInt(b.fee_generated,10)+parseInt(b.commission_generated,10)}
                             </td>
 
                             <td className="tac bold green">
