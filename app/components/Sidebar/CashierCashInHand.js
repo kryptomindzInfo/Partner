@@ -31,7 +31,7 @@ const cid = localStorage.getItem('cashierId');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
 const cashierName = localStorage.getItem('cashierName');
-const branchId = localStorage.getItem('branchId');
+const branchId = localStorage.getItem('cashirBranch');
 
 class CashierCashInHand extends Component {
   constructor() {
@@ -518,14 +518,14 @@ class CashierCashInHand extends Component {
               onClick={this.showPopupSendMoney}
 
             >
-              <i className="material-icons">send</i> Cashier to Cashier Transfer
+               Cashier to Cashier Transfer
             </Button>
             :
             <Button 
               dashBtn
               disabled
             >
-              <i className="material-icons">send</i> Cashier to Cashier Transfer
+               Cashier to Cashier Transfer
             </Button>
         }
           </Col>

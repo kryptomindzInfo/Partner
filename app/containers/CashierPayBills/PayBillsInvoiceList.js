@@ -127,7 +127,12 @@ const PayBillsInvoiceList = props => {
   
   
   const getInvoiceList = () =>
-    invoiceList.map((invoice,index) => (
+  invoiceList.map((invoice,index) => {
+    var tax = invoice.items.reduce(
+      function(a, b){
+        return a + (b.total_amount-(b.quantity*b.item_desc.unit_price));
+      }, 0);
+    return (
       <tr key={invoice._id} className={ penaltyList[index] > 0 ? 'red' : ''}>
         <td
           className="tac"
@@ -174,7 +179,8 @@ const PayBillsInvoiceList = props => {
             </Col>
           </Row>
         </td>
-        <td className="tac">{invoice.amount}</td>
+        <td className="tac">{invoice.amount-tax}</td>
+        <td className="tac">{tax}</td>
         <td className="tac">{penaltyList[index]}</td>
         <td className="tac">
           {feeList[index] > 0 ? feeList[index].toFixed(2) : 'NA'}
@@ -197,7 +203,8 @@ const PayBillsInvoiceList = props => {
           </div>
         </td>
       </tr>
-    ));
+    );
+  });
 
   const fetchfee = async(penaltylist) => {
     const feelist = invoiceList.map(async (invoice,index) => {
@@ -287,22 +294,25 @@ const PayBillsInvoiceList = props => {
           </div>
         </div>
         <div />
+        {invoiceList && invoiceList.length > 0 ? (
         <Table marginTop="34px" smallTd>
           <thead>
             <tr>
               <th>Number</th>
               <th>Amount</th>
+              <th>Tax</th>
               <th>Penalty</th>
               <th>Fees</th>
-              <th>Amount With Fees</th> 
+              <th>Total Amount</th> 
               <th>Due Date</th>
               <th />
             </tr>
           </thead>
           <tbody>
-            {invoiceList && invoiceList.length > 0 ? getInvoiceList() : null}
+            {getInvoiceList()}
           </tbody>
         </Table>
+        ):<h3 style={{textAlign:'center'}}>No invoices found</h3>}
         <FormGroup>
           {totalAmount > 0 ? (
             <Button onClick={handleMultipleInvoiceSubmit} filledBtn>
