@@ -494,7 +494,7 @@ class CashierTransactionLimit extends Component {
           } else {
             const o = res.data.row;
             if (o.sender_id) {
-              const senderid = JSON.parse(o.sender_id);
+              const senderid = o.sender_id;
               this.setState({
                 sender_id: senderid,
                 senderIdentificationCountry: senderid.country || '',
@@ -503,9 +503,9 @@ class CashierTransactionLimit extends Component {
                 senderIdentificationValidTill: senderid.valid || '',
               });
             }
-            const sender = JSON.parse(o.sender_info);
-            const receiver = JSON.parse(o.receiver_info);
-            const receiverid = JSON.parse(o.receiver_id);
+            const sender = o.sender_info;
+            const receiver = o.receiver_info;
+            const receiverid = o.receiver_id;
 
             o.without_id = o.without_id == 1;
             o.require_otp = o.require_otp == 1;
