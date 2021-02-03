@@ -93,6 +93,9 @@ export default class BankLoginPage extends Component {
             if (res.data.status == 0 && res.data.message === "Incorrect username or password") {
               throw res.data.message;
             }
+            else if (res.data.status == 0 && res.data.message === "Your account has been blocked, pls contact the admin!") {
+                throw res.data.message;
+            }
             else if (!res.data.initial_setup) {
               window.location.href = '/setup';
               console.log(res.data.initial_setup);

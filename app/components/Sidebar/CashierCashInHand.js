@@ -411,7 +411,7 @@ class CashierCashInHand extends Component {
             transactionStarted: res.data.transactionStarted,
             loading: false,
             branch_id: res.data.branchId,
-            balance: res.data.cashInHand,
+            balance: res.data.cashInHand.toFixed(2),
             isClosed: res.data.isClosed
           }, () => {
             var dis = this;
@@ -506,7 +506,7 @@ class CashierCashInHand extends Component {
       <Card marginBottom="54px" buttonMarginTop="32px" bigPadding>
         <h3 style ={{textAlign:'center'}}> Cash in Hand </h3>
         <div style ={{textAlign:'center', fontSize:'20px'}} className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+          {CURRENCY} {this.state.balance}
         </div>
         
          <Row  style={{marginTop:'10px'}}>

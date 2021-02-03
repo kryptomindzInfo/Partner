@@ -131,6 +131,18 @@ class CashierTransactionLimit extends Component {
     });
   };
 
+  handleCheckbox = event => {
+    const { value, name } = event.target;
+    if (value == "true") {
+      var v = false;
+    } else {
+      var v = true;
+    }
+    this.setState({
+      [name]: v,
+    });
+  };
+
   proceed = items => {
     const dis = this;
     for (const key in items) {
@@ -934,8 +946,7 @@ class CashierTransactionLimit extends Component {
               },
               function() {
                 this.success();
-                this.closePopup();
-                this.getStats();
+                this.closeOpenCashierPopup();
               },
             );
           }
