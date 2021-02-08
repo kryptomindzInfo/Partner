@@ -65,6 +65,7 @@ export default class BranchDashboard extends Component {
       otpMobile: mobile,
       feeGenerated: 0,
       openingBalance: 0,
+      pendingtransStatus:'',
       commissionGenerated: 0,
       cashPaid: 0,
       pending: 0,
@@ -141,7 +142,7 @@ export default class BranchDashboard extends Component {
     });
   };
 
-  showPendingDetails = (id, items) => {
+  showPendingDetails = (id, items,type,interbank,status) => {
 
     var dis = this;
     for (var key in items) {
@@ -152,6 +153,11 @@ export default class BranchDashboard extends Component {
         });
 
       }
+      this.setState({
+        type : type,
+        interbank : interbank,
+        pendingtransStatus: status,
+      });
     }
     this.setState({
       selectedId: id,
@@ -1903,7 +1909,7 @@ export default class BranchDashboard extends Component {
                                   className="labelBlue"
                                 >
 
-                                  <span onClick={() => dis.showPendingDetails(b._id, JSON.parse(b.transaction_details))}>
+                                  <span onClick={() => dis.showPendingDetails(b._id, JSON.parse(b.transaction_details),b.trans_type,b.interbank,b.status)}>
                                     Cash sent from{' '}
                                     {b.sender_name}{' '}
                                       to{' '}
@@ -2075,17 +2081,17 @@ export default class BranchDashboard extends Component {
                       </Col>
                     </Row>
                     <Row>
-                      <Col className="popInfoLeft">Date</Col>
-                      <Col className="popInfoRight">
-                        {this.state.dateClaimMoney}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="popInfoLeft">Transaction ID</Col>
-                      <Col className="popInfoRight">
-                        {this.state.transferCode}
-                      </Col>
-                    </Row>
+                            <Col className="popInfoLeft">Transaction Type</Col>
+                            <Col className="popInfoRight">
+                              {this.state.type}
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col className="popInfoLeft">Interbank Transaction ?</Col>
+                            <Col className="popInfoRight">
+                              {this.state.interbank ? "Yes" : "No"}
+                            </Col>
+                          </Row>
                     <Row>
                       <Col className="popInfoLeft">ID required</Col>
                       <Col className="popInfoRight">
@@ -2172,7 +2178,8 @@ export default class BranchDashboard extends Component {
                     </Row>
                   </Col>
                   <Col>
-
+                  {this.state.pendingtransStatus === 0 ? (
+                       
                     <Row>
                       <Col cW="49%" mR="2%">
                         {this.state.claimMoneyLoading ? (
@@ -2201,7 +2208,7 @@ export default class BranchDashboard extends Component {
                           )}
                       </Col>
                     </Row>
-
+                  ): null}
 
                     <br />
                     {/* <p className="note">
