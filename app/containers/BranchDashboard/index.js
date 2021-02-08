@@ -400,7 +400,7 @@ export default class BranchDashboard extends Component {
               },
               function () {
                 this.success();
-                //  this.closePopup();
+                 this.closePopup();
                 this.getCashiers();
               },
             );

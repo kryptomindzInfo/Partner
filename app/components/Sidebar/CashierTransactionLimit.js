@@ -1757,7 +1757,7 @@ class CashierTransactionLimit extends Component {
           </Popup>
         ) : null}
 
-        {this.state.popupSendMoney ? (
+{this.state.popupSendMoney ? (
           <Popup bigBody close={this.closePopupSendMoney.bind(this)} accentedH1>
             {this.state.showSendMoneyOTP ? (
               <div>
@@ -1786,10 +1786,10 @@ class CashierTransactionLimit extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px" marginBottom="50px">
-                      <span>Verify</span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px" marginBottom="50px">
+                        <span>Verify</span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1799,8 +1799,8 @@ class CashierTransactionLimit extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
@@ -1835,10 +1835,10 @@ class CashierTransactionLimit extends Component {
                       <Loader />
                     </Button>
                   ) : (
-                    <Button filledBtn marginTop="50px" marginBottom="50px">
-                      <span>Verify</span>
-                    </Button>
-                  )}
+                      <Button filledBtn marginTop="50px" marginBottom="50px">
+                        <span>Verify</span>
+                      </Button>
+                    )}
 
                   <p className="resend">
                     Wait for <span className="timer">{this.state.timer}</span>{' '}
@@ -1848,8 +1848,8 @@ class CashierTransactionLimit extends Component {
                         Resend
                       </span>
                     ) : (
-                      <span>Resend</span>
-                    )}
+                        <span>Resend</span>
+                      )}
                   </p>
                 </form>
               </div>
@@ -1876,15 +1876,15 @@ class CashierTransactionLimit extends Component {
                         <Loader />
                       </Button>
                     ) : (
-                      <Button
-                        filledBtn
-                        marginTop="50px"
-                        marginBottom="50px"
-                        onClick={this.confirmPending}
-                      >
-                        <span>Yes</span>
-                      </Button>
-                    )}
+                        <Button
+                          filledBtn
+                          marginTop="50px"
+                          marginBottom="50px"
+                          onClick={this.confirmPending}
+                        >
+                          <span>Yes</span>
+                        </Button>
+                      )}
                   </Col>
                   <Col cW="49%">
                     <Button
@@ -1900,1010 +1900,1023 @@ class CashierTransactionLimit extends Component {
                 </Row>
               </div>
             ) : (
-              <div>
-                 <h1>{this.state.pendingTransType}</h1>
-                <form action="" method="post" onSubmit={(event) => this.proceedTransaction(event)}>
-                  {this.state.proceed ? (
                     <div>
-                      <Container>
-                        <Row vAlign="flex-start">
-                          <Col sm="12" md="4">
-                            <div
-                              style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                padding: '13px 0px',
-                                color: '#417505',
-                              }}
-                            >
-                              Sender's Info
+                      {this.state.proceed ? (
+                        <div>
+                        <h1>{this.state.pendingTransType}</h1>
+                        <form action="" method="post" onSubmit={(event) => this.proceedTransaction(event)}>                       
+                          <div>
+                            <Container>
+                              <Row vAlign="flex-start">
+                                <Col sm="12" md="4">
+                                  <div
+                                    style={{
+                                      fontSize: '24px',
+                                      fontWeight: 'bold',
+                                      padding: '13px 0px',
+                                      color: '#417505',
+                                    }}
+                                  >
+                                    Sender's Info
                             </div>
-                            <Row>
-                              <Col className="popInfoLeft">Mobile Number</Col>
-                              <Col className="popInfoRight">
-                                {this.state.mobile}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Given Name</Col>
-                              <Col className="popInfoRight">
-                                {this.state.givenname}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Family Name</Col>
-                              <Col className="popInfoRight">
-                                {this.state.familyname}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Address</Col>
-                              <Col className="popInfoRight">
-                                {this.state.address1}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">State</Col>
-                              <Col className="popInfoRight">
-                                {this.state.state}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Zip Code</Col>
-                              <Col className="popInfoRight">
-                                {this.state.zip}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Country</Col>
-                              <Col className="popInfoRight">
-                                {this.state.country}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Email ID</Col>
-                              <Col className="popInfoRight">
-                                {this.state.email}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Notes</Col>
-                              <Col className="popInfoRight">
-                                {this.state.note}
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col sm="12" md="4">
-                            <div
-                              style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                padding: '13px 0px',
-                                color: '#417505',
-                              }}
-                            >
-                              Receiver's Info
+                                  <Row>
+                                    <Col className="popInfoLeft">Mobile Number</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.mobile}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Given Name</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.givenname}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Family Name</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.familyname}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Address</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.address1}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">State</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.state}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Zip Code</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.zip}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Country</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.country}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Email ID</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.email}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Notes</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.note}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col sm="12" md="4">
+                                  <div
+                                    style={{
+                                      fontSize: '24px',
+                                      fontWeight: 'bold',
+                                      padding: '13px 0px',
+                                      color: '#417505',
+                                    }}
+                                  >
+                                    Receiver's Info
                             </div>
-                            <Row>
-                              <Col className="popInfoLeft">Mobile Number</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverMobile}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Given Name</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverGivenName}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Family Name</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverFamilyName}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Country</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverCountry}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Email ID</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverEmail}
-                              </Col>
-                            </Row>
-                            <Row /> <Row /> <Row />
-                          </Col>
-                          <Col sm="12" md="4">
-                            <div
-                              style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                padding: '13px 0px',
-                                color: '#417505',
-                              }}
-                            >
-                              &nbsp;
+                                  <Row>
+                                    <Col className="popInfoLeft">Mobile Number</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverMobile}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Given Name</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverGivenName}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Family Name</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverFamilyName}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Country</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverCountry}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Email ID</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverEmail}
+                                    </Col>
+                                  </Row>
+                                  <Row /> <Row /> <Row />
+                                </Col>
+                                <Col sm="12" md="4">
+                                  <div
+                                    style={{
+                                      fontSize: '24px',
+                                      fontWeight: 'bold',
+                                      padding: '13px 0px',
+                                      color: '#417505',
+                                    }}
+                                  >
+                                    &nbsp;
                             </div>
-                            <Row>
-                              <Col className="popInfoLeft">Amount</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverIdentificationAmount}
-                              </Col>
-                            </Row>
-                            <Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Amount</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverIdentificationAmount}
+                                    </Col>
+                                  </Row>
+                                  <Row>
                                     <Col className="popInfoLeft">Interbank Transaction</Col>
                                     <Col className="popInfoRight">
                                       {this.state.interbank ? "Yes" : "No"}
                                     </Col>
                                   </Row>
-                            <Row>
-                              <Col className="popInfoLeft">ID required</Col>
-                              <Col className="popInfoRight">
-                                {this.state.withoutID ? 'No' : 'Yes'}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">OTP required</Col>
-                              <Col className="popInfoRight">
-                                {this.state.requireOTP ? 'Yes' : 'No'}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row vAlign="flex-start">
-                          <Col>
-                            <div
-                              style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                padding: '13px 0px',
-                              }}
-                            >
-                              Sender's Identification
+                                  {/* <Row>
+                                    <Col className="popInfoLeft">Transaction ID</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.transferCode}
+                                    </Col>
+                                  </Row> */}
+                                  <Row>
+                                    <Col className="popInfoLeft">ID required</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.withoutID ? 'No' : 'Yes'}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">OTP required</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.requireOTP ? 'Yes' : 'No'}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                              <Row vAlign="flex-start">
+                                <Col>
+                                  <div
+                                    style={{
+                                      fontSize: '24px',
+                                      fontWeight: 'bold',
+                                      padding: '13px 0px',
+                                    }}
+                                  >
+                                    Sender's Identification
                             </div>
-                            <Row>
-                              <Col className="popInfoLeft">Country</Col>
-                              <Col className="popInfoRight">
-                                {this.state.senderIdentificationCountry}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Type</Col>
-                              <Col className="popInfoRight">
-                                {this.state.senderIdentificationType}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Number</Col>
-                              <Col className="popInfoRight">
-                                {this.state.senderIdentificationNumber}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Valid till</Col>
-                              <Col className="popInfoRight">
-                                {this.state.senderIdentificationValidTill}
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col>
-                            <div
-                              style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                padding: '13px 0px',
-                              }}
-                            >
-                              Receiver's Identification
+                                  <Row>
+                                    <Col className="popInfoLeft">Country</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.senderIdentificationCountry}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Type</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.senderIdentificationType}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Number</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.senderIdentificationNumber}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Valid till</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.senderIdentificationValidTill}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col>
+                                  <div
+                                    style={{
+                                      fontSize: '24px',
+                                      fontWeight: 'bold',
+                                      padding: '13px 0px',
+                                    }}
+                                  >
+                                    Receiver's Identification
                             </div>
-                            <Row>
-                              <Col className="popInfoLeft">Country</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverIdentificationCountry}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Type</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverIdentificationType}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Number</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverIdentificationNumber}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Valid till</Col>
-                              <Col className="popInfoRight">
-                                {this.state.receiverIdentificationValidTill}
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col>
-                            {this.state.claimMoneyLoading ? (
-                              <Button filledBtn marginTop="20px" disabled>
-                                <Loader />
-                              </Button>
-                            ) : (
-                              <Button filledBtn marginTop="20px">
-                                <span>
-                                  Proceed
+                                  <Row>
+                                    <Col className="popInfoLeft">Country</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverIdentificationCountry}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Type</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverIdentificationType}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Number</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverIdentificationNumber}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="popInfoLeft">Valid till</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.receiverIdentificationValidTill}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col>
+                                  {this.state.claimMoneyLoading ? (
+                                    <Button filledBtn marginTop="20px" disabled>
+                                      <Loader />
+                                    </Button>
+                                  ) : (
+                                      <Button filledBtn marginTop="20px">
+                                        <span>
+                                          Proceed
                                   {/* <FormattedMessage {...messages.addbank} /> */}
-                                </span>
-                              </Button>
-                            )}
+                                        </span>
+                                      </Button>
+                                    )}
 
-                            <br />
-                            {/* <p className="note">
+                                  <br />
+                                  {/* <p className="note">
                       <span style={{ color: 'red' }}>* </span>
                       Total fee $200 will be charged
                     </p> */}
-                          </Col>
-                        </Row>
-                      </Container>
-                    </div>
-                  ) : (
-                    <div style={{ width: '100%', height: '100%' }}>
-                      <CashierPopupToggle
-                        handleToggleChange={value =>
-                          this.handleToggleChange(value)
-                        }
-                      />
-                      {this.state.isWallet ? (
-                        <Blur isValidFee={this.state.isValidFee}>
-                          <CashierToWalletForm
-                            isValidFee={this.state.isValidFee}
-                            onClose={() => this.closePopupSendMoney()}
-                            formValues={values =>
-                              this.setToWalletFormValues(values)
-                            }
-                          />
-                        </Blur>
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        </form>
+                        </div>
                       ) : (
-                        <Blur isValidFee={this.state.isValidFee}>
-                          <Container>
-                            <Row>
-                              <Col sm="12" md="5" cW="49%">
-                                <div
-                                  style={{
-                                    fontSize: '24px',
-                                    fontWeight: 'bold',
-                                    padding: '13px 0px',
-                                    color: '#417505',
-                                  }}
-                                >
-                                  Sender's Info
-                                </div>
-
-                                <Row>
-                                  <Col cW="20%" mR="2%">
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="ccode"
-                                        readOnly
-                                        placeholder="+221"
-                                        value={this.state.ccode}
-                                        disabled
-                                        onChange={this.handleInputChange}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col cW="78%">
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Mobile"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="mobile"
-                                        onBlur={() =>
-                                          getSenderUser(this.state.mobile)
-                                        }
-                                        value={this.state.mobile}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Given Name"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="givenname"
-                                        value={this.state.givenname}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Family Name"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="familyname"
-                                        title="Minimum 3 characters"
-                                        value={this.state.familyname}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-
-                                <FormGroup>
-                                  <TextField
-                                    size="small"
-                                    InputLabelProps={{
-                                      shrink: true,
-                                    }}
-                                    label="Address"
-                                    style={{
-                                      marginTop: '6px',
-                                      marginBottom: '6px',
-                                    }}
-                                    fullWidth
-                                    variant="outlined"
-                                    type="text"
-                                    name="address1"
-                                    value={this.state.address1}
-                                    onChange={this.handleInputChange}
-                                    required
+                        <div>
+                        <h1>Send Money</h1>
+                        <form action="" method="post" onSubmit={this.sendMoney}>
+                            <div style={{ width: '100%', height: '100%' }}>
+                              <CashierPopupToggle
+                                handleToggleChange={value =>
+                                  this.handleToggleChange(value)
+                                }
+                              />
+                              {this.state.isWallet ? (
+                                <Blur isValidFee={this.state.isValidFee}>
+                                  <CashierToWalletForm
+                                    isValidFee={this.state.isValidFee}
+                                    onClose={() => this.closePopupSendMoney()}
+                                    formValues={values =>
+                                      this.setToWalletFormValues(values)
+                                    }
                                   />
-                                </FormGroup>
-
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="State"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="state"
-                                        value={this.state.state}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Zip"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="zip"
-                                        value={this.state.zip}
-                                        onChange={this.handleInputChange}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <CountrySelectBox
-                                        type="text"
-                                        name="country"
-                                        value={this.state.country}
-                                        onChange={this.countryChange}
-                                        data-change="ccode"
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Email"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="email"
-                                        name="email"
-                                        onInput={e =>
-                                          e.target.setCustomValidity('')
-                                        }
-                                        onInvalid={e =>
-                                          e.target.setCustomValidity(
-                                            'Enter a valid email address',
-                                          )
-                                        }
-                                        value={this.state.email}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  {/* <form.Group controlId="exampleForm.ControlTextarea1">
-                        <form.Label>Example textarea</form.Label>
-                        <form.Control as="textarea" rows="3" />
-                      </form.Group> */}
-                                </Row>
-                                <FormGroup>
-                                  <TextField
-                                    size="small"
-                                    InputLabelProps={{
-                                      shrink: true,
-                                    }}
-                                    label="Note"
-                                    style={{
-                                      marginTop: '6px',
-                                      marginBottom: '6px',
-                                    }}
-                                    fullWidth
-                                    variant="outlined"
-                                    multiline
-                                    rows="4"
-                                    type="text"
-                                    name="note"
-                                    value={this.state.note}
-                                    onChange={this.handleInputChange}
-                                  />
-                                </FormGroup>
-                                <div
-                                  style={{
-                                    fontSize: '24px',
-                                    fontWeight: 'bold',
-                                    padding: '10px 0px',
-                                  }}
-                                >
-                                  Sender's Identification
-                                </div>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <CountrySelectBox
-                                        type="text"
-                                        name="senderIdentificationCountry"
-                                        value={
-                                          this.state.senderIdentificationCountry
-                                        }
-                                        onChange={this.countryChange}
-                                        data-change="ccc"
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <TypeSelectBox
-                                        type="text"
-                                        name="senderIdentificationType"
-                                        value={
-                                          this.state.senderIdentificationType
-                                        }
-                                        onChange={this.typeChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Id Number"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="senderIdentificationNumber"
-                                        value={
-                                          this.state.senderIdentificationNumber
-                                        }
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <MuiPickersUtilsProvider
-                                        utils={DateFnsUtils}
-                                      >
-                                        <KeyboardDatePicker
-                                          id="date-picker-dialog"
-                                          label="Valid Till"
-                                          size="small"
-                                          fullWidth
-                                          minDate= {date}
-                                          inputVariant="outlined"
-                                          format="dd/MM/yyyy"
-                                          required
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
-                                          value={
-                                            this.state
-                                              .senderIdentificationValidTill
-                                          }
-                                          onChange={date =>
-                                            this.handleDateChange(
-                                              date,
-                                              'senderIdentificationValidTill',
-                                            )
-                                          }
-                                          KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                          }}
-                                        />
-                                      </MuiPickersUtilsProvider>
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col sm="12" md="2" cW="2%" />
-                              <Col sm="12" md="5" cW="49%">
-                                <div
-                                  style={{
-                                    fontSize: '24px',
-                                    fontWeight: 'bold',
-                                    padding: '13px 0px',
-                                    color: '#417505',
-                                  }}
-                                >
-                                  Receiver's Info
-                                </div>
-                                <Row>
-                                  <Col cW="20%" mR="2%">
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        placeholder="+221"
-                                        name="receiverccode"
-                                        readOnly
-                                        value={this.state.receiverccode}
-                                        onChange={this.handleInputChange}
-                                        disabled
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col cW="78%">
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Mobile"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        title="10 Digit numeric value"
-                                        name="receiverMobile"
-                                        value={this.state.receiverMobile}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Given Name"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="receiverGivenName"
-                                        title="Minimum 3 characters"
-                                        value={this.state.receiverGivenName}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Family Name"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="text"
-                                        name="receiverFamilyName"
-                                        title="Minimum 3 characters"
-                                        value={this.state.receiverFamilyName}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <CountrySelectBox
-                                        type="text"
-                                        name="receiverCountry"
-                                        value={this.state.receiverCountry}
-                                        onChange={this.countryChange}
-                                        data-change="receiverccode"
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-
-                                  <Col>
-                                    <FormGroup>
-                                      <TextField
-                                        size="small"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        label="Email"
-                                        style={{
-                                          marginTop: '6px',
-                                          marginBottom: '6px',
-                                        }}
-                                        fullWidth
-                                        variant="outlined"
-                                        type="email"
-                                        name="receiverEmail"
-                                        onInput={e =>
-                                          e.target.setCustomValidity('')
-                                        }
-                                        onInvalid={e =>
-                                          e.target.setCustomValidity(
-                                            'Enter a valid email address',
-                                          )
-                                        }
-                                        value={this.state.receiverEmail}
-                                        onChange={this.handleInputChange}
-                                        required
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  {/* <form.Group controlId="exampleForm.ControlTextarea1">
-                        <form.Label>Example textarea</form.Label>
-                        <form.Control as="textarea" rows="3" />
-                      </form.Group> */}
-                                </Row>
-                                <Label mT="20px">
-                                  <input
-                                    type="checkbox"
-                                    onChange={this.toggleIdentificationBlock}
-                                    value="1"
-                                    checked={this.state.withoutID}
-                                  />{' '}
-                                  Pay without requesting physical id
-                                  <input
-                                    style={{ marginLeft: '20px' }}
-                                    type="checkbox"
-                                    onChange={this.checkboxChange}
-                                    value="1"
-                                    checked={this.state.requireOTP}
-                                  />{' '}
-                                  Require OTP
-                                </Label>
-                                {this.state.withoutID ? null : (
-                                  <div>
-                                    <div
-                                      style={{
-                                        fontSize: '24px',
-                                        fontWeight: 'bold',
-                                        padding: '13px 0px',
-                                      }}
-                                    >
-                                      Receiver's Identification
-                                    </div>
-                                    <Row>
-                                      <Col>
-                                        <FormGroup>
-                                          <CountrySelectBox
-                                            type="text"
-                                            name="receiverIdentificationCountry"
-                                            value={
-                                              this.state
-                                                .receiverIdentificationCountry
-                                            }
-                                            onChange={this.countryChange}
-                                            data-change="ccc"
-                                            required
-                                          />
-                                        </FormGroup>
-                                      </Col>
-                                      <Col>
-                                        <FormGroup>
-                                          <TypeSelectBox
-                                            type="text"
-                                            name="receiverIdentificationType"
-                                            value={
-                                              this.state
-                                                .receiverIdentificationType
-                                            }
-                                            onChange={this.typeChange}
-                                            required
-                                          />
-                                        </FormGroup>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col>
-                                        <FormGroup>
-                                          <TextField
-                                            size="small"
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                            label="Id Number"
+                                </Blur>
+                              ) : (
+                                  <Blur isValidFee={this.state.isValidFee}>
+                                    <Container>
+                                      <Row>
+                                        <Col sm="12" md="5" cW="49%">
+                                          <div
                                             style={{
-                                              marginTop: '6px',
-                                              marginBottom: '6px',
+                                              fontSize: '24px',
+                                              fontWeight: 'bold',
+                                              padding: '13px 0px',
+                                              color: '#417505',
                                             }}
-                                            fullWidth
-                                            variant="outlined"
-                                            type="text"
-                                            name="receiverIdentificationNumber"
-                                            value={
-                                              this.state
-                                                .receiverIdentificationNumber
-                                            }
-                                            onChange={this.handleInputChange}
-                                            required
-                                          />
-                                        </FormGroup>
-                                      </Col>
-                                      <Col>
-                                        <FormGroup>
-                                          <MuiPickersUtilsProvider
-                                            utils={DateFnsUtils}
                                           >
-                                            <KeyboardDatePicker
-                                              id="date-picker-dialog"
-                                              label="Valid Till"
+                                            Sender's Info
+                                </div>
+
+                                          <Row>
+                                            <Col cW="20%" mR="2%">
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="ccode"
+                                                  readOnly
+                                                  placeholder="+221"
+                                                  value={this.state.ccode}
+                                                  disabled
+                                                  onChange={this.handleInputChange}
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col cW="78%">
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Mobile"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="mobile"
+                                                  onBlur={() =>
+                                                    getSenderUser(this.state.mobile)
+                                                  }
+                                                  value={this.state.mobile}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Given Name"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="givenname"
+                                                  value={this.state.givenname}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Family Name"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="familyname"
+                                                  title="Minimum 3 characters"
+                                                  value={this.state.familyname}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+
+                                          <FormGroup>
+                                            <TextField
                                               size="small"
-                                              fullWidth
-                                              minDate= {date}
-                                              inputVariant="outlined"
-                                              format="dd/MM/yyyy"
-                                              required
                                               InputLabelProps={{
                                                 shrink: true,
                                               }}
-                                              value={
-                                                this.state
-                                                  .receiverIdentificationValidTill
-                                              }
-                                              onChange={date =>
-                                                this.handleDateChange(
-                                                  date,
-                                                  'receiverIdentificationValidTill',
-                                                )
-                                              }
-                                              KeyboardButtonProps={{
-                                                'aria-label': 'change date',
+                                              label="Address"
+                                              style={{
+                                                marginTop: '6px',
+                                                marginBottom: '6px',
                                               }}
+                                              fullWidth
+                                              variant="outlined"
+                                              type="text"
+                                              name="address1"
+                                              value={this.state.address1}
+                                              onChange={this.handleInputChange}
+                                              required
                                             />
-                                          </MuiPickersUtilsProvider>
-                                        </FormGroup>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                )}
-                                <FormGroup>
-                                  <TextField
-                                    size="small"
-                                    InputLabelProps={{
-                                      shrink: true,
-                                    }}
-                                    label="Amount"
-                                    style={{
-                                      marginTop: '6px',
-                                      marginBottom: '6px',
-                                    }}
-                                    fullWidth
-                                    variant="outlined"
-                                    type="number"
-                                    //
-                                    name="receiverIdentificationAmount"
-                                    value={
-                                      this.state.receiverIdentificationAmount
-                                    }
-                                    onChange={event => {
-                                      this.setState({
-                                        receiverIdentificationAmount:
-                                          event.target.value,
-                                      });
-                                    }}
-                                    onBlur={this.amountChange}
-                                    required
-                                  />
-                                </FormGroup>
-                                <div>
-                                  <FormControlLabel
-                                    control={
-                                      <MuiCheckbox
-                                        checked={!this.state.isInclusive}
-                                        onChange={event =>
-                                          this.handleFeeTypeChange(event)
-                                        }
-                                        name="isInclusive"
-                                        color="primary"
-                                      />
-                                    }
-                                    label="Sender pays transaction fees"
-                                  />
+                                          </FormGroup>
+
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="State"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="state"
+                                                  value={this.state.state}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Zip"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="zip"
+                                                  value={this.state.zip}
+                                                  onChange={this.handleInputChange}
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <CountrySelectBox
+                                                  type="text"
+                                                  name="country"
+                                                  value={this.state.country}
+                                                  onChange={this.countryChange}
+                                                  data-change="ccode"
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Email"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="email"
+                                                  name="email"
+                                                  onInput={e =>
+                                                    e.target.setCustomValidity('')
+                                                  }
+                                                  onInvalid={e =>
+                                                    e.target.setCustomValidity(
+                                                      'Enter a valid email address',
+                                                    )
+                                                  }
+                                                  value={this.state.email}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            {/* <form.Group controlId="exampleForm.ControlTextarea1">
+                        <form.Label>Example textarea</form.Label>
+                        <form.Control as="textarea" rows="3" />
+                      </form.Group> */}
+                                          </Row>
+                                          <FormGroup>
+                                            <TextField
+                                              size="small"
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                              label="Note"
+                                              style={{
+                                                marginTop: '6px',
+                                                marginBottom: '6px',
+                                              }}
+                                              fullWidth
+                                              variant="outlined"
+                                              multiline
+                                              rows="4"
+                                              type="text"
+                                              name="note"
+                                              value={this.state.note}
+                                              onChange={this.handleInputChange}
+                                            />
+                                          </FormGroup>
+                                          <div
+                                            style={{
+                                              fontSize: '24px',
+                                              fontWeight: 'bold',
+                                              padding: '10px 0px',
+                                            }}
+                                          >
+                                            Sender's Identification
                                 </div>
-                                <div>
-                                  <FormControlLabel
-                                    control={
-                                      <MuiCheckbox
-                                        checked={this.state.interbank}
-                                        onChange={event =>
-                                          this.handleBankingTypeChange(event)
-                                        }
-                                        name="interbank"
-                                        color="primary"
-                                      />
-                                    }
-                                    label="Receiver can recieve from any bank"
-                                  />
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <CountrySelectBox
+                                                  type="text"
+                                                  name="senderIdentificationCountry"
+                                                  value={
+                                                    this.state.senderIdentificationCountry
+                                                  }
+                                                  onChange={this.countryChange}
+                                                  data-change="ccc"
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col>
+                                              <FormGroup>
+                                                <TypeSelectBox
+                                                  type="text"
+                                                  name="senderIdentificationType"
+                                                  value={
+                                                    this.state.senderIdentificationType
+                                                  }
+                                                  onChange={this.typeChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Id Number"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="senderIdentificationNumber"
+                                                  value={
+                                                    this.state.senderIdentificationNumber
+                                                  }
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col>
+                                              <FormGroup>
+                                                <MuiPickersUtilsProvider
+                                                  utils={DateFnsUtils}
+                                                >
+                                                  <KeyboardDatePicker
+                                                    id="date-picker-dialog"
+                                                    label="Valid Till"
+                                                    size="small"
+                                                    minDate={date}
+                                                    fullWidth
+                                                    inputVariant="outlined"
+                                                    format="dd/MM/yyyy"
+                                                    required
+                                                    InputLabelProps={{
+                                                      shrink: true,
+                                                    }}
+                                                    value={
+                                                      this.state
+                                                        .senderIdentificationValidTill
+                                                    }
+                                                    onChange={date =>
+                                                      this.handleDateChange(
+                                                        date,
+                                                        'senderIdentificationValidTill',
+                                                      )
+                                                    }
+                                                    KeyboardButtonProps={{
+                                                      'aria-label': 'change date',
+                                                    }}
+                                                  />
+                                                </MuiPickersUtilsProvider>
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col sm="12" md="2" cW="2%" />
+                                        <Col sm="12" md="5" cW="49%">
+                                          <div
+                                            style={{
+                                              fontSize: '24px',
+                                              fontWeight: 'bold',
+                                              padding: '13px 0px',
+                                              color: '#417505',
+                                            }}
+                                          >
+                                            Receiver's Info
                                 </div>
-                                <Typography
-                                  style={{
-                                    color: 'rgb(53, 153, 51)',
-                                    fontSize: '14px',
-                                  }}
-                                >
-                                  {CURRENCY} {this.state.livefee} will be
+                                          <Row>
+                                            <Col cW="20%" mR="2%">
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  placeholder="+221"
+                                                  name="receiverccode"
+                                                  readOnly
+                                                  value={this.state.receiverccode}
+                                                  onChange={this.handleInputChange}
+                                                  disabled
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col cW="78%">
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Mobile"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  title="10 Digit numeric value"
+                                                  name="receiverMobile"
+                                                  value={this.state.receiverMobile}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Given Name"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="receiverGivenName"
+                                                  title="Minimum 3 characters"
+                                                  value={this.state.receiverGivenName}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Family Name"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="text"
+                                                  name="receiverFamilyName"
+                                                  title="Minimum 3 characters"
+                                                  value={this.state.receiverFamilyName}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col>
+                                              <FormGroup>
+                                                <CountrySelectBox
+                                                  type="text"
+                                                  name="receiverCountry"
+                                                  value={this.state.receiverCountry}
+                                                  onChange={this.countryChange}
+                                                  data-change="receiverccode"
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+
+                                            <Col>
+                                              <FormGroup>
+                                                <TextField
+                                                  size="small"
+                                                  InputLabelProps={{
+                                                    shrink: true,
+                                                  }}
+                                                  label="Email"
+                                                  style={{
+                                                    marginTop: '6px',
+                                                    marginBottom: '6px',
+                                                  }}
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type="email"
+                                                  name="receiverEmail"
+                                                  onInput={e =>
+                                                    e.target.setCustomValidity('')
+                                                  }
+                                                  onInvalid={e =>
+                                                    e.target.setCustomValidity(
+                                                      'Enter a valid email address',
+                                                    )
+                                                  }
+                                                  value={this.state.receiverEmail}
+                                                  onChange={this.handleInputChange}
+                                                  required
+                                                />
+                                              </FormGroup>
+                                            </Col>
+                                            {/* <form.Group controlId="exampleForm.ControlTextarea1">
+                        <form.Label>Example textarea</form.Label>
+                        <form.Control as="textarea" rows="3" />
+                      </form.Group> */}
+                                          </Row>
+                                          <Label mT="20px">
+                                            <input
+                                              type="checkbox"
+                                              onChange={this.toggleIdentificationBlock}
+                                              value="1"
+                                              checked={this.state.withoutID}
+                                            />{' '}
+                                  Pay without requesting physical id
+                                  <input
+                                              style={{ marginLeft: '20px' }}
+                                              type="checkbox"
+                                              onChange={this.checkboxChange}
+                                              value="1"
+                                              checked={this.state.requireOTP}
+                                            />{' '}
+                                  Require OTP
+                                </Label>
+                                          {this.state.withoutID ? null : (
+                                            <div>
+                                              <div
+                                                style={{
+                                                  fontSize: '24px',
+                                                  fontWeight: 'bold',
+                                                  padding: '13px 0px',
+                                                }}
+                                              >
+                                                Receiver's Identification
+                                    </div>
+                                              <Row>
+                                                <Col>
+                                                  <FormGroup>
+                                                    <CountrySelectBox
+                                                      type="text"
+                                                      name="receiverIdentificationCountry"
+                                                      value={
+                                                        this.state
+                                                          .receiverIdentificationCountry
+                                                      }
+                                                      onChange={this.countryChange}
+                                                      data-change="ccc"
+                                                      required
+                                                    />
+                                                  </FormGroup>
+                                                </Col>
+                                                <Col>
+                                                  <FormGroup>
+                                                    <TypeSelectBox
+                                                      type="text"
+                                                      name="receiverIdentificationType"
+                                                      value={
+                                                        this.state
+                                                          .receiverIdentificationType
+                                                      }
+                                                      onChange={this.typeChange}
+                                                      required
+                                                    />
+                                                  </FormGroup>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col>
+                                                  <FormGroup>
+                                                    <TextField
+                                                      size="small"
+                                                      InputLabelProps={{
+                                                        shrink: true,
+                                                      }}
+                                                      label="Id Number"
+                                                      style={{
+                                                        marginTop: '6px',
+                                                        marginBottom: '6px',
+                                                      }}
+                                                      fullWidth
+                                                      variant="outlined"
+                                                      type="text"
+                                                      name="receiverIdentificationNumber"
+                                                      value={
+                                                        this.state
+                                                          .receiverIdentificationNumber
+                                                      }
+                                                      onChange={this.handleInputChange}
+                                                      required
+                                                    />
+                                                  </FormGroup>
+                                                </Col>
+                                                <Col>
+                                                  <FormGroup>
+                                                    <MuiPickersUtilsProvider
+                                                      utils={DateFnsUtils}
+                                                    >
+                                                      <KeyboardDatePicker
+                                                        id="date-picker-dialog"
+                                                        label="Valid Till"
+                                                        size="small"
+                                                        fullWidth
+                                                        inputVariant="outlined"
+                                                        format="dd/MM/yyyy"
+                                                        minDate={date}
+                                                        required
+                                                        InputLabelProps={{
+                                                          shrink: true,
+                                                        }}
+                                                        value={
+                                                          this.state
+                                                            .receiverIdentificationValidTill
+                                                        }
+                                                        onChange={date =>
+                                                          this.handleDateChange(
+                                                            date,
+                                                            'receiverIdentificationValidTill',
+                                                          )
+                                                        }
+                                                        KeyboardButtonProps={{
+                                                          'aria-label': 'change date',
+                                                        }}
+                                                      />
+                                                    </MuiPickersUtilsProvider>
+                                                  </FormGroup>
+                                                </Col>
+                                              </Row>
+                                            </div>
+                                          )}
+                                          <FormGroup>
+                                            <TextField
+                                              size="small"
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                              label="Amount"
+                                              style={{
+                                                marginTop: '6px',
+                                                marginBottom: '6px',
+                                              }}
+                                              fullWidth
+                                              variant="outlined"
+                                              type="number"
+                                              //
+                                              name="receiverIdentificationAmount"
+                                              value={
+                                                this.state.receiverIdentificationAmount
+                                              }
+                                              onChange={event => {
+                                                this.setState({
+                                                  receiverIdentificationAmount:
+                                                    event.target.value,
+                                                });
+                                              }}
+                                              onBlur={this.amountChange}
+                                              required
+                                            />
+                                          </FormGroup>
+                                          <div>
+                                            <FormControlLabel
+                                              control={
+                                                <MuiCheckbox
+                                                  checked={!this.state.isInclusive}
+                                                  onChange={event =>
+                                                    this.handleFeeTypeChange(event)
+                                                  }
+                                                  name="isInclusive"
+                                                  color="primary"
+                                                />
+                                              }
+                                              label="Sender pays transaction fees"
+                                            />
+                                          </div>
+                                          <div>
+                                            <FormControlLabel
+                                              control={
+                                                <MuiCheckbox
+                                                  checked={this.state.interbank}
+                                                  onChange={event =>
+                                                    this.handleBankingTypeChange(event)
+                                                  }
+                                                  name="interbank"
+                                                  color="primary"
+                                                />
+                                              }
+                                              label="Receiver can recieve from any bank"
+                                            />
+                                          </div>
+                                          <Typography
+                                            style={{
+                                              color: 'rgb(53, 153, 51)',
+                                              fontSize: '14px',
+                                            }}
+                                          >
+                                            {CURRENCY} {this.state.livefee} will be
                                   charged as fee and {CURRENCY}{' '}
-                                  {this.state.isInclusive
-                                    ? this.state.receiverIdentificationAmount
-                                      ? this.state
-                                        .receiverIdentificationAmount -
-                                        this.state.livefee
-                                      : '0'
-                                    : this.state.receiverIdentificationAmount
-                                    ? this.state.receiverIdentificationAmount
-                                    : '0'}{' '}
+                                            {this.state.isInclusive
+                                              ? this.state.receiverIdentificationAmount
+                                                ? this.state
+                                                  .receiverIdentificationAmount -
+                                                this.state.livefee
+                                                : '0'
+                                              : this.state.receiverIdentificationAmount
+                                                ? this.state.receiverIdentificationAmount
+                                                : '0'}{' '}
                                   will be sent to the receiver
                                 </Typography>
-                                <Button filledBtn marginTop="20px">
-                                  <span>
-                                    <Typography variant="h6">
-                                      {this.state.receiverIdentificationAmount
-                                        ? 'Collect '
-                                        : ''}
-                                      {this.state.receiverIdentificationAmount
-                                        ? this.state.isInclusive
-                                          ? `${
-                                              this.state
-                                                .receiverIdentificationAmount
-                                            } and `
-                                          : `${parseFloat(
-                                            this.state
-                                              .receiverIdentificationAmount,
-                                          ) +
-                                              parseFloat(
-                                                this.state.livefee,
-                                              )} and `
-                                        : ''}
+                                          <Button filledBtn marginTop="20px">
+                                            <span>
+                                              <Typography variant="h6">
+                                                {this.state.receiverIdentificationAmount
+                                                  ? 'Collect '
+                                                  : ''}
+                                                {this.state.receiverIdentificationAmount
+                                                  ? this.state.isInclusive
+                                                    ? `${this.state
+                                                      .receiverIdentificationAmount
+                                                    } and `
+                                                    : `${parseFloat(
+                                                      this.state
+                                                        .receiverIdentificationAmount,
+                                                    ) +
+                                                    parseFloat(
+                                                      this.state.livefee,
+                                                    )} and `
+                                                  : ''}
                                       Proceed
                                     </Typography>
-                                  </span>
-                                </Button>
-                              </Col>
-                            </Row>
-                          </Container>
-                        </Blur>
-                      )}
+                                            </span>
+                                          </Button>
+                                        </Col>
+                                      </Row>
+                                    </Container>
+                                  </Blur>
+                                )}
+                            </div>
+                          
+                      </form>
+                    </div>
+                    )}
                     </div>
                   )}
-                </form>
-              </div>
-            )}
           </Popup>
         ) : null}
 
