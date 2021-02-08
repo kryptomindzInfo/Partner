@@ -46,6 +46,7 @@ toast.configure({
 const token = localStorage.getItem('cashierLogged');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
+const maxTransAmt = localStorage.getItem('maxTransAmt');
 const date = new Date();
 
 class CashierTransactionLimit extends Component {
@@ -143,7 +144,7 @@ class CashierTransactionLimit extends Component {
     });
   };
 
-  proceed = items => {
+  proceed = (items,type,interbank) => {
     const dis = this;
     for (const key in items) {
       if (items.hasOwnProperty(key)) {
@@ -155,6 +156,8 @@ class CashierTransactionLimit extends Component {
 
     this.setState({
       proceed: true,
+      interbank: interbank,
+      pendingTransType:type,
       popupSendMoney: true,
     });
   };
@@ -574,7 +577,7 @@ class CashierTransactionLimit extends Component {
       verifySendMoneyOTPLoading: true,
     });
     axios
-      .post(`${API_URL}/partnerCashier/sendMoneyPending`, this.state)
+      .post(`${API_URL}/partnerCashier/sendMoneyPending`, {...this.state, type: "Non Wallet to Non Wallet Send Money"})
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
@@ -612,9 +615,9 @@ class CashierTransactionLimit extends Component {
   sendMoney = event => {
     event.preventDefault();
     if (
-      !this.state.proceed &&
-      this.state.receiverIdentificationAmount > this.state.balance
+      Number(this.state.receiverIdentificationAmount) > Number(maxTransAmt) && !this.state.proceed
     ) {
+      console.log(maxTransAmt);
       // this.setState({
       //   notification: 'Amount has to be lesser than transaction limit',
       // });
@@ -739,6 +742,16 @@ class CashierTransactionLimit extends Component {
         });
         this.error();
       });
+  };
+
+  proceedTransaction = event => {
+    event.preventDefault();
+    console.log(this.state.pendingTransType);
+    if (this.state.pendingTransType === 'Non Wallet to Non Wallet Send Money'){
+      this.sendMoney(event);
+    } else if(this.state.pendingTransType === 'Claim Money') {
+      this.claimMoney();
+    }
   };
 
   startClaiming = event => {
@@ -1888,8 +1901,8 @@ class CashierTransactionLimit extends Component {
               </div>
             ) : (
               <div>
-                <h1>Send Money</h1>
-                <form action="" method="post" onSubmit={this.sendMoney}>
+                 <h1>{this.state.pendingTransType}</h1>
+                <form action="" method="post" onSubmit={(event) => this.proceedTransaction(event)}>
                   {this.state.proceed ? (
                     <div>
                       <Container>
@@ -2021,17 +2034,11 @@ class CashierTransactionLimit extends Component {
                               </Col>
                             </Row>
                             <Row>
-                              <Col className="popInfoLeft">Date</Col>
-                              <Col className="popInfoRight">
-                                {this.state.dateClaimMoney}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className="popInfoLeft">Transaction ID</Col>
-                              <Col className="popInfoRight">
-                                {this.state.transferCode}
-                              </Col>
-                            </Row>
+                                    <Col className="popInfoLeft">Interbank Transaction</Col>
+                                    <Col className="popInfoRight">
+                                      {this.state.interbank ? "Yes" : "No"}
+                                    </Col>
+                                  </Row>
                             <Row>
                               <Col className="popInfoLeft">ID required</Col>
                               <Col className="popInfoRight">

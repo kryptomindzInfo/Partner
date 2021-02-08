@@ -76,6 +76,7 @@ export default class CashierDashboard extends Component {
       perPage: 20,
       totalCount: 100,
       allhistory: [],
+      pending:[],
       activePage: 1,
       active: 'Active',
       trans_from: '',
@@ -155,9 +156,9 @@ addOpeningBalance = event => {
   }
   };
 
-    proceed = (items) => {
-
-this.child.current.proceed(items);
+    proceed = (items,type,interbank) => {
+      console.log(type);
+    this.child.current.proceed(items,type,interbank);
   };
 
 
@@ -316,30 +317,30 @@ generateOTP = () => {
       .then(res => {
         console.log(res);
         if (res.status == 200) {
-          var notification = {};
-          var result = res.data.history;
-          result.sort(
-            function(a, b) {
-              return (
-                new Date(b.created_at).Timestamp.getTime() -
-                new Date(a.created_at).Timestamp.getTime()
-              ); // implicit conversion in number
-            },
-            () => {},
-          );
-          var l = result.length;
-          const allHistory = result;
-          const pendingHistory = res.data.history3.reverse();
+        //   var notification = {};
+        //   var result = res.data.history;
+        //   result.sort(
+        //     function(a, b) {
+        //       return (
+        //         new Date(b.created_at).Timestamp.getTime() -
+        //         new Date(a.created_at).Timestamp.getTime()
+        //       ); // implicit conversion in number
+        //     },
+        //     () => {},
+        //   );
+        //   var l = result.length;
+        //   const allHistory = result;
+          const pendingHistory = res.data.pending.reverse();
           this.setState(
             {
               pending: pendingHistory,
-              ticker: allHistory[0],
+              // ticker: allHistory[0],
               loading: false,
-              allhistory: allHistory,
-              totalCount: result.length,
+              // allhistory: allHistory,
+              // totalCount: result.length,
             },
             () => {
-              this.showHistory();
+              // this.showHistory();
             },
           );
         }
@@ -663,7 +664,7 @@ generateOTP = () => {
                  <tbody>
                 {
 
-                      this.state.pending && this.state.pending.length > 0
+                      this.state.pending.length > 0
                       ? this.state.pending.map(function(b) {
 
                         var fulldate = dis.formatDate(b.created_at);
@@ -689,7 +690,7 @@ generateOTP = () => {
                                     <div>
                                     <span>Approved</span>
                                     <br />
-                                    <Button style={{marginTop: '10px'}} onClick={() => dis.proceed(JSON.parse(b.transaction_details))}>Proceed</Button>
+                                    <Button style={{marginTop: '10px'}} onClick={() => dis.proceed(JSON.parse(b.transaction_details),b.trans_type,b.interbank)}>Proceed</Button>
                                     </div>
                                   :
                                   b.status == 0 ?

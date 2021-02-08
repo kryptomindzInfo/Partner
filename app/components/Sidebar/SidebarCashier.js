@@ -18,8 +18,8 @@ class SidebarCashier extends Component {
     this.child = React.createRef();
   }
 
-  proceed = (items) =>{
-  	this.child.current.proceed(items);
+  proceed = (items,type,interbank) =>{
+  	this.child.current.proceed(items,type,interbank);
   };
   render() {
     return (

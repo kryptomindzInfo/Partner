@@ -705,7 +705,7 @@ export default class BranchDashboard extends Component {
     axios
       .post(`${API_URL}/getAll`, {
         token: token,
-        type: 'branch',
+        type: 'partnerBranch',
         page: 'cashierpending',
         where: { cashier_id: id }
       })
@@ -718,7 +718,7 @@ export default class BranchDashboard extends Component {
           // var l = result.length;
           const perndingHistory = res.data.rows.reverse();
           this.setState({
-            pending: perndingHistory,
+            pendingCashierHistory: perndingHistory,
             historyLoading: false
           });
         }
@@ -1890,8 +1890,8 @@ export default class BranchDashboard extends Component {
                     <tbody>
                       {
 
-                        this.state.pending && this.state.pending.length > 0
-                          ? this.state.pending.map(function (b) {
+                        this.state.pendingCashierHistory && this.state.pendingCashierHistory.length > 0
+                          ? this.state.pendingCashierHistory.map(function (b) {
 
                             var fulldate = dis.formatDate(b.created_at);
                             return <tr key={b._id}>
