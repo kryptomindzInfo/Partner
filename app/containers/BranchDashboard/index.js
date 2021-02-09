@@ -394,11 +394,11 @@ export default class BranchDashboard extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: 1 })
+      .post(`${API_URL}/partnerBranch/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: 1 })
       .then(res => {
         if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
+          if (res.data.status===0) {
+            throw res.data.message;
           } else {
             this.setState(
               {
@@ -434,7 +434,7 @@ export default class BranchDashboard extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: -1 })
+      .post(`${API_URL}/partnerBranch/updateCashierTransferStatus`, { token: this.state.token, cashier_id: this.state.selectedCashier, transfer_id: this.state.selectedId, status: -1 })
       .then(res => {
         if (res.status == 200) {
           if (res.data.error) {
