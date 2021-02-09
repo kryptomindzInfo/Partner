@@ -625,6 +625,7 @@ class CashierTransactionLimit extends Component {
       // });
       // this.error();
       this.setState({
+        pendingtype: 'send',
         showConfirmPending: true,
       });
     } else {
