@@ -54,6 +54,7 @@ import CashierLogin from 'containers/CashierLogin';
 import CashierForgotPassword from 'containers/CashierForgotPassword';
 import CashierOTPPage from 'containers/CashierOTPPage';
 import CashierSetup from 'containers/CashierSetup';
+import CashierReports from 'containers/CashierReports';
 import CashierDashboard from 'containers/CashierDashboard';
 import CashierInfo from 'containers/CashierInfo';
 import BankEditFee from 'containers/BankEditFee';
@@ -261,6 +262,11 @@ export default function App(props) {
             exact
             path="/cashier/:bank?/pay-bills"
             component={p => <CashierMerchantListPage {...p} />}
+          />
+          <CashierRoute
+            exact
+            path="/cashier/:bank?/reports"
+            component={CashierReports}
           />
 
           <Route component={NotFoundPage} />

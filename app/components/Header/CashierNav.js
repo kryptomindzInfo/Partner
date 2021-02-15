@@ -48,7 +48,7 @@ class CashierNav extends Component {
               <span> Pay Bills </span>
             </Link>
           </A>
-          <A>
+          <A href={`/cashier/${bankName}/reports`}>
             <Link active={reports}>
               <FormattedMessage {...messages.menu4} />
             </Link>

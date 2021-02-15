@@ -46,6 +46,7 @@ const bid = localStorage.getItem('cashierId');
 const logo = localStorage.getItem('bankLogo');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
+const bankId = localStorage.getItem('bankId');
 //enable the following line and disable the next line to test for tomorrow
 var today =new Date(new Date().setDate(new Date().getDate()+1));
 //var today =new Date();
@@ -315,29 +316,12 @@ generateOTP = () => {
         offset: this.state.perPage,
       })
       .then(res => {
-        console.log(res);
         if (res.status == 200) {
-        //   var notification = {};
-        //   var result = res.data.history;
-        //   result.sort(
-        //     function(a, b) {
-        //       return (
-        //         new Date(b.created_at).Timestamp.getTime() -
-        //         new Date(a.created_at).Timestamp.getTime()
-        //       ); // implicit conversion in number
-        //     },
-        //     () => {},
-        //   );
-        //   var l = result.length;
-        //   const allHistory = result;
           const pendingHistory = res.data.pending.reverse();
           this.setState(
             {
               pending: pendingHistory,
-              // ticker: allHistory[0],
               loading: false,
-              // allhistory: allHistory,
-              // totalCount: result.length,
             },
             () => {
               // this.showHistory();
@@ -346,6 +330,26 @@ generateOTP = () => {
         }
       })
       .catch(err => {});
+  };
+  newhistory = async() => {
+    try{
+      const res = await axios.post(`${API_URL}/partnerCashier/getFailedTransactions`, {
+        token: token,
+        bank_id: bankId,
+      });
+      if (res.status == 200) {
+        this.setState(
+          {
+            allhistory:res.data.transactions.filter(trans => trans.state==="DONE"),
+  
+          }
+        );
+      }
+    }catch (err){
+      console.log(err);
+    }
+    
+      
   };
 
   getStats = () => {
@@ -421,6 +425,7 @@ generateOTP = () => {
           this.setState({ branchDetails: res.data.banks }, () => {
             this.getStats();
             this.getHistory();
+            this.newhistory();
           });
         }
       })
@@ -715,87 +720,42 @@ generateOTP = () => {
                       </tbody>
                       :
 
-                  <tbody>
-                    {
-
-                      this.state.history && this.state.history.length > 0
-                      ? this.state.history.map(function(b) {
-                          // var sinfo = b.trans_type == "CR" ? b.sender_info ? null;
-                          // var rinfo = b.trans_type == "CR" ? b.receiver_info ? null;
-                          var sinfo = {};
-                          var rinfo = {};
-                          var fulldate = dis.formatDate(b.created_at);
-                          return dis.state.filter == b.trans_type ||
-                            dis.state.filter == '' ? (
-                            <tr key={b._id}>
-                              <td>
+                      <tbody>
+                      {this.state.allhistory.length>0
+                          ? this.state.allhistory.map( (b,i) => {
+                            var fulldate = dis.formatDate(b.createdAt);
+                            return (
+                            <tr key={i} >
+                              <td style={{textAlign:"center"}}>
                                 <div className="labelGrey">{fulldate}</div>
                               </td>
-                              <td>
-                                <div
-                                  className="labelBlue"
-                                  onClick={() => dis.showHistoryPop(b)}
-                                >
-                                  {b.sender_info ? (
-                                    <span>
-                                      Cash sent from{' '}
-                                      {JSON.parse(b.sender_info).givenname +
-                                        ' ' +
-                                        JSON.parse(b.sender_info)
-                                          .familyname}{' '}
-                                      to{' '}
-                                      {(JSON.parse(b.receiver_info).givenname ? JSON.parse(b.receiver_info).givenname : JSON.parse(b.receiver_info).mobile) +
-                                        ' ' +
-                                      (JSON.parse(b.receiver_info).familyname ? JSON.parse(b.receiver_info).familyname : '')}
-                                    </span>
-                                  ) : (
-                                    <span>
-                                      Cash claimed from {!b.sender_name.includes('undefined') ? b.sender_name : b.sender_mobile} to{' '}
-                                      {b.receiver_name}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="labelSmallGrey">
-                                  {b.status == 1 ? (
-                                    <span>Completed</span>
-                                  ) :
-                                  b.status == 0 ? (
-                                    <span>Pending</span>
-                                  )
-                                  :
-                                  (
-                                    <span className="red">Failed</span>
-                                  )}
+                              <td style={{textAlign:"center"}}>
+                                <div className="labelGrey">
+                                  Transfered From {b.childTx[0].transaction.from_name} to {b.childTx[0].transaction.to_name}
                                 </div>
                               </td>
+                              <td style={{textAlign:"center"}}>
+                                <div className="labelGrey">{b.txType}</div>
+                              </td>
+                              <td style={{textAlign:"center"}}>
+                                <div className="labelGrey">Completed</div>
+                              </td>
+                              <td style={{textAlign:"center"}}> 
+                                <div className="labelGrey">XOF {b.childTx[0].transaction.amount}</div>
+                              </td>
                               <td>
-                                <div className="labelGrey">
-                                  {b.transaction_code == 'DR' ? '-XOF' : 'XOF'}
-                                  {b.amount}
-                                </div>
+                              <Button dashBtn>Actions</Button>
+
                               </td>
                             </tr>
-                          ) : null;
-                        })
-                      : null
-                    }
-                  </tbody>
+                            )
+                          })
+                          : null
+                      }
+                    </tbody>
+                  
                 }
                 </Table>
-                <div>
-                {
-                  this.state.showPending ?
-                  null
-                  :
-                  <Pagination
-                    activePage={this.state.activePage}
-                    itemsCountPerPage={this.state.perPage}
-                    totalItemsCount={this.state.totalCount}
-                    pageRangeDisplayed={5}
-                    onChange={this.handlePageChange}
-                  />
-                }
-                </div>
               </div>
             </Card>
           </Main>

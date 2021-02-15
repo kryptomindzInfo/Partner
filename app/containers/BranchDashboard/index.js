@@ -52,6 +52,7 @@ toast.configure({
 const token = localStorage.getItem('branchLogged');
 const bid = localStorage.getItem('branchId');
 const logo = localStorage.getItem('bankLogo');
+const bankId = localStorage.getItem('bankid');
 const email = localStorage.getItem('branchEmail');
 const mobile = localStorage.getItem('branchMobile');
 const name = localStorage.getItem('branchName');
@@ -912,9 +913,9 @@ export default class BranchDashboard extends Component {
     axios
       .post(`${API_URL}/partnerBranch/getAll`, {
         page: 'partnerUser',
-        type: 'branch',
+        type: 'partnerBranch',
         token: token,
-        where: {},
+        where: {partner_id:bankId},
       })
       .then(res => {
         if (res.status == 200) {
