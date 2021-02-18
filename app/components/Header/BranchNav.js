@@ -52,7 +52,7 @@ class BranchNav extends Component {
               <FormattedMessage {...messages.bmenu3} />
             </Link>
           </A> */}
-          <A >
+           <A href={"/branch/" + bankName + "/report"}>
             <Link active={reports}>
               <FormattedMessage {...messages.menu4} />
             </Link>
