@@ -19,11 +19,11 @@ export const DEFAULT_LOCALE = 'en';
 
 // production config k8s
 // export const SERVER_URL = '91d90ac373dc.sn.mynetname.net:2020';
-export const SERVER_URL = 'http://91d90ac373dc.sn.mynetname.net:31080';
-export const API_URL = 'http://91d90ac373dc.sn.mynetname.net:30301/api';
-export const CONTRACT_URL = ' http://91d90ac373dc.sn.mynetname.net:30880/ipfs/';
+export const SERVER_URL = 'http://91d90ac373dc.sn.mynetname.net:41080';
+export const API_URL = 'http://91d90ac373dc.sn.mynetname.net:40301/api';
+export const CONTRACT_URL = ' http://91d90ac373dc.sn.mynetname.net:40880/ipfs/';
 export const STATIC_URL =
-  'http://91d90ac373dc.sn.mynetname.net:30301/api/uploads/';
+  'http://91d90ac373dc.sn.mynetname.net:40301/api/uploads/';
 // export const API_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/api';
 // export const STATIC_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/api/uploads/';
 // export const CONTRACT_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/ipfs/';
