@@ -8,12 +8,9 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
-
 import { toast } from 'react-toastify';
-
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
 import Wrapper from 'components/Wrapper';
 import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
@@ -89,9 +86,6 @@ export default class PartnerDashboard extends Component {
     if (loading) {
       return <Loader fullPage />;
     }
-    // if (redirect) {
-    //   return <Redirect to="/" />;
-    // }
     return (
       <Wrapper from="bank">
         <Helmet>

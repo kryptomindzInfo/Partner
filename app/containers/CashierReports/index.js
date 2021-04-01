@@ -119,11 +119,11 @@ export default class CashierDashboard extends Component {
       });
       if (res.status == 200) {
         return ({
-          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" && trans.state==="DONE"),
-          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" && trans.state==="DONE"),
-          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" && trans.state==="DONE"),
-          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational" && trans.state==="DONE"),
-          sendMoneyWtNw:res.data.transactions.filter(trans => trans.txType === "Wallet To Non Wallet" && trans.state==="DONE"),
+          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" ),
+          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" ),
+          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" ),
+          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational"),
+          sendMoneyWtNw:res.data.transactions.filter(trans => trans.txType === "Wallet To Non Wallet"),
         });
       }
     } catch (err){
@@ -247,6 +247,7 @@ export default class CashierDashboard extends Component {
     const branch=await this.getBranchByName();
     this.getStats();
     const allHistory = await this.getHistory();
+    console.log(allHistory);
     this.setState(
       {
         branchDetails:branch,

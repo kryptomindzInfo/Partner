@@ -19,18 +19,13 @@ import ActionBar from 'components/ActionBar';
 import SidebarCashier from 'components/Sidebar/SidebarCashier';
 import Main from 'components/Main';
 import Table from 'components/Table';
-import Pagination from 'react-js-pagination';
-import TextInput from 'components/TextInput';
 import Popup from 'components/Popup';
-import Row from 'components/Row';
-import Col from 'components/Col';
-import FormGroup from 'components/FormGroup';
 import Button from 'components/Button';
-
+import endOfDay from 'date-fns/endOfDay';
+import startOfDay from 'date-fns/startOfDay';
 import { API_URL, CURRENCY, STATIC_URL } from '../App/constants';
-
 import 'react-toastify/dist/ReactToastify.css';
-import FormDialog from '../../components/FormDialog';
+
 
 toast.configure({
   position: 'bottom-right',
@@ -74,17 +69,13 @@ export default class CashierDashboard extends Component {
       feeGenerated: 0,
       commissionGenerated: 0,
       closingTime: null,
-      perPage: 20,
-      totalCount: 100,
-      allhistory: [],
       pending:[],
-      activePage: 1,
-      active: 'Active',
-      trans_from: '',
-      trans_to: '',
-      transcount_from: '',
-      history: [],
       filter: '',
+      loading: false,
+      sentRow: [],
+      receivedRow: [],
+      allRow: [],
+      selectedRow: [],
     };
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -129,52 +120,25 @@ export default class CashierDashboard extends Component {
 
   };
 
-  openCashier = e => {
-    this.setState({
-      openCashierPopup: true
-    });
-  };
 
-addOpeningBalance = event => {
-    event.preventDefault();
-      if(this.state.agree){
-
-      this.setState(
-        {
-          showOpeningOTP: true,
-          otpOpt: 'openingBalance',
-          otpTxt: 'Your OTP to open cashier balance is ',
-        },
-        () => {
-          this.generateOTP();
-        },
-      );
-  }else{
-        this.setState({
-          notification: 'You need to agree'
-        });
-        this.error();
-  }
-  };
-
-    proceed = (items,type,interbank) => {
-      console.log(type);
-    this.child.current.proceed(items,type,interbank);
-  };
+proceed = (items,type,interbank) => {
+  this.child.current.proceed(items,type,interbank);
+};
 
 
-  startTimer = () => {
-    var dis = this;
-    var timer = setInterval(function() {
-      if (dis.state.timer <= 0) {
-        clearInterval(timer);
-        dis.setState({ resend: true });
-      } else {
-        var time = Number(dis.state.timer) - 1;
-        dis.setState({ timer: time });
-      }
-    }, 1000);
-  };
+startTimer = () => {
+  var dis = this;
+  var timer = setInterval(function() {
+    if (dis.state.timer <= 0) {
+      clearInterval(timer);
+      dis.setState({ resend: true });
+    } else {
+      var time = Number(dis.state.timer) - 1;
+      dis.setState({ timer: time });
+    }
+  }, 1000);
+};
+
 generateOTP = () => {
     this.setState({ resend: false, timer: 30 });
 
@@ -210,49 +174,8 @@ generateOTP = () => {
         this.error();
       });
   };
-  verifyOpeningOTP = event => {
-    event.preventDefault();
 
-    this.setState({
-      verifyEditOTPLoading: true,
-    });
-    axios
-      .post(`${API_URL}/partnerCashier/openBalance`, this.state)
-      .then(res => {
-        if (res.status == 200) {
-          if (res.data.error) {
-            throw res.data.error;
-          } else {
-            this.setState(
-              {
-                notification: 'Cashier opened successfully!',
-              },
-              function() {
-                this.success();
-                this.closePopup();
-                this.getStats();
-              },
-            );
-          }
-        } else {
-          const error = new Error(res.data.error);
-          throw error;
-        }
-        this.setState({
-          verifyEditOTPLoading: false,
-        });
-      })
-      .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-          verifyEditOTPLoading: false,
-        });
-        this.error();
-      });
-
-  };
-
-   handleCheckbox = event => {
+handleCheckbox = event => {
     const { value, name } = event.target;
     if(value == "true"){
       var v = false;
@@ -262,8 +185,9 @@ generateOTP = () => {
     this.setState({
       [name]: v,
     });
-  };
-  getTransHistory = master_code => {
+};
+
+getTransHistory = master_code => {
     axios
       .post(`${API_URL}/getTransHistory`, {
         token: token,
@@ -285,8 +209,9 @@ generateOTP = () => {
         }
       })
       .catch(err => {});
-  };
-  showHistory = () => {
+};
+
+showHistory = () => {
     this.setState({ history: [] }, () => {
       var out = [];
       var start = (this.state.activePage - 1) * this.state.perPage;
@@ -304,9 +229,9 @@ generateOTP = () => {
         }, 3000);
       });
     });
-  };
+};
 
-  getHistory = () => {
+getHistory = () => {
     axios
       .post(`${API_URL}/partnerCashier/getHistory`, {
         token: token,
@@ -330,26 +255,30 @@ generateOTP = () => {
         }
       })
       .catch(err => {});
-  };
-  newhistory = async() => {
+};
+
+getTransactions = async(after,before) => {
+    console.log(after);
     try{
-      const res = await axios.post(`${API_URL}/partnerCashier/getFailedTransactions`, {
+      const res = await axios.post(`${API_URL}/partnerCashier/queryTransactionStates`, {
         token: token,
         bank_id: bankId,
+        status: "2",
+        date_after: after,
+        date_before: before,
+        page_start: 0,
+        limit: 100
       });
-      if (res.status == 200) {
-        this.setState(
-          {
-            allhistory:res.data.transactions.filter(trans => trans.state==="DONE"),
-  
-          }
-        );
+      if (res.status === 200) {
+        if (res.data.status === 0) {
+          return { data: {}, loading: false };
+        }
+        return { data: res.data.transactions, loading: false };
       }
-    }catch (err){
-      console.log(err);
+      return { data: {}, loading: false };
+    } catch (err) {
+      return { data: {}, loading: false };
     }
-    
-      
   };
 
   getStats = () => {
@@ -405,31 +334,30 @@ generateOTP = () => {
       });
   };
 
-  filterData = e => {
-
-    this.setState({ showPending:false, filter: e });
+  filterData = (type) => {
+    if ( type === 'all' ) {
+      this.setState({ selectedRow: this.state.allRow });
+    }else if ( type === 'sent') {
+      this.setState({ selectedRow: this.state.sentRow });
+    }else{
+      this.setState({ selectedRow: this.state.receivedRow });
+    }
   };
 
-  handlePageChange = pageNumber => {
-    this.setState({ activePage: pageNumber });
-    this.showHistory();
-  };
-
-  getBranchByName = () => {
-    axios
-      .post(`${API_URL}/partnerCashier/getBranchByName`, {
-        name: this.props.match.params.bank,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          this.setState({ branchDetails: res.data.banks }, () => {
-            this.getStats();
-            this.getHistory();
-            this.newhistory();
-          });
-        }
-      })
-      .catch(err => {});
+  getData = async() => {
+    this.setState({loading: true});
+    const after = new Date();
+    const before = new Date();
+    after.setHours(0,0,0,0);
+    before.setHours(23,59,59,0);
+    const transactions = await this.getTransactions(after,before);
+    console.log(transactions);
+    this.setState({
+      selectedRow: transactions.data,
+      allRow: transactions.data,
+      sentRow: transactions.data.filter(val=> val.txType === 'Non Wallet to Wallet' || val.txType === 'Non Wallet To Non Wallet'),
+      loading: transactions.loading,
+    });
   };
 
   formatDate = date => {
@@ -456,11 +384,12 @@ generateOTP = () => {
     var h = readable.getHours();
     var mi = readable.getMinutes();
     var mlong = months[m];
-    return d + ' ' + mlong + ' ' + y + ' ' + h + ':' + mi;
+    return  h + ':' + mi;
+    // return d + ' ' + mlong + ' ' + y + ' ' + h + ':' + mi;
   };
 
   componentDidMount() {
-    this.getBranchByName();
+    this.getData();
   }
 
   render() {
@@ -493,6 +422,11 @@ generateOTP = () => {
       '-' +
       tempDate.getFullYear()
     const currDate = this.formatDate(tempDate);
+
+    if (this.state.loading) {
+      return <Loader fullPage />;
+    }
+
     return (
       <Wrapper from="branch">
         <Helmet>
@@ -579,83 +513,45 @@ generateOTP = () => {
               </Card>
             </div>
 
-            <ActionBar
-              marginBottom="15px"
-              marginTop="15px"
-              inputWidth="calc(100% - 241px)"
-              className="clr"
-              style={{ display: 'none' }}
-            >
-              {this.state.ticker ? (
-                <p className="notification">
-                  {dis.state.ticker.status == 1 ? (
-                    dis.state.ticker.trans_type == 'DR' ? (
-                      <span>
-                        <strong>Congrats</strong> You have received {CURRENCY}{' '}
-                        {Number(this.state.ticker.amount) +
-                          Number(this.state.ticker.fee)}{' '}
-                        from{' '}
-                        <strong>
-                          {
-                            JSON.parse(this.state.ticker.receiver_info)
-                              .givenname
-                          }
-                        </strong>{' '}
-                        on {this.formatDate(this.state.ticker.created_at)}
-                      </span>
-                    ) : (
-                      <span>
-                        <strong>Congrats</strong> You have sent {CURRENCY}{' '}
-                        {this.state.ticker.amount} to{' '}
-                        <strong>{this.state.ticker.sender_name}</strong> on{' '}
-                        {this.formatDate(dis.state.ticker.created_at)}
-                      </span>
-                    )
-                  ) : (
-                    <span>
-                      <strong className="red">Oops!</strong> Your last
-                      transaction (
-                      <strong>{dis.state.ticker.master_code}</strong>) on{' '}
-                      {this.formatDate(dis.state.ticker.created_at)} was failed
-                    </span>
-                  )}
-                </p>
-              ) : null}
-            </ActionBar>
-
             <Card bigPadding style={{marginTop: '50px'}}>
               <div className="cardHeader">
                 <div className="cardHeaderLeft">
                   <i className="material-icons">playlist_add_check</i>
                 </div>
                 <div className="cardHeaderRight">
-                  <h3>Recent Activity</h3>
+                  <h3>Today's Activity</h3>
                   <h5>E-wallet activity</h5>
                 </div>
               </div>
               <div className="cardBody">
                 <div className="clr">
-                  <div className="menuTabs" onClick={() => this.filterData('')}>
+                  <div className="menuTabs" onClick={() => this.filterData('all')}>
                     All
                   </div>
                   <div
                     className="menuTabs"
-                    onClick={() => this.filterData('DR')}
+                    onClick={() => this.filterData('sent')}
                   >
                     Payment Sent
                   </div>
                   <div
                     className="menuTabs"
-                    onClick={() => this.filterData('CR')}
+                    onClick={() => this.filterData('received')}
                   >
                     Payment Received
                   </div>
                   <div
                     className="menuTabs"
+                    onClick={() => this.filterData('received')}
+                  >
+                    Invoices Paid
+                  </div>
+                  {/* <div
+                    className="menuTabs"
                     onClick={() => this.showPending()}
                   >
                     Transaction Pending
-                  </div>
+                  </div> */}
                 </div>
 
                 <Table
@@ -718,11 +614,10 @@ generateOTP = () => {
                       : null
                     }
                       </tbody>
-                      :
-
-                      <tbody>
-                      {this.state.allhistory.length>0
-                          ? this.state.allhistory.map( (b,i) => {
+                :
+                  <tbody>
+                      {this.state.selectedRow.length > 0
+                          ? this.state.selectedRow.map( (b,i) => {
                             var fulldate = dis.formatDate(b.createdAt);
                             return (
                             <tr key={i} >
@@ -815,120 +710,7 @@ generateOTP = () => {
           </Popup>
         ) : null}
 
-         {this.state.openCashierPopup ? (
-          <Popup close={this.closePopup.bind(this)} accentedH1>
-            {this.state.showOpeningOTP ? (
-              <div>
-                <h1>Verify OTP</h1>
-                <form action="" method="post" onSubmit={this.verifyOpeningOTP}>
-                  <FormGroup>
-                    <label>OTP*</label>
-                    <TextInput
-                      type="text"
-                      name="otp"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.otp}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  {this.verifyEditOTPLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                    <Button filledBtn marginTop="50px">
-                      <span>Verify</span>
-                    </Button>
-                  )}
 
-                  <p className="resend">
-                    Wait for <span className="timer">{this.state.timer}</span>{' '}
-                    to{' '}
-                    {this.state.resend ? (
-                      <span className="go" onClick={this.generateOTP}>
-                        Resend
-                      </span>
-                    ) : (
-                      <span>Resend</span>
-                    )}
-                  </p>
-                </form>
-              </div>
-            ) : (
-              <div>
-                <h1>Open Cashier</h1>
-                <form action="" method="post" onSubmit={this.addOpeningBalance}>
-
-
-                <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-
-                    <Col cW="20%" textAlign="right">
-                      <strong>Opening for the day</strong>
-                    </Col>
-                    <Col cW="20%" textAlign="center">
-                      :
-                    </Col>
-                    <Col cW="35%">
-                    {
-                      currDate
-                    }
-                        {/* {Date.now().toISOString()} */}
-
-                    </Col>
-                  </Row>
-
-                  <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-
-                    <Col cW="20%" textAlign="right">
-                      <strong>Cash in Hand</strong>
-                    </Col>
-                    <Col cW="20%" textAlign="center">
-                      :
-                    </Col>
-                    <Col cW="35%">
-                      {
-                        this.state.openingBalance+this.state.cashReceived-this.state.cashPaid
-                      }
-                    </Col>
-                  </Row>
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-                    <Col cW="20%" textAlign="right">
-                      <strong></strong>
-                    </Col>
-                    <Col cW="20%" textAlign="center">
-
-                    </Col>
-                    <Col cW="35%">
-
-                    </Col>
-                  </Row>
-
-
-                  <div style={{
-                    marginTop: '20px',
-                    fontSize: '18px',
-                    textAlign: 'center'
-                    }}>
-                  <input type="checkbox"
-                  name="agree"
-                  value={this.state.agree}
-                   checked={this.state.agree}
-                   required
-                              onClick={this.handleCheckbox} />  Agree to the opening balance?
-                  </div>
-
-
-                    <Button filledBtn marginTop="50px">
-                      <span>Open</span>
-                    </Button>
-
-                </form>
-              </div>
-            )}
-          </Popup>
-        ) : null}
       </Wrapper>
     );
   }
