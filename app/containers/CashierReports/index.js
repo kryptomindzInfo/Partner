@@ -124,10 +124,10 @@ export default class CashierDashboard extends Component {
       });
       if (res.status == 200) {
         return ({
-          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" ).slice(1,2),
-          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" ).slice(1,2),
-          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" ).slice(1,2),
-          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational").slice(1,2),
+          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" ),
+          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" ),
+          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" ),
+          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational"),
           sendMoneyWtNw:res.data.transactions.filter(trans => trans.txType === "Wallet To Non Wallet"),
         });
       }
