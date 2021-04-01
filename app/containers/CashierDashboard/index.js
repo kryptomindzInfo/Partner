@@ -638,10 +638,17 @@ getTransactions = async(after,before) => {
                               <td style={{textAlign:"center"}}> 
                                 <div className="labelGrey">XOF {b.childTx[0].transaction.amount}</div>
                               </td>
-                              <td>
-                              <Button dashBtn>Actions</Button>
+                              <td className="tac bold green">
+                              <span className="absoluteMiddleRight primary popMenuTrigger">
+                                <i className="material-icons ">more_vert</i>
+                                <div className="popMenu">
+                                  <span >
+                                    Receipt
+                                  </span>
+                                </div>
+                              </span>
+                            </td>
 
-                              </td>
                             </tr>
                             )
                           })

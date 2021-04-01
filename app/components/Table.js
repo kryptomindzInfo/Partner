@@ -21,7 +21,7 @@ margin-top: ${props => props.marginTop ? props.marginTop : '0' };
           color: #FF0000;
         }
     >td {
-        font-size: 16px;
+        font-size: 10px;
         font-weight: 300;
         text-align: ${props => props.textAlign ? props.textAlign : 'center' };
         padding: ${props => props.smallTd ? '10px' : '14px 22px' };
@@ -37,7 +37,7 @@ margin-top: ${props => props.marginTop ? props.marginTop : '0' };
             text-align: right;
         }
         .labelGrey{
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 300;
             font-stretch: normal;
             font-style: normal;
