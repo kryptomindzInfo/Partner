@@ -111,18 +111,23 @@ export default class CashierDashboard extends Component {
   warn = () => toast.warn(this.state.notification);
 
   
-  getHistory = async() => {
+  getHistory = async(after,before) => {
     try{
-      const res = await axios.post(`${API_URL}/partnerCashier/getFailedTransactions`, {
+      const res = await axios.post(`${API_URL}/partnerCashier/queryTransactionStates`, {
         token: token,
         bank_id: bankId,
+        status: "2",
+        date_after: after,
+        date_before: before,
+        page_start: 0,
+        limit: 100
       });
       if (res.status == 200) {
         return ({
-          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" ),
-          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" ),
-          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" ),
-          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational"),
+          sendMoneyNwtNw:res.data.transactions.filter(trans => trans.txType === "Non Wallet To Non Wallet" ).slice(1,2),
+          sendMoneyNwtW: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Wallet" ).slice(1,2),
+          sendMoneyNwtM: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Merchant" ).slice(1,2),
+          sendMoneyNwtO: res.data.transactions.filter(trans => trans.txType === "Non Wallet to Operational").slice(1,2),
           sendMoneyWtNw:res.data.transactions.filter(trans => trans.txType === "Wallet To Non Wallet"),
         });
       }
@@ -244,9 +249,13 @@ export default class CashierDashboard extends Component {
         loading:true,
       }
     );
+    const after = new Date();
+    const before = new Date();
+    after.setHours(0,0,0,0);
+    before.setHours(23,59,59,0);
     const branch=await this.getBranchByName();
     this.getStats();
-    const allHistory = await this.getHistory();
+    const allHistory = await this.getHistory(after,before);
     console.log(allHistory);
     this.setState(
       {
@@ -370,6 +379,24 @@ export default class CashierDashboard extends Component {
                     <Col cW='40%'></Col>
                   </Row>
             </ActionBar>
+            <Card marginBottom="20px" buttonMarginTop="5px" smallValue style={{height:'80px'}}>
+        <Row>
+        <Col>
+          <h4 style={{color:"green",marginBottom:"20px" }}><b>Bank Name : </b>Axis Bank </h4> 
+          </Col>
+          <Col>
+          <h4 style={{color:"green",marginBottom:"20px" }}><b>Partner Name : </b>Apollo </h4> 
+          </Col>
+          <Col>
+          <h4 style={{color:"green", marginBottom:"20px"}}><b>Branch Name : </b>Branch1 </h4>      
+          </Col>
+          <Col>
+          <h4 style={{color:"green", marginBottom:"20px"}}><b>Cashier Name : </b>ApolloUser </h4> 
+             
+          </Col>
+          </Row>
+          <Button style={{float:'right'}}>Download as CSV</Button>
+      </Card>
         <div className="clr">
           <Row style={{backgroundColor:"lightgray"}}>
             <Col >
@@ -489,6 +516,7 @@ export default class CashierDashboard extends Component {
                       {this.state.sendMoneyNwtNw.length > 0
                           ? this.state.sendMoneyNwtNw.map( (b,i) => {
                             var fulldate = dis.formatDate(b.createdAt);
+                            console.log(b);
                             return (
                             <tr key={i} >
                               <td style={{textAlign:"center"}}>
