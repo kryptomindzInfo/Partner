@@ -62,6 +62,7 @@ export default class CashierDashboard extends Component {
     super();
     this.state = {
       token,
+      formDate: new Date(),
       otpEmail: email,
       otpMobile: mobile,
       agree: false,
@@ -243,14 +244,14 @@ export default class CashierDashboard extends Component {
     )
   };
 
-  componentDidMount= async() => {
+  getData = async() => {
     this.setState(
       {
         loading:true,
       }
     );
-    const after = new Date();
-    const before = new Date();
+    const after = new Date(this.state.formDate);
+    const before = new Date(this.state.formDate);
     after.setHours(0,0,0,0);
     before.setHours(23,59,59,0);
     const branch=await this.getBranchByName();
@@ -268,6 +269,11 @@ export default class CashierDashboard extends Component {
         loading:false,
       }
     );
+
+  };
+
+  componentDidMount= async() => {
+    this.getData();
     
   };
 
@@ -353,11 +359,11 @@ export default class CashierDashboard extends Component {
                         shrink: true,
                         }}
                         value={
-                          this.state.date
+                          this.state.formDate
                           }
                         onChange={date =>
                         this.setState({
-                              date: date,
+                          formDate: date,
                         })
                         }
                          KeyboardButtonProps={{
@@ -371,7 +377,7 @@ export default class CashierDashboard extends Component {
                     <Col cw='25%'>
                       <Button 
                         style={{padding:'9px', color:'white', backgroundColor:'#417505'}}
-                        onClick={()=>this.getHistory()}
+                        onClick={()=>this.getData()}
                       >
                         Get Report
                       </Button>
