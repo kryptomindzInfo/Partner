@@ -31,7 +31,7 @@ const cid = localStorage.getItem('cashierId');
 const email = localStorage.getItem('cashierEmail');
 const mobile = localStorage.getItem('cashierMobile');
 const cashierName = localStorage.getItem('cashierName');
-const branchId = localStorage.getItem('cashirBranch');
+const branchId = localStorage.getItem('cashierBranch');
 
 class CashierCashInHand extends Component {
   constructor() {
@@ -469,6 +469,7 @@ class CashierCashInHand extends Component {
         }
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           this.setState({
             cashiers: res.data.rows
