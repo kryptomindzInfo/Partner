@@ -745,7 +745,8 @@ export default class CashierDashboard extends Component {
                           ? this.state.sendMoneyNwtNw.map( (b,i) => {
                             var fulldate = dis.formatDate(b.createdAt);
                             var child = b.childTx.filter(c=>c.transaction.note === "Cashier claim Money");
-                            return (
+                            if(child.length>0){
+                              return (
                             <tr key={i} >
                               <td style={{textAlign:"center"}}>
                                 <div className="labelGrey">{fulldate.date}</div>
@@ -772,6 +773,7 @@ export default class CashierDashboard extends Component {
                               </td>
                             </tr>
                             )
+                            }
                           })
                           : null
                         }

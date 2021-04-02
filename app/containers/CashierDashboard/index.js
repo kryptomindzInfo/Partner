@@ -343,6 +343,7 @@ getTransactions = async(after,before) => {
     }else if ( type === 'sent') {
       this.setState({ selectedRow: this.state.sentRow });
     }else{
+      console.log(this.state.receivedRow);
       this.setState({ selectedRow: this.state.receivedRow });
     }
   };
@@ -358,6 +359,7 @@ getTransactions = async(after,before) => {
     this.setState({
       selectedRow: transactions.data,
       allRow: transactions.data,
+      receivedRow: transactions.data.filter(val=> val.txType === 'Non Wallet To Non Wallet'),
       sentRow: transactions.data.filter(val=> val.txType === 'Non Wallet to Wallet' || val.txType === 'Non Wallet To Non Wallet'),
       loading: transactions.loading,
     });
@@ -622,6 +624,14 @@ getTransactions = async(after,before) => {
                       {this.state.selectedRow.length > 0
                           ? this.state.selectedRow.map( (b,i) => {
                             var fulldate = dis.formatDate(b.createdAt);
+                            let child = [];
+                            if (this.state.selectedRow === this.state.receivedRow){
+                              child = b.childTx.filter(c=>c.transaction.note === "Cashier claim Money");
+                              console.log(child);
+                            }else{
+                              child = b.childTx;
+                            }
+                            if(child.length>0){
                             return (
                             <tr key={i} >
                               <td style={{textAlign:"center"}}>
@@ -629,7 +639,7 @@ getTransactions = async(after,before) => {
                               </td>
                               <td style={{textAlign:"center"}}>
                                 <div className="labelGrey">
-                                  Transfered From {b.childTx[0].transaction.from_name} to {b.childTx[0].transaction.to_name}
+                                  Transfered From {child[0].transaction.from_name} to {child[0].transaction.to_name}
                                 </div>
                               </td>
                               <td style={{textAlign:"center"}}>
@@ -639,7 +649,7 @@ getTransactions = async(after,before) => {
                                 <div className="labelGrey">Completed</div>
                               </td>
                               <td style={{textAlign:"center"}}> 
-                                <div className="labelGrey">XOF {b.childTx[0].transaction.amount}</div>
+                                <div className="labelGrey">XOF {child[0].transaction.amount}</div>
                               </td>
                               <td className="tac bold green">
                               <span className="absoluteMiddleRight primary popMenuTrigger">
@@ -654,6 +664,7 @@ getTransactions = async(after,before) => {
 
                             </tr>
                             )
+                            }
                           })
                           : null
                       }
