@@ -58,6 +58,7 @@ class CashierTransactionLimit extends Component {
       showOpeningOTP: false,
       tomorrow: false,
       closingTime: null,
+      openingTime: null,
       withoutID: false,
       requireOTP: false,
       sendtooperationalpopup: false,
@@ -1009,6 +1010,7 @@ class CashierTransactionLimit extends Component {
                 balance: Number(res.data.limit),
                 tomorrow: res.data.isClosed,
                 closingTime: res.data.closingTime,
+                openingTime: res.data.openingTime,
                 cashInHand: res.data.cashInHand,
                 transactionStarted: res.data.transactionStarted,
                 isClosed: res.data.isClosed,
@@ -1201,7 +1203,7 @@ class CashierTransactionLimit extends Component {
               </Button>
             ) : (
                 <Button dashBtn disabled>
-                  Open My Counter
+                   Counter Opened At {new Date(this.state.openingTime).getHours()}:{new Date(this.state.openingTime).getMinutes()}
                 </Button>
               )}
           </Col>
