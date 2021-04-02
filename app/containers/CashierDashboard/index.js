@@ -21,6 +21,7 @@ import Main from 'components/Main';
 import Table from 'components/Table';
 import Popup from 'components/Popup';
 import Button from 'components/Button';
+import Footer from 'components/Footer';
 import endOfDay from 'date-fns/endOfDay';
 import startOfDay from 'date-fns/startOfDay';
 import { API_URL, CURRENCY, STATIC_URL } from '../App/constants';
@@ -56,6 +57,8 @@ export default class CashierDashboard extends Component {
     super();
     this.state = {
       token,
+      bankName: localStorage.getItem('bankName'),
+      bankLogo: localStorage.getItem('bankLogo'),
       otpEmail: email,
       otpMobile: mobile,
       agree:false,
@@ -717,7 +720,7 @@ getTransactions = async(after,before) => {
           </Popup>
         ) : null}
 
-
+      <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
     );
   }

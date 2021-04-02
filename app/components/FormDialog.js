@@ -315,7 +315,7 @@ export default function FormDialog() {
               const token = localStorage.getItem('cashierLogged');
               const { mobile } = values;
               axios
-                .post(`${API_URL}/cashier/getUser`, { token, mobile })
+                .post(`${API_URL}/partnerCashier/getUserByMobile`, { token, mobile })
                 .then(res => {
                   if (res.data.error) {
                     setUser({
@@ -461,8 +461,8 @@ export default function FormDialog() {
               axios
                 .post(
                   user.status !== 0
-                    ? `${API_URL}/cashier/editUser`
-                    : `${API_URL}/cashier/createUser`,
+                    ? `${API_URL}/partnerCashier/editUser`
+                    : `${API_URL}/partnerCashier/createUser`,
                   {
                     token: cashiertoken,
                     ...values,
@@ -478,7 +478,7 @@ export default function FormDialog() {
                       localStorage.getItem('editableUser'),
                     );
                     return axios
-                      .post(`${API_URL}/cashier/activateUser`, {
+                      .post(`${API_URL}/partnerCashier/activateUser`, {
                         token: cashiertoken,
                         mobile,
                       })

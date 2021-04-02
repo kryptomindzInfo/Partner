@@ -16,10 +16,13 @@ import TransactionReceipt from './TransactionReciept';
 import Button from '../../components/Button';
 import { isNull } from 'lodash';
 import { API_URL } from '../App/constants';
+import Footer from 'components/Footer';
 import axios from 'axios';
 
 function CashierMerchantListPage(props) {
   const [addMerchantPopup, setAddMerchantPopup] = React.useState(false);
+  const bankName = localStorage.getItem('bankName');
+  const bankLogo =  localStorage.getItem('bankLogo');
   const [receiptvalues, setReceiptvalues] = React.useState();
   const [receiptPopup, setReceiptPopup] = React.useState(false);
   const [payBillsPopup, setPayBillsPopup] = React.useState(false);
@@ -213,6 +216,7 @@ function CashierMerchantListPage(props) {
       ) : (
           ''
         )}
+       <Footer bankname={bankName} banklogo={bankLogo}/>
     </Wrapper>
   );
 }

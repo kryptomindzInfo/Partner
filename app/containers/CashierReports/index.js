@@ -27,6 +27,7 @@ import Popup from 'components/Popup';
 import Button from 'components/Button';
 import Row from 'components/Row';
 import Col from 'components/Col';
+import Footer from 'components/Footer';
 import FormGroup from 'components/FormGroup';
 
 import { API_URL, CURRENCY, STATIC_URL } from '../App/constants';
@@ -62,6 +63,8 @@ export default class CashierDashboard extends Component {
     super();
     this.state = {
       token,
+      bankName: localStorage.getItem('bankName'),
+      bankLogo: localStorage.getItem('bankLogo'),
       formDate: new Date(),
       otpEmail: email,
       otpMobile: mobile,
@@ -814,175 +817,7 @@ export default class CashierDashboard extends Component {
             </Card>
           
         </Container>
-        {this.state.historyPop ? (
-          <Popup close={this.closePopup.bind(this)} accentedH1 bigBody>
-            <div>
-              <h1>Transaction Details ({this.state.popmaster})</h1>
-              {this.state.historyLoading ? (
-                <Button filledBtn disabled>
-                  <Loader />
-                </Button>
-              ) : (
-                  <Table marginTop="34px" smallTd textAlign="left">
-                    <tbody>
-                      {this.state.popresult && this.state.popresult.length > 0
-                        ? this.state.popresult.map(function (b) {
-                          var isoformat = new Date(
-                            b.tx_data.tx_timestamp.seconds * 1000,
-                          ).toISOString();
-                          var fulldate = dis.formatDate(isoformat);
-
-                          return dis.state.filter == b.tx_data.tx_type ||
-                            dis.state.filter == '' ? (
-                              <tr key={b.tx_data.tx_id}>
-                                <td>
-                                  <div className="labelGrey">{fulldate}</div>
-                                </td>
-                                <td>
-                                  <div className="labelBlue">
-                                    {b.tx_data.tx_details}
-                                  </div>{' '}
-                                  <div className="labelSmallGrey">Completed</div>
-                                </td>
-                                <td className="right">
-                                  <div className="labelGrey">
-                                    {b.tx_data.tx_type == 'DR' ? (
-                                      <span>
-                                        {CURRENCY} -{b.amount}
-                                      </span>
-                                    ) : (
-                                        <span>
-                                          {CURRENCY} {b.amount}
-                                        </span>
-                                      )}
-                                  </div>
-                                </td>
-                                <td>{b.tx_data.child_id}</td>
-                              </tr>
-                            ) : null;
-                        })
-                        : null}
-                    </tbody>
-                  </Table>
-                )}
-            </div>
-          </Popup>
-        ) : null}
-
-        {this.state.openCashierPopup ? (
-          <Popup close={this.closePopup.bind(this)} accentedH1>
-            {this.state.showOpeningOTP ? (
-              <div>
-                <h1>Verify OTP</h1>
-                <form action="" method="post" onSubmit={this.verifyOpeningOTP}>
-                  <FormGroup>
-                    <label>OTP*</label>
-                    <TextInput
-                      type="text"
-                      name="otp"
-                      onFocus={inputFocus}
-                      onBlur={inputBlur}
-                      value={this.state.otp}
-                      onChange={this.handleInputChange}
-                      required
-                    />
-                  </FormGroup>
-                  {this.verifyEditOTPLoading ? (
-                    <Button filledBtn marginTop="50px" disabled>
-                      <Loader />
-                    </Button>
-                  ) : (
-                      <Button filledBtn marginTop="50px">
-                        <span>Verify</span>
-                      </Button>
-                    )}
-
-                  <p className="resend">
-                    Wait for <span className="timer">{this.state.timer}</span>{' '}
-                    to{' '}
-                    {this.state.resend ? (
-                      <span className="go" onClick={this.generateOTP}>
-                        Resend
-                      </span>
-                    ) : (
-                        <span>Resend</span>
-                      )}
-                  </p>
-                </form>
-              </div>
-            ) : (
-                <div>
-                  <h1>Open Cashier</h1>
-                  <form action="" method="post" onSubmit={this.addOpeningBalance}>
-
-
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-
-                      <Col cW="20%" textAlign="right">
-                        <strong>Opening for the day</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        :
-                    </Col>
-                      <Col cW="35%">
-                        {
-                          currDate
-                        }
-                        {/* {Date.now().toISOString()} */}
-
-                      </Col>
-                    </Row>
-
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-
-                      <Col cW="20%" textAlign="right">
-                        <strong>Cash in Hand</strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-                        :
-                    </Col>
-                      <Col cW="35%">
-                        {
-                          this.state.openingBalance + this.state.cashReceived - this.state.cashPaid
-                        }
-                      </Col>
-                    </Row>
-                    <Row style={{ marginTop: '5%', marginLeft: '-5%' }}>
-                      <Col cW="20%" textAlign="right">
-                        <strong></strong>
-                      </Col>
-                      <Col cW="20%" textAlign="center">
-
-                      </Col>
-                      <Col cW="35%">
-
-                      </Col>
-                    </Row>
-
-
-                    <div style={{
-                      marginTop: '20px',
-                      fontSize: '18px',
-                      textAlign: 'center'
-                    }}>
-                      <input type="checkbox"
-                        name="agree"
-                        value={this.state.agree}
-                        checked={this.state.agree}
-                        required
-                        onClick={this.handleCheckbox} />  Agree to the opening balance?
-                  </div>
-
-
-                    <Button filledBtn marginTop="50px">
-                      <span>Open</span>
-                    </Button>
-
-                  </form>
-                </div>
-              )}
-          </Popup>
-        ) : null}
+         <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
     );
   }
