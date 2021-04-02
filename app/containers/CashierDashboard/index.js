@@ -357,7 +357,7 @@ getTransactions = async(after,before) => {
     const transactions = await this.getTransactions(after,before);
     console.log(transactions);
     this.setState({
-      selectedRow: transactions.data,
+      selectedRow: transactions.data.reverse(),
       allRow: transactions.data,
       receivedRow: transactions.data.filter(val=> val.txType === 'Non Wallet To Non Wallet'),
       sentRow: transactions.data.filter(val=> val.txType === 'Non Wallet to Wallet' || val.txType === 'Non Wallet To Non Wallet'),
