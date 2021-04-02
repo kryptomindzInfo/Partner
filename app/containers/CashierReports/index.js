@@ -65,6 +65,9 @@ export default class CashierDashboard extends Component {
       token,
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
+      branchName: localStorage.getItem('branchName'),
+      partnerName: localStorage.getItem('partnerName'),
+      cashierName: localStorage.getItem('cashierName'),
       formDate: new Date(),
       otpEmail: email,
       otpMobile: mobile,
@@ -391,21 +394,26 @@ export default class CashierDashboard extends Component {
             <Card marginBottom="20px" buttonMarginTop="5px" smallValue style={{height:'80px'}}>
         <Row>
         <Col>
-          <h4 style={{color:"green",marginBottom:"20px" }}><b>Bank Name : </b>Axis Bank </h4> 
+          <h4 style={{color:"green",marginBottom:"20px" }}><b>Bank Name : </b>{this.state.bankName} </h4> 
           </Col>
           <Col>
-          <h4 style={{color:"green",marginBottom:"20px" }}><b>Partner Name : </b>Apollo </h4> 
+          <h4 style={{color:"green",marginBottom:"20px" }}><b>Partner Name : </b>{this.state.partnerName}</h4> 
+          </Col>
+          </Row>
+          <Row>
+          <Col>
+          <h4 style={{color:"green", marginBottom:"20px"}}><b>Branch Name : </b>{this.state.branchName}</h4>      
           </Col>
           <Col>
-          <h4 style={{color:"green", marginBottom:"20px"}}><b>Branch Name : </b>Branch1 </h4>      
-          </Col>
-          <Col>
-          <h4 style={{color:"green", marginBottom:"20px"}}><b>Cashier Name : </b>ApolloUser </h4> 
+          <h4 style={{color:"green", marginBottom:"20px"}}><b>Cashier Name : </b>{this.state.cashierName}</h4> 
              
           </Col>
           </Row>
+          {/* <Row>
           <Button style={{float:'right'}}>Download as CSV</Button>
+          </Row> */}
       </Card>
+      
         <div className="clr">
           <Row style={{backgroundColor:"lightgray"}}>
             <Col >
