@@ -1203,7 +1203,12 @@ class CashierTransactionLimit extends Component {
               </Button>
             ) : (
                 <Button dashBtn disabled>
-                   Counter Opened At {new Date(this.state.openingTime).getHours()}:{new Date(this.state.openingTime).getMinutes()}
+                  <Row>
+                    Counter Opened At 
+                   </Row>
+                   <Row>
+                   {new Date(this.state.openingTime).getHours()}:{new Date(this.state.openingTime).getMinutes()}
+                   </Row>
                 </Button>
               )}
           </Col>
