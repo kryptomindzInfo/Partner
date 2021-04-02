@@ -16,6 +16,7 @@ import Container from 'components/Container';
 import Loader from 'components/Loader';
 import Card from 'components/Card';
 import ActionBar from 'components/ActionBar';
+import PrintIcon from '@material-ui/icons/Print';
 import SidebarCashier from 'components/Sidebar/SidebarCashier';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -25,6 +26,7 @@ import Pagination from 'react-js-pagination';
 import TextInput from 'components/TextInput';
 import Popup from 'components/Popup';
 import Button from 'components/Button';
+import ReactToPrint from 'react-to-print';
 import Row from 'components/Row';
 import Col from 'components/Col';
 import Footer from 'components/Footer';
@@ -106,7 +108,7 @@ export default class CashierDashboard extends Component {
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
     this.warn = this.warn.bind(this);
-
+    this.componentRef = React.createRef();
 
     this.child = React.createRef();
   }
@@ -413,6 +415,12 @@ export default class CashierDashboard extends Component {
           <Button style={{float:'right'}}>Download as CSV</Button>
           </Row> */}
       </Card>
+
+      <ReactToPrint
+        trigger={() => <Button ><PrintIcon/>  Print</Button>}
+        content={() => this.componentRef.current}
+      />
+      <div ref={this.componentRef}>
       
         <div className="clr">
           <Row style={{backgroundColor:"lightgray"}}>
@@ -823,7 +831,7 @@ export default class CashierDashboard extends Component {
                 </Table>
             </div>
             </Card>
-          
+      </div>    
         </Container>
          <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
