@@ -1180,7 +1180,7 @@ export default class CashierDashboard extends Component {
                   textAlign="left"
                 >
                   <thead>
-                        <tr><th>Date</th><th>Opening Time</th> <th>Opening Balance</th><th>Denomination</th><th>Closing Balance</th><th>Discripency</th><th>Note</th><th>Closing Time</th></tr>
+                        <tr><th>Date</th><th>Opening Time</th> <th>Opening Balance</th><th>System closing balance </th><th>Closing Balance</th><th>Discripancy</th><th>Note</th><th>Closing Time</th></tr>
                       </thead>
                       <tbody>
                       {this.state.reports.length > 0
@@ -1201,12 +1201,7 @@ export default class CashierDashboard extends Component {
                               </td>
                               <td style={{textAlign:"center"}}>
                                 <div className="labelGrey">
-                                {b.denomination ?
-                                b.denomination.map(
-                                  (d) => {
-                                    return(`${d.val} X ${d.num==="" ? "0" : d.num}, `)
-                                  }
-                                ) :""}
+                                  {b.closing_balance && b.descripency ? (b.closing_balance+b.descripency).toFixed(2) : 0}
                                 </div>
                               </td>
                               <td style={{textAlign:"center"}}>
