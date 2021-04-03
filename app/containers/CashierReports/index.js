@@ -1180,7 +1180,7 @@ export default class CashierDashboard extends Component {
                   textAlign="left"
                 >
                   <thead>
-                        <tr><th>Date</th><th>Opening Time</th> <th>Opening Balance</th><th>System closing balance </th><th>Closing Balance</th><th>Discripancy</th><th>Note</th><th>Closing Time</th></tr>
+                        <tr><th>Date</th><th>Opening Time</th> <th>Opening Balance</th><th>System closing balance </th><th>Closing Balance</th><th>Discripancy</th><th>Remark</th><th>Closing Time</th></tr>
                       </thead>
                       <tbody>
                       {this.state.reports.length > 0
