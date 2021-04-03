@@ -1159,7 +1159,7 @@ export default class CashierDashboard extends Component {
       ):(
         <Card style={{ marginTop: '50px' }}>
             <div>
-                <h3 style={{color:"green"}}>Dailty Report</h3>
+                <h3 style={{color:"green"}}>Daily Report</h3>
                 <Table
                   marginTop="34px"
                   marginBottom="34px"
