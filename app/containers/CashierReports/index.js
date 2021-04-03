@@ -84,6 +84,7 @@ export default class CashierDashboard extends Component {
       tomorrow: false,
       trans_type: '',
       cashReceived: 0,
+      discripencyTotal:0,
       openingBalance: 0,
       closingBalance: 0,
       cashPaid: 0,
@@ -345,9 +346,13 @@ export default class CashierDashboard extends Component {
     before.setHours(23,59,59,0);
     const branch = await this.getBranchByName();
     const report = await this.getReport(after,before);
-    console.log(report.result);
+    console.log(report.result.reports);
     this.setState(
       {
+        discripencyTotal: (report.result.reports.reduce(
+          function(a, b){
+            return a + b.descripency;
+          }, 0)),
         branchDetails:branch,
         reports:report.result.reports,
         loading:false,
@@ -445,7 +450,7 @@ export default class CashierDashboard extends Component {
                         })}}
                         style={{marginLeft:'5px'}}
                       >
-                       Daily Report
+                       Dicripency Report
                       </Button>
                   </Col>
                   <Col cW="80%"></Col>
@@ -585,8 +590,19 @@ export default class CashierDashboard extends Component {
 
                 </div>
               )}
+        <Row>
+          <Col cW='90%'></Col>
+          <Col cW='10%'>
+            <ReactToPrint
+              style={{float:'right'}}
+            trigger={() => <Button ><PrintIcon/>  Print</Button>}
+            content={() => this.componentRef.current}
+          />
+          </Col>
+        </Row>
         </ActionBar>
-        <Card marginBottom="20px" buttonMarginTop="5px" smallValue style={{height:'80px'}}>
+        <div ref={this.componentRef}>
+        <Card marginBottom="20px" buttonMarginTop="5px" smallValue style={{height:'90px'}}>
         <Row>
         <Col>
           <h4 style={{color:"green",marginBottom:"20px" }}><b>Bank Name : </b>{this.state.bankName} </h4> 
@@ -609,11 +625,8 @@ export default class CashierDashboard extends Component {
           </Row> */}
       </Card>
 
-      <ReactToPrint
-        trigger={() => <Button ><PrintIcon/>  Print</Button>}
-        content={() => this.componentRef.current}
-      />
-      <div ref={this.componentRef}>
+     
+      
       {this.state.toggle === 'report' ? (
       <div>
         <div className="clr">
@@ -849,14 +862,14 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                        <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                        <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> 
-                            <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total1}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total1}</b></div>
                           </td>
                         </tr>
                     </tbody>
@@ -906,14 +919,14 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                        <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                        <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> 
-                            <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total2}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total2}</b></div>
                           </td>
                         </tr>
                     </tbody>
@@ -964,14 +977,14 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                        <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                        <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> 
-                            <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total3}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total3}</b></div>
                           </td>
                         </tr>
                     </tbody>
@@ -1022,14 +1035,14 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                         <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                         <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> 
-                            <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total4}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total4}</b></div>
                           </td>
                         </tr>
                     </tbody>
@@ -1082,13 +1095,13 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                         <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                         <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}>
-                          <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total1}</b></div>
+                          <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total1}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}> </td>
                         </tr>
@@ -1141,13 +1154,13 @@ export default class CashierDashboard extends Component {
                           })
                           : null
                         }
-                        <tr>
-                          <td style={{textAlign:"center", color:'green'}}><b>Total</b></td>
+                        <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}></td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}> </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'green'}}><b>XOF {this.state.total5}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.total5}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}></td>
                         </tr>
@@ -1159,7 +1172,7 @@ export default class CashierDashboard extends Component {
       ):(
         <Card style={{ marginTop: '50px' }}>
             <div>
-                <h3 style={{color:"green"}}>Daily Report</h3>
+                <h3 style={{color:"green"}}> Dicripency Report</h3>
                 <Table
                   marginTop="34px"
                   marginBottom="34px"
@@ -1217,9 +1230,22 @@ export default class CashierDashboard extends Component {
                             </tr>
                             )
                             
+                            
                           })
                           : null
                         }
+                        <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
+                          <td style={{textAlign:"center"}}></td>
+                          <td style={{textAlign:"center"}}> </td>
+                          <td style={{textAlign:"center"}}> </td>
+                          <td style={{textAlign:"center"}}> </td>
+                          <td style={{textAlign:"center"}}> 
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.discripencyTotal.toFixed(2)}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}> </td>
+                          <td style={{textAlign:"center"}}> </td>
+                        </tr>
                     </tbody>
                 </Table>
             </div>
