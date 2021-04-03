@@ -1204,6 +1204,7 @@ export default class CashierDashboard extends Component {
                                   {b.closing_balance && b.descripency ? (b.closing_balance+b.descripency).toFixed(2) : 0}
                                 </div>
                               </td>
+                              
                               <td style={{textAlign:"center"}}>
                                 <div className="labelGrey">
                                   {b.closing_balance ? b.closing_balance.toFixed(2) : 0}
