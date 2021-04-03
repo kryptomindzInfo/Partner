@@ -112,6 +112,7 @@ export default class CashierDashboard extends Component {
       total5: 0,
       total6: 0,
       reports: [],
+      datereport: [],
       history: [],
       filter: '',
     };
@@ -299,6 +300,7 @@ export default class CashierDashboard extends Component {
     console.log(report.result);
     this.setState(
       {
+        datereport: report.result.reports,
         branchDetails:branch,
         total1: (allHistory.sendMoneyNwtNw.reduce(
           function(a, b){
@@ -715,6 +717,92 @@ export default class CashierDashboard extends Component {
               </Card>
             </Col>
           </Row>
+          <Row style={{backgroundColor:"lightgray", marginTop:'20px'}}>
+            <Col >
+            <Card
+                horizontalMargin="7px"
+                cardWidth="-webkit-fill-available"
+                h4FontSize="16px"
+                smallValue
+                textAlign="center"
+                col
+                style={{backgroundColor:"lightgray"}}
+              >
+                <h4>Closing Balance</h4>
+                <div className="cardValue">
+                  {
+                    <span> {CURRENCY} {this.state.datereport.length > 0 ? this.state.datereport[0].closing_balance : "-"}</span>
+                  }
+                </div>
+              </Card>
+            </Col>
+            <Col>
+            <Card
+                horizontalMargin="7px"
+                cardWidth="-webkit-fill-available"
+                h4FontSize="16px"
+                smallValue
+                textAlign="center"
+                col
+                style={{
+                  backgroundColor:"lightgray",
+                  borderStyle:"hidden hidden hidden solid",
+                  borderColor:"grey"
+                }}
+              >
+                <h4>Closing Time</h4>
+                <div className="cardValue">
+                {
+                    <span>{this.state.datereport.length > 0 ? `${new Date(this.state.datereport[0].closing_time).getHours()}:${new Date(this.state.datereport[0].closing_time).getMinutes()}` : "-:--"}</span>
+                }
+                </div>
+              </Card>
+            </Col>
+            <Col>
+            <Card
+                horizontalMargin="7px"
+                cardWidth="-webkit-fill-available"
+                h4FontSize="16px"
+                smallValue
+                textAlign="center"
+                col
+                style={{
+                  backgroundColor:"lightgray",
+                  borderStyle:"hidden hidden hidden solid",
+                  borderColor:"grey"
+                }}
+              >
+                <h4>Report Date</h4>
+                <div className="cardValue">
+                 {`${new Date().getDate()}/${new Date().getMonth()-1}/${new Date().getFullYear()}`}
+                </div>
+              </Card>
+            </Col>
+            <Col>
+            <Card
+                horizontalMargin="7px"
+                cardWidth="-webkit-fill-available"
+                smallValue
+                h4FontSize="16px"
+                textAlign="center"
+                col
+                style={{
+                  backgroundColor:"lightgray",
+                  borderStyle:"hidden hidden hidden solid",
+                  borderColor:"grey"
+                }}
+              >
+                <h4>Opening Time</h4>
+                <div className="cardValue">
+                {
+                    <span>{this.state.datereport.length > 0 ? `${new Date(this.state.datereport[0].opening_time).getHours()}:${new Date(this.state.datereport[0].opening_time).getMinutes()}` : "-:--"}</span>
+                }
+                </div>
+              </Card>
+            </Col>
+            
+          </Row>
+         
          </div>
 
             <Card style={{ marginTop: '50px' }}>
