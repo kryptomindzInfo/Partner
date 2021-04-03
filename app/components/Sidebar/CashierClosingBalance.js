@@ -337,6 +337,7 @@ class CashierClosingBalance extends Component {
     this.setState({
       verifyEditOTPLoading: true,
     });
+    console.log(this.state);
     axios
       .post(`${API_URL}/partnerCashier/addClosingBalance`, this.state)
       .then(res => {

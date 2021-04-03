@@ -43,11 +43,11 @@ class CashierNav extends Component {
               <FormattedMessage {...messages.menu3} />
             </Link>
           </A> */}
-          <A href={`/cashier/${bankName}/pay-bills`}>
+          {/* <A href={`/cashier/${bankName}/pay-bills`}>
             <Link active={bills}>
               <span> Pay Bills </span>
             </Link>
-          </A>
+          </A> */}
           <A href={`/cashier/${bankName}/reports`}>
             <Link active={reports}>
               <FormattedMessage {...messages.menu4} />

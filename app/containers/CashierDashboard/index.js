@@ -14,6 +14,8 @@ import Wrapper from 'components/Wrapper';
 import CashierHeader from 'components/Header/CashierHeader';
 import Container from 'components/Container';
 import Loader from 'components/Loader';
+import Row from 'components/Row';
+import Col from 'components/Col';
 import Card from 'components/Card';
 import ActionBar from 'components/ActionBar';
 import SidebarCashier from 'components/Sidebar/SidebarCashier';
@@ -290,6 +292,7 @@ getTransactions = async(after,before) => {
         token: token
       })
       .then(res => {
+        console.log(res);
         if (res.status == 200) {
           let received = res.data.cashReceived == null ? 0 : res.data.cashReceived;
           let paid = res.data.cashPaid == null ? 0 : res.data.cashPaid;
@@ -394,6 +397,7 @@ getTransactions = async(after,before) => {
   };
 
   componentDidMount() {
+    this.getStats();
     this.getData();
   }
 
@@ -445,77 +449,89 @@ getTransactions = async(after,before) => {
           from="cashier"
         />
         <Container verticalMargin>
-          <SidebarCashier refresh={this.getHistory.bind(this)} branchName={this.props.match.params.bank} ref={this.child} />
+          <SidebarCashier refresh={this.getHistory.bind(this)}  bankName={this.props.match.params.bank} branchName={this.props.match.params.bank} ref={this.child} />
           <Main>
 
             <div className="clr">
-              <Card
-                horizontalMargin="7px"
-                cardWidth="151px"
-                h4FontSize="16px"
-                smallValue
-                textAlign="center"
-                col
-              >
-                <h4>Opening Balance</h4>
-                <div className="cardValue">
-                {
-                   <span> {CURRENCY} {this.state.openingBalance.toFixed(2)}</span>
-                }
-                </div>
-              </Card>
-              <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                h4FontSize="16px"
-                smallValue
-                textAlign="center"
-                col
-              >
-                <h4>Cash Received</h4>
-                <div className="cardValue">
-                  {CURRENCY} {this.state.cashReceived.toFixed(2)}
-                </div>
-              </Card>
-              <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                h4FontSize="16px"
-                smallValue
-                textAlign="center"
-                col
-              >
-                <h4>Paid in Cash</h4>
-                <div className="cardValue">
-                  {CURRENCY} {this.state.cashPaid.toFixed(2)}
-                </div>
-              </Card>
-              <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                smallValue
-                h4FontSize="16px"
-                textAlign="center"
-                col
-              >
-                <h4>Fee</h4>
-                <div className="cardValue">
-                  {CURRENCY} {this.state.feeGenerated.toFixed(2)}
-                </div>
-              </Card>
-              <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                smallValue
-                h4FontSize="16px"
-                textAlign="center"
-                col
-              >
-                <h4>Commision</h4>
-                <div className="cardValue">
-                  {CURRENCY}  {this.state.commissionGenerated.toFixed(2)}
-                </div>
-              </Card>
+              <Row>
+                <Col>
+                  <Card
+                    horizontalMargin="7px"
+                    cardWidth="170px"
+                    h4FontSize="16px"
+                    smallValue
+                    textAlign="center"
+                    col
+                  >
+                    <h4>Opening Balance</h4>
+                    <div className="cardValue">
+                    {
+                      <span> {CURRENCY} {this.state.openingBalance.toFixed(2)}</span>
+                    }
+                    </div>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    horizontalMargin="7px"
+                    cardWidth="170px"
+                    h4FontSize="16px"
+                    smallValue
+                    textAlign="center"
+                    col
+                  >
+                    <h4>Cash Received</h4>
+                    <div className="cardValue">
+                      {CURRENCY} {this.state.cashReceived.toFixed(2)}
+                    </div>
+                  </Card>
+                </Col>
+                <Col>
+                 <Card
+                    horizontalMargin="7px"
+                    cardWidth="170px"
+                    h4FontSize="16px"
+                    smallValue
+                    textAlign="center"
+                    col
+                  >
+                    <h4>Paid in Cash</h4>
+                    <div className="cardValue">
+                      {CURRENCY} {this.state.cashPaid.toFixed(2)}
+                    </div>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    horizontalMargin="7px"
+                    cardWidth="170px"
+                    smallValue
+                    h4FontSize="16px"
+                    textAlign="center"
+                    col
+                  >
+                    <h4>Fee</h4>
+                    <div className="cardValue">
+                      {CURRENCY} {this.state.feeGenerated.toFixed(2)}
+                    </div>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    horizontalMargin="7px"
+                    cardWidth="170px"
+                    smallValue
+                    h4FontSize="16px"
+                    textAlign="center"
+                    col
+                  >
+                    <h4>Commision</h4>
+                    <div className="cardValue">
+                      {CURRENCY}  {this.state.commissionGenerated.toFixed(2)}
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
             </div>
 
             <Card bigPadding style={{marginTop: '50px'}}>

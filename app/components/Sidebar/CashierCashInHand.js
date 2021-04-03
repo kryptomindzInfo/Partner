@@ -38,7 +38,9 @@ class CashierCashInHand extends Component {
     super();
     this.state = {
       balance: 0,
-      incoming: []
+      incoming: [],
+      receiptPopup:false,
+      values:{},
     }
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -56,6 +58,12 @@ class CashierCashInHand extends Component {
     this.setState({
       [name]: value,
     });
+  };
+
+  closeReceiptPopup = () => {
+    this.setState({
+      receiptPopup: false,
+    })
   };
 
   closePopup = () => {
@@ -295,6 +303,14 @@ class CashierCashInHand extends Component {
             console.log(res.data.status);
             this.setState({
               notification: 'Transaction Successfully Done',
+              values:{
+                amount: this.state.amount,
+                sender_id: cid,
+                sender_name: cashierName,
+                receiver_id: receiver[0],
+                receiver_name: receiver[1]
+              },
+              receiptPopup:true,
             });
             this.success();
             this.closePopup();

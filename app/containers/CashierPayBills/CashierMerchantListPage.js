@@ -153,6 +153,7 @@ function CashierMerchantListPage(props) {
       <Container verticalMargin>
         <SidebarCashier
           branchName={props.match.params.bank}
+          bankName={props.match.params.bank}
           refresh={() => { }}
         />
         <Main>

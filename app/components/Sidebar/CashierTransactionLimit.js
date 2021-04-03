@@ -17,7 +17,7 @@ import Loader from 'components/Loader';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 import CashierToOperationalForm from './CashiertoOperationalForm';
 import TransactionReciept from '../TransactionReciept';
-
+import history from 'utils/history';
 import { API_URL, CONTRACT_URL, CURRENCY, STATIC_URL } from 'containers/App/constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -1216,6 +1216,22 @@ class CashierTransactionLimit extends Component {
         <Row style={{ marginTop: '25%' }}>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
             <FormDialog />
+          </Col>
+        </Row>
+        <Row>
+          <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
+            {this.state.transactionStarted && !this.state.isClosed ? (
+              <Button
+                dashBtn
+                onClick={()=>history.push(`/cashier/${this.props.bankName}/pay-bills`)}
+              >
+                Pay Bills
+              </Button>
+            ) : (
+                <Button dashBtn disabled>
+                  Paybills
+                </Button>
+              )}
           </Col>
         </Row>
         <Row>

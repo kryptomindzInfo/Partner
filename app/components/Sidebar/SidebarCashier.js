@@ -24,7 +24,7 @@ class SidebarCashier extends Component {
   render() {
     return (
         <Sidebar marginRight>
-            <CashierTransactionLimit refresh={this.props.refresh.bind(this)}  ref={this.child}/>
+            <CashierTransactionLimit refresh={this.props.refresh.bind(this)}  bankName={this.props.bankName} ref={this.child}/>
             <CashierCashInHand refresh={this.props.refresh.bind(this)}/>
             <CashierClosingBalance branchName={this.props.branchName}/>
         </Sidebar>
