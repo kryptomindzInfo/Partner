@@ -27,6 +27,7 @@ import TextInput from 'components/TextInput';
 import Popup from 'components/Popup';
 import Button from 'components/Button';
 import ReactToPrint from 'react-to-print';
+import BranchHeader from 'components/Header/BranchHeader';
 import Row from 'components/Row';
 import Col from 'components/Col';
 import Footer from 'components/Footer';
@@ -62,11 +63,13 @@ today = today.getTime();
 
 
 export default class CashierDashboard extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       token,
       toggle: 'report',
+      token: props.apitype === 'partnerCashier' ?  localStorage.getItem('cashierLogged') :localStorage.getItem('branchLogged'),
+      id: props.apitype === 'partnerCashier' ?  localStorage.getItem('cashierId') : props.match.params.id,
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
       branchName: localStorage.getItem('branchName'),
@@ -134,9 +137,10 @@ export default class CashierDashboard extends Component {
   
   getHistory = async(after,before) => {
     try{
-      const res = await axios.post(`${API_URL}/partnerCashier/queryTransactionStates`, {
-        token: token,
+      const res = await axios.post(`${API_URL}/${this.props.apitype}/queryCashierTransactionStates`, {
+        token: this.state.token,
         bank_id: bankId,
+        cashier_id: this.state.id,
         status: "2",
         date_after: after,
         date_before: before,
@@ -161,8 +165,9 @@ export default class CashierDashboard extends Component {
 
   getReport = async(after,before) => {
     try{
-      const res = await axios.post(`${API_URL}/partnerCashier/getDailyReport`, {
-        token: token,
+      const res = await axios.post(`${API_URL}/${this.props.apitype}/getCashierDailyReport`, {
+        token: this.state.token,
+        cashier_id: this.state.id,
         start:after,
         end: before,
       });
@@ -179,11 +184,11 @@ export default class CashierDashboard extends Component {
       
   };
   
-
   getStats = () => {
     axios
-      .post(`${API_URL}/partnerCashier/getDashStats`, {
-        token: token
+      .post(`${API_URL}/${this.props.apitype}/getPartnerCashierDashStats`, {
+        token: this.state.token,
+        cashier_id: this.state.id,
       })
       .then(res => {
         if (res.status == 200) {
@@ -232,7 +237,6 @@ export default class CashierDashboard extends Component {
       });
   };
 
-  
 
   handlePageChange = pageNumber => {
     this.setState({ activePage: pageNumber });
@@ -294,7 +298,6 @@ export default class CashierDashboard extends Component {
     const before = new Date(this.state.formDate);
     after.setHours(0,0,0,0);
     before.setHours(23,59,59,0);
-    const branch=await this.getBranchByName();
     this.getStats();
     const allHistory = await this.getHistory(after,before);
     const report = await this.getReport(after,before);
@@ -302,7 +305,6 @@ export default class CashierDashboard extends Component {
     this.setState(
       {
         datereport: report.result.reports,
-        branchDetails:branch,
         total1: (allHistory.sendMoneyNwtNw.reduce(
           function(a, b){
             return a + (b.childTx[0].transaction.amount);
@@ -344,7 +346,6 @@ export default class CashierDashboard extends Component {
     const before = new Date(this.state.endDate);
     after.setHours(0,0,0,0);
     before.setHours(23,59,59,0);
-    const branch = await this.getBranchByName();
     const report = await this.getReport(after,before);
     console.log(report.result.reports);
     this.setState(
@@ -353,7 +354,6 @@ export default class CashierDashboard extends Component {
           function(a, b){
             return a + b.descripency;
           }, 0)),
-        branchDetails:branch,
         reports:report.result.reports,
         loading:false,
       }
@@ -416,12 +416,23 @@ export default class CashierDashboard extends Component {
           <meta charSet="utf-8" />
           <title>Dashboard | CASHIER | E-WALLET</title>
         </Helmet>
-        <CashierHeader
+        {this.props.apitype==='partnerCashier' ? (
+          <CashierHeader
           active="reports"
           bankName={this.props.match.params.bank}
           bankLogo={STATIC_URL + logo}
           from="cashier"
         />
+
+        ) : (
+          <BranchHeader
+          page="branch"
+          goto={"/branch/"+this.props.match.params.bank+"/dashboard"}
+          bankName={this.props.match.params.bank}
+          bankLogo={STATIC_URL + logo}
+        />
+        )}
+        
         <Container verticalMargin>
         <div
                 style={{

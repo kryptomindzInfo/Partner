@@ -68,6 +68,7 @@ export default class BranchDashboard extends Component {
       openingBalance: 0,
       pendingtransStatus:'',
       commissionGenerated: 0,
+      invoicePaid:0,
       cashPaid: 0,
       pending: 0,
       accepted: 0,
@@ -826,6 +827,7 @@ export default class BranchDashboard extends Component {
             totalCashier: total,
             cashReceived: received.toFixed(2),
             cashPaid: paid.toFixed(2),
+            invoicePaid: res.data.invoicePaid,
             cashInHand: res.data.cashInHand.toFixed(2),
             feeGenerated:res.data.feeGenerated.toFixed(2),
             commissionGenerated:res.data.commissionGenerated.toFixed(2),
@@ -974,37 +976,38 @@ export default class BranchDashboard extends Component {
           <Row>
               <Col>
                 <Card
-                  marginBottom="54px"
+                  style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Opening Balance</h4>
-
                   <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
                 </Card>
               </Col>
               <Col>
               <Card
-                  marginBottom="54px"
+                   style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Paid in Cash</h4>
-
                   <div className="cardValue">{CURRENCY}: {this.state.cashPaid}</div>
                 </Card>
               </Col>
               <Col>
               <Card
-                  marginBottom="54px"
+                   style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Cash Recieved</h4>
 
@@ -1013,11 +1016,12 @@ export default class BranchDashboard extends Component {
               </Col>
               <Col>
                 <Card
-                  marginBottom="54px"
+                   style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Cash in Hand</h4>
 
@@ -1026,26 +1030,42 @@ export default class BranchDashboard extends Component {
               </Col>
               <Col>
               <Card
-                  marginBottom="54px"
+                  style={{height:'160px'}}
+                  marginBottom="10px"
+                  textAlign="center"
                   buttonMarginTop="32px"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Number of Cashier</h4>
                   <div className="cardValue">{this.state.totalCashier}</div>
                 </Card>
               </Col>
             </Row>
-            <Row style={{marginTop:'35px',marginBottom:'35px'}}>
-            
-              <Col cW='60%'>
-              <Card
-                  marginBottom="54px"
+          <Row style={{marginTop:'35px',marginBottom:'35px'}}>
+              <Col cW='20%'l>
+                <Card
+                  style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
                   bigPadding
                   smallValue
-                  style={{display:'contents'}}
+                >
+                  <h4>Invoices Paid</h4>
+
+                  <div className="cardValue">{CURRENCY}: {this.state.invoicePaid}</div>
+                </Card>
+              </Col>
+            
+              <Col cW='50%'>
+              <Card
+                  style={{height:'160px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
                 >
                   <h4>Revenue Collected</h4>
                   <Row>
@@ -1064,13 +1084,14 @@ export default class BranchDashboard extends Component {
                   </Row>
                 </Card>
               </Col>
-              <Col cW='40%'>
+              <Col cW='30%'>
               <Card
-                  marginBottom="54px"
+                   style={{height:'160px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
                   bigPadding
+                  textAlign="center"
                   smallValue
-                  style={{display:'contents'}}
                 >
                   <h4>Authorisation Requests</h4>
                   <Row>
@@ -1160,7 +1181,7 @@ export default class BranchDashboard extends Component {
                                 <Button
                                   className="sendMoneyButton"
                                 >
-                                  <A
+                                  {/* <A
                                     href={
                                       '/branch/' +
                                       dis.props.match.params.bank +
@@ -1169,6 +1190,16 @@ export default class BranchDashboard extends Component {
                                     }
                                   >
                                     View
+                                  </A> */}
+                                  <A
+                                    href={
+                                      '/branch/' +
+                                      dis.props.match.params.bank +
+                                      '/cashier/reports/' +
+                                      b._id
+                                    }
+                                  >
+                                    Reports
                                   </A>
                               </Button>
                               <span className="absoluteMiddleRight primary popMenuTrigger">

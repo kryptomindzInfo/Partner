@@ -210,6 +210,12 @@ export default function App(props) {
             path="/branch/:bank?/report"
             component={BranchReports}
           />
+           <BranchRoute
+            apitype='partnerBranch'
+            exact
+            path="/branch/:bank?/cashier/reports/:id"
+            component={CashierReports}
+          />
           {/* <BranchRoute
             exact
             path="/branch/operationalHistory"
@@ -270,6 +276,7 @@ export default function App(props) {
             component={p => <CashierMerchantListPage {...p} />}
           />
           <CashierRoute
+            apitype='partnerCashier'
             exact
             path="/cashier/:bank?/reports"
             component={CashierReports}
