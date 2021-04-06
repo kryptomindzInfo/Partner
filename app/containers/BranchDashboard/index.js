@@ -1056,7 +1056,7 @@ export default class BranchDashboard extends Component {
                 >
                   <h4>Invoices Paid</h4>
 
-                  <div className="cardValue">{CURRENCY}: {this.state.invoicePaid}</div>
+                  <div className="cardValue">{this.state.invoicePaid}</div>
                 </Card>
               </Col>
             
@@ -1071,15 +1071,15 @@ export default class BranchDashboard extends Component {
                 >
                   <h4>Revenue Collected</h4>
                   <Row>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Fee</h5>
                       <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
                     </Col>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Commission</h5>
                       <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
                     </Col>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Total</h5>
                       <div className="cardValue">{CURRENCY}: {parseInt(this.state.commissionGenerated, 10)+parseInt(this.state.feeGenerated, 10)}</div>
                     </Col>
@@ -1097,15 +1097,15 @@ export default class BranchDashboard extends Component {
                 >
                   <h4>Authorisation Requests</h4>
                   <Row>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Approved</h5>
                       <div className="cardValue">{this.state.accepted}</div>
                     </Col>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Declined</h5>
                       <div className="cardValue">{this.state.cancelled}</div>
                     </Col>
-                    <Col>
+                    <Col style={{textAlign:'center'}}>
                       <h5>Pending</h5>
                       <div className="cardValue">{this.state.pending}</div>
                     </Col>
@@ -1150,11 +1150,11 @@ export default class BranchDashboard extends Component {
                                 {b.name}
                               </td>
                             <td className="tac">
-
-                              {(
+                              {b.cash_in_hand.toFixed(2)}
+                              {/* {(
                                 b.opening_balance +
                                 (b.cash_received - b.cash_paid)
-                              ).toFixed(2)}
+                              ).toFixed(2)} */}
                             </td>
                             <td>
                               {this.state.users.filter(
@@ -1173,7 +1173,7 @@ export default class BranchDashboard extends Component {
                               {b.cash_received.toFixed(2)}
                             </td>
                             <td>
-                            {parseInt(b.fee_generated,10)+parseInt(b.commission_generated,10)}
+                            {b.fee_generated+b.commission_generated}
                             </td>
 
                             <td className="tac bold green">
