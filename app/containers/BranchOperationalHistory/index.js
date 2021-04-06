@@ -580,9 +580,9 @@ export default class BranchOperationalHistory extends Component {
                                   {
                                     b.Value.tx_data.tx_type == 'DR'
                                       ?
-                                      <span>{CURRENCY} -{b.Value.amount.toFixed(2)}</span>
+                                      <span>{CURRENCY} -{b.Value.amount}</span>
                                       :
-                                      <span>{CURRENCY} {b.Value.amount.toFixed(2)}</span>
+                                      <span>{CURRENCY} {b.Value.amount}</span>
                                   }
 
                                 </div>

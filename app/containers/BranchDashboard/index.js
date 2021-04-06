@@ -30,7 +30,7 @@ import Table from 'components/Table';
 import MiniPopUp from 'components/MiniPopUp';
 import FormGroup from 'components/FormGroup';
 import TextInput from 'components/TextInput';
-import UploadArea from 'components/UploadArea';
+import Footer from 'components/Footer';
 import Row from 'components/Row';
 import Col from 'components/Col';
 import Popup from 'components/Popup';
@@ -63,6 +63,8 @@ export default class BranchDashboard extends Component {
     this.state = {
       token,
       otpEmail: email,
+      bankName: localStorage.getItem('bankName'),
+      bankLogo: localStorage.getItem('bankLogo'),
       otpMobile: mobile,
       feeGenerated: 0,
       openingBalance: 0,
@@ -1130,8 +1132,8 @@ export default class BranchDashboard extends Component {
                       <th>Cashier Name</th>
                       <th>Cash in Hand (XOF)</th>
                       <th>Assigned to</th>
-                      <th>Input amount</th>
-                      <th>Withdrawal</th>
+                      <th>Paid In Cash</th>
+                      <th>Cash Received</th>
                       <th>Revenue Generated</th>
                       <th>Pending Transaction</th>
                       <th></th>
@@ -1163,11 +1165,12 @@ export default class BranchDashboard extends Component {
                                 )[0].name
                                 : ''}
                             </td>
-                            <td>
-                              {b.cash_received.toFixed(2)}
-                            </td>
+                            
                             <td>
                               {b.cash_paid.toFixed(2)}
+                            </td>
+                            <td>
+                              {b.cash_received.toFixed(2)}
                             </td>
                             <td>
                             {parseInt(b.fee_generated,10)+parseInt(b.commission_generated,10)}
@@ -2318,6 +2321,7 @@ export default class BranchDashboard extends Component {
             </form>
           </Popup>
         ) : null}
+          <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
     );
   }

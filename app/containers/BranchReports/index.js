@@ -19,7 +19,7 @@ import ActionBar from 'components/ActionBar';
 import FormGroup from 'components/FormGroup';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import SelectInput from 'components/SelectInput';
+import Footer from 'components/Footer';
 import Main from 'components/Main';
 import Table from 'components/Table';
 import Button from 'components/Button';
@@ -59,6 +59,8 @@ export default class BranchReports extends Component {
     super();
     this.state = {
       token,
+      bankName: localStorage.getItem('bankName'),
+      bankLogo: localStorage.getItem('bankLogo'),
       cashiers:[],
       selectedCashierDetails: {},
       datearray:[],
@@ -67,38 +69,20 @@ export default class BranchReports extends Component {
       datestats: [],
       accepted: 0,
       from:new Date(),
-      selectedCashier:'',
       to:new Date(),
-      otpEmail: email,
-      otpMobile: mobile,
-      agree: false,
-      showPending: false,
-      loading:false,
-      historyPop: false,
-      tomorrow: false,
-      trans_type: '',
       cashReceived: 0,
       openingBalance: 0,
+      paidInCash:0,
       closingBalance: 0,
       cashPaid: 0,
       feeGenerated: 0,
+      cashInhand: 0,
+      pending: 0,
+      accepted: 0,
+      declined: 0,
+      invoicePaid: 0,
       commissionGenerated: 0,
       closingTime: null,
-      perPage: 20,
-      totalCount: 100,
-      allhistory: {},
-      DR:{},
-      CR:{},
-      activePage: 1,
-      active: 'Active',
-      trans_from: '',
-      trans_to: '',
-      transcount_from: '',
-      sendMoneyNwtNw: [],
-      sendMoneyNwtW: [],
-      sendMoneyNwtM: [],
-      sendMoneyNwtO: [],
-      sendMoneyWtNw: [],
       history: [],
       datelist: [],
       filter: '',
@@ -202,8 +186,12 @@ export default class BranchReports extends Component {
       });
       if (res.status == 200) {
         return ({
-          cashier:cashier,
-          reports:res.data.reports,
+          cashier: cashier,
+          reports: res.data.reports,
+          accepted: res.data.accepted,
+          pending: res.data.pending,
+          declined: res.data.decline,
+          paid: res.data.invoicePaid,
         });
       }
     } catch (err){
@@ -221,10 +209,7 @@ export default class BranchReports extends Component {
       after.setHours(0,0,0,0);
       before.setHours(23,59,59,0);
       const cashiedatestats = await this.getCashierDailyReport(after,before,cashier);
-      return ({
-        date:date,
-        cashiedatestats:cashiedatestats,
-      });
+      return ({cashiedatestats:cashiedatestats});
     });
     const result= await Promise.all(stats);
     return(result);
@@ -233,10 +218,52 @@ export default class BranchReports extends Component {
   getDateStats = async(dlist,clist) => {
     const stats = dlist.map(async (date) => {
       const cashiedatestats = await this.getCashierStatsByDate(date,clist);
-      return cashiedatestats;
-  });
-  const result= await Promise.all(stats);
-  return({res:result, loading:false});
+      console.log(cashiedatestats);
+      return ({
+        cashiedatestats: cashiedatestats,
+        totalCih: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_in_hand : 0), 0
+        ).toFixed(2),
+        totalOb: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].opening_balance : 0), 0
+        ).toFixed(2),
+        totalCr: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received : 0), 0
+        ).toFixed(2),
+        totalCb: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance : 0), 0
+        ).toFixed(2),
+        totalDis: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
+        ).toFixed(2),
+        totalFee: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].fee_generated : 0), 0
+        ).toFixed(2),
+        totalComm: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].comm_generated : 0), 0
+        ).toFixed(2),
+        totalPic: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].paid_in_cash : 0), 0
+        ),
+        totalRa: cashiedatestats.reduce(
+          (a, b) => a + b.cashiedatestats.accepted, 0
+        ),
+        totalRp: cashiedatestats.reduce(
+          (a, b) => a + b.cashiedatestats.pending, 0
+        ),
+        totalRd: cashiedatestats.reduce(
+          (a, b) => a + b.cashiedatestats.declined, 0
+        ),
+        totalInvoice:  cashiedatestats.reduce(
+          (a, b) => a + b.cashiedatestats.paid, 0
+        ),
+      })
+    });
+    const result= await Promise.all(stats);
+    return({
+      res:result,
+      loading:false,
+    });
   };
 
   formatDate = date => {
@@ -282,12 +309,45 @@ export default class BranchReports extends Component {
     const end = endOfDay(new Date(this.state.to));
     const datelist = await this.getDatesBetweenDates(start, end);
     const datestats =  await this.getDateStats(datelist,cashiers.cashiers);
-    console.log(datestats.res);
+    console.log(datestats);
     this.setState(
       {
         cashiers: cashiers.cashiers,
         datelist: datelist,
         datestats: datestats.res,
+        openingBalance: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalOb), 0
+        ),
+        closingBalance: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalCb), 0
+        ),
+        paidInCash: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalPic), 0
+        ),
+        cashReceived: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalCr), 0
+        ),
+        cashInhand: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalCih), 0
+        ),
+        feeGenerated: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalFee), 0
+        ),
+        commissionGenerated: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalComm), 0
+        ),
+        pending : datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalRp), 0
+        ),
+        accepted: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalRa), 0
+        ),
+        declined: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalRd), 0
+        ),
+        invoicePaid: datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalInvoice), 0
+        ),
         loading:datestats.loading,
       }
     );
@@ -404,7 +464,7 @@ export default class BranchReports extends Component {
                         id="date-picker-dialog"
                         label="To"
                         size="small"
-                        minDate={new Date()}
+                        maxDate={new Date()}
                         fullWidth
                         inputVariant="outlined"
                         format="dd/MM/yyyy"
@@ -433,28 +493,6 @@ export default class BranchReports extends Component {
                     </Col> */}
                   </Row>
                   <Row style={{marginTop:'12px'}}>
-                    {/* <Col cw='30%'>
-                    <FormGroup>
-                        <SelectInput
-                          style={{marginTop:'17px'}}
-                          type="text"
-                          name="country"
-                          // value={this.state.country}
-                          onChange={this.cashierChange}
-                          required
-                          autoFocus
-                        >
-                          <option title="" value="">Select Cashier*</option>
-                          {this.state.cashiers.length>0 ?(
-                            this.state.cashiers.map((c,i)=>{
-                              return(
-                                <option title="" value={c._id}>{c.name}</option>
-                              );
-                            })
-                          ):null}
-                        </SelectInput>
-                        </FormGroup>
-                    </Col> */}
                     <Col cW='17%'></Col>
                     <Col cw='50%'>
                       <Button style={{padding:'9px'}} onClick={()=>this.getData()}>Get Report</Button>
@@ -465,104 +503,118 @@ export default class BranchReports extends Component {
                    
                 
             </ActionBar>
-              <div className="clr">
-              <Row>
-                <Col>
+            <div className="clr">
+            <Row>
+              <Col>
                 <Card
-                horizontalMargin="7px"
-                cardWidth="151px"
-                h4FontSize="16px"
-                smallValue
-                textAlign="center"
-                col
-              >
-                <h4>Paid in cash</h4>
-                <div className="cardValue">
-                  {
-                    <span> {CURRENCY} 0</span>
-                  }
-                </div>
-              </Card>
-
-                </Col>
-                <Col>
-                <Card
-                  horizontalMargin="7px"
-                  cardWidth="125px"
-                  h4FontSize="16px"
-                  smallValue
-                  textAlign="center"
-                  col
-                >
-                  <h4>Cash Received</h4>
-                  <div className="cardValue">
-                    {CURRENCY} 1224.80
-                  </div>
-                  </Card>
-                </Col>
-                <Col>
-                <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                h4FontSize="16px"
-                smallValue
-                textAlign="center"
-                col
-              >
-                <h4>Fee Generated</h4>
-                <div className="cardValue">
-                  {CURRENCY} 2.10
-                </div>
-              </Card>
-
-                </Col>
-                <Col>
-                <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                smallValue
-                h4FontSize="16px"
-                textAlign="center"
-                col
-              >
-                <h4>Commission Generated</h4>
-                <div className="cardValue">
-                  {CURRENCY} 3.14
-                </div>
-              </Card>
-
-                </Col>
-                <Col>
-                <Card
-                horizontalMargin="7px"
-                cardWidth="125px"
-                smallValue
-                h4FontSize="16px"
-                textAlign="center"
-                col
-              >
-                <h4>Revenue Generated</h4>
-                <div className="cardValue">
-                  
-                    <div>
-                     {CURRENCY} 5.24
-                    </div>
-                 
-                 
-                </div>
-              </Card>
-                </Col>
-                <Col>
-                <Card
-                  marginBottom="54px"
+                  style={{height:'120px'}}
+                  marginBottom="10px"
                   buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
                   smallValue
-                  style={{display:'contents'}}
+                >
+                  <h4>Opening Balance</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
+                </Card>
+              </Col>
+              <Col>
+              <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Paid in Cash</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashPaid}</div>
+                </Card>
+              </Col>
+              <Col>
+              <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash Recieved</h4>
+
+                  <div className="cardValue">{CURRENCY}: {this.state.cashReceived}</div>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash in Hand</h4>
+
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                </Card>
+              </Col>
+            </Row>
+          <Row style={{marginTop:'5px',marginBottom:'0px'}}>
+              <Col cW='20%'l>
+                <Card
+                  style={{height:'140px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Invoices Paid</h4>
+
+                  <div className="cardValue">{this.state.invoicePaid}</div>
+                </Card>
+              </Col>
+            
+              <Col cW='50%'>
+              <Card
+                  style={{height:'140px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Revenue Collected</h4>
+                  <Row>
+                    <Col>
+                      <h5>Fee</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
+                    </Col>
+                    <Col>
+                      <h5>Commission</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
+                    </Col>
+                    <Col>
+                      <h5>Total</h5>
+                      <div className="cardValue">{CURRENCY}: {parseInt(this.state.commissionGenerated, 10)+parseInt(this.state.feeGenerated, 10)}</div>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+              <Col cW='30%'>
+              <Card
+                   style={{height:'140px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  textAlign="center"
+                  smallValue
                 >
                   <h4>Authorisation Requests</h4>
                   <Row>
                     <Col>
-                      <h5>Approve</h5>
+                      <h5>Approved</h5>
                       <div className="cardValue">{this.state.accepted}</div>
                     </Col>
                     <Col>
@@ -576,13 +628,14 @@ export default class BranchReports extends Component {
                   </Row>
                   
                 </Card>
-                </Col>
-              </Row>
+              </Col>
+            </Row>
+            
             </div>
         {this.state.datelist.length > 0 
             ? this.state.datelist.map( (date,i) => {
               return(
-              <Card style={{ marginTop: '50px' }}>
+              <Card style={{ marginTop: '10px' }}>
               
                 <h3 style={{color:'green'}}><b>{`${new Date(date).getDate()}/${new Date(date).getMonth()-1}/${new Date(date).getFullYear()}`}</b></h3>
                 <Table
@@ -606,10 +659,10 @@ export default class BranchReports extends Component {
                         <th>Requests Pending</th></tr>
                     </thead>
                     <tbody>
-                    {this.state.datestats[i].length > 0 
-                        ? this.state.datestats[i].map( (b, index) => {
+                    {this.state.datestats[i].cashiedatestats.length > 0 
+                        ? this.state.datestats[i].cashiedatestats.map( (b, index) => {
                           return (
-                          <tr key={i} >
+                          <tr key={index} >
                             
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.cashier.name}</div>
@@ -636,20 +689,54 @@ export default class BranchReports extends Component {
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? (b.cashiedatestats.reports[0].fee_generated + b.cashiedatestats.reports[0].comm_generated).toFixed(2) : ""}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">0</div>
+                              <div className="labelGrey">{b.cashiedatestats.accepted}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">0</div>
+                              <div className="labelGrey">{b.cashiedatestats.declined}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">0</div>
+                              <div className="labelGrey">{b.cashiedatestats.pending}</div>
                             </td>
                             
                           </tr>
                           )
                         })
+
                         : null
                       }
+                      <tr style={{textAlign:"center", backgroundColor:'green'}}>
+                          <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalOb}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCih}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalPic}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCr}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalFee}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalComm}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {parseInt(this.state.datestats[i].totalComm) + parseInt(this.state.datestats[i].totalFee)}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRa}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRd}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRp}</b></div>
+                          </td>
+                        </tr>
                   </tbody>
               
               </Table>
@@ -662,7 +749,7 @@ export default class BranchReports extends Component {
 
            
         </Container>
-
+        <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
     );
   }
