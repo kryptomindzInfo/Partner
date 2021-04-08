@@ -976,6 +976,19 @@ export default class BranchDashboard extends Component {
           <SidebarBranch bankName={this.props.match.params.bank} />
           <Main>
           <Row>
+          <Col>
+              <Card
+                  style={{height:'160px'}}
+                  marginBottom="10px"
+                  textAlign="center"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Number of Cashier</h4>
+                  <div className="cardValue">{this.state.totalCashier}</div>
+                </Card>
+              </Col>
               <Col>
                 <Card
                   style={{height:'160px'}}
@@ -1030,19 +1043,7 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
                 </Card>
               </Col>
-              <Col>
-              <Card
-                  style={{height:'160px'}}
-                  marginBottom="10px"
-                  textAlign="center"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
-                >
-                  <h4>Number of Cashier</h4>
-                  <div className="cardValue">{this.state.totalCashier}</div>
-                </Card>
-              </Col>
+              
             </Row>
           <Row style={{marginTop:'35px',marginBottom:'35px'}}>
               <Col cW='20%'l>
@@ -1114,7 +1115,8 @@ export default class BranchDashboard extends Component {
                 </Card>
               </Col>
             </Row>
-            
+          </Main>
+          <Main fullWidth>  
             <Card bigPadding>
               <div className="cardHeader">
                 <div className="cardHeaderLeft">
@@ -1130,11 +1132,16 @@ export default class BranchDashboard extends Component {
                   <thead>
                     <tr>
                       <th>Cashier Name</th>
-                      <th>Cash in Hand (XOF)</th>
                       <th>Assigned to</th>
+                      <th>Opening Time</th>
+                      <th>Opening Balance</th>
                       <th>Paid In Cash</th>
                       <th>Cash Received</th>
                       <th>Revenue Generated</th>
+                      <th>Cash in Hand</th>
+                      <th>Closing Time</th>
+                      <th>Closing Balance</th>
+                      <th>Discripancy</th>
                       <th>Pending Transaction</th>
                       <th></th>
                     </tr>
@@ -1146,35 +1153,44 @@ export default class BranchDashboard extends Component {
                           <tr key={b._id}>
                              <td style={{display:"inline-flex"}}>
                                   <FiberManualRecordIcon  fontSize="small" color={b.is_closed ? "secondary" : "primary"}/>
-
                                 {b.name}
                               </td>
-                            <td className="tac">
-                              {b.cash_in_hand.toFixed(2)}
-                              {/* {(
-                                b.opening_balance +
-                                (b.cash_received - b.cash_paid)
-                              ).toFixed(2)} */}
-                            </td>
-                            <td>
-                              {this.state.users.filter(
-                                u => u._id == b.partner_user_id,
-                              )[0]
-                                ? this.state.users.filter(
+                              <td>
+                                {this.state.users.filter(
                                   u => u._id == b.partner_user_id,
-                                )[0].name
-                                : ''}
-                            </td>
-                            
-                            <td>
-                              {b.cash_paid.toFixed(2)}
-                            </td>
-                            <td>
-                              {b.cash_received.toFixed(2)}
-                            </td>
-                            <td>
-                            {b.fee_generated+b.commission_generated}
-                            </td>
+                                )[0]
+                                  ? this.state.users.filter(
+                                    u => u._id == b.partner_user_id,
+                                  )[0].name
+                                  : ''}
+                              </td>
+                              <td>
+                                {`${new Date(b.opening_time).getHours()}:${new Date(b.opening_time).getMinutes()}`}
+                              </td>
+                              <td className="tac">
+                                {b.opening_balance.toFixed(2)}
+                              </td>
+                              <td>
+                                {b.cash_paid.toFixed(2)}
+                              </td>
+                              <td>
+                                {b.cash_received.toFixed(2)}
+                              </td>
+                              <td>
+                                {b.fee_generated+b.commission_generated}
+                              </td>
+                              <td className="tac">
+                                {b.cash_in_hand.toFixed(2)}
+                              </td>
+                              <td>
+                                {`${new Date(b.closing_time).getHours()}:${new Date(b.closing_time).getMinutes()}`}
+                              </td>
+                              <td className="tac">
+                                {b.closing_balance.toFixed(2)}
+                              </td>
+                              <td>
+                                {(b.closing_balance-b.cash_in_hand).toFixed(2)}
+                              </td>
 
                             <td className="tac bold green">
                               <span onClick={() => this.showPending(b._id)}> {b.pending_trans}</span>
@@ -1183,6 +1199,7 @@ export default class BranchDashboard extends Component {
                             <td className="tac bold green">
                                 <Button
                                   className="sendMoneyButton"
+                                  style ={{marginRight:"10px"}} 
                                 >
                                   {/* <A
                                     href={
@@ -1205,7 +1222,7 @@ export default class BranchDashboard extends Component {
                                     Reports
                                   </A>
                               </Button>
-                              <span className="absoluteMiddleRight primary popMenuTrigger">
+                              <span style ={{marginLeft:"10px"}} className="absoluteMiddleRight primary popMenuTrigger">
                                 <i className="material-icons ">more_vert</i>
                                 <div className="popMenu">
                                   <span onClick={() => dis.showEditPopup(b)}>

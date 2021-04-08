@@ -227,6 +227,12 @@ export default class BranchReports extends Component {
         totalOb: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].opening_balance : 0), 0
         ).toFixed(2),
+        totalCb: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance : 0), 0
+        ).toFixed(2),
+        totalDis: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
+        ).toFixed(2),
         totalCr: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received : 0), 0
         ).toFixed(2),
@@ -647,6 +653,7 @@ export default class BranchReports extends Component {
                 <thead>
                       <tr>
                         <th>Cashier</th>
+                        <th>Opening Time</th>
                         <th>Opening Balance</th>
                         <th>Cash in Hand</th>
                         <th>Paid in cash</th>
@@ -654,6 +661,9 @@ export default class BranchReports extends Component {
                         <th>Fee Generated</th>
                         <th>Commission Generated</th>
                         <th>Revenue Generated</th>
+                        <th>Closing Time</th>
+                        <th>Closing Balance</th>
+                        <th>Discripancy</th>
                         <th>Requests Approved</th>
                         <th>Requests Declined</th>
                         <th>Requests Pending</th></tr>
@@ -666,6 +676,9 @@ export default class BranchReports extends Component {
                             
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.cashier.name}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? `${new Date(b.cashiedatestats.reports[0].opening_time).getHours()}:${new Date(b.cashiedatestats.reports[0].opening_time).getMinutes()}` : "-:--"}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].opening_balance.toFixed(2) : "-"}</div>
@@ -689,6 +702,15 @@ export default class BranchReports extends Component {
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? (b.cashiedatestats.reports[0].fee_generated + b.cashiedatestats.reports[0].comm_generated).toFixed(2) : ""}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? `${new Date(b.cashiedatestats.reports[0].closing_time).getHours()}:${new Date(b.cashiedatestats.reports[0].closing_time).getMinutes()}` : "-:--"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance.toFixed(2) : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency.toFixed(2) : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.accepted}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
@@ -706,6 +728,9 @@ export default class BranchReports extends Component {
                       }
                       <tr style={{textAlign:"center", backgroundColor:'green'}}>
                           <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}></div>
+                          </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalOb}</b></div>
                           </td>
@@ -726,6 +751,15 @@ export default class BranchReports extends Component {
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {parseInt(this.state.datestats[i].totalComm) + parseInt(this.state.datestats[i].totalFee)}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCb}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalDis}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRa}</b></div>

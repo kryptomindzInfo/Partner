@@ -131,7 +131,7 @@ class BranchMasterWallet extends Component {
               dashBtn
               onClick={this.handlePopupOpen}
             >
-              <FormattedMessage {...messages.sendmoney} />
+              Transfer from Master to Operational
             </Button>
           </Col>
         </Row>
