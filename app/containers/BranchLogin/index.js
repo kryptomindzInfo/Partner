@@ -88,6 +88,9 @@ export default class BranchLogin extends Component {
           console.log(res);
           localStorage.setItem('branchLogged', res.data.token);
           localStorage.setItem('branchName', res.data.name);
+          localStorage.setItem('partnerName', res.data.partner_name);
+          localStorage.setItem('bankName', res.data.bank_name);
+          localStorage.setItem('bankLogo', res.data.bank_logo);
           localStorage.setItem('branchLimit', res.data.credit_limit);
           localStorage.setItem('branchUserName', res.data.username);
           localStorage.setItem('branchId', res.data.id);

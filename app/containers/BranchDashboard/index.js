@@ -977,10 +977,10 @@ export default class BranchDashboard extends Component {
         <Container verticalMargin>
           <SidebarBranch bankName={this.props.match.params.bank} />
           <Main>
-          <Row>
-          <Col>
-              <Card
-                  style={{height:'160px'}}
+            <Row>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'120px'}}
                   marginBottom="10px"
                   textAlign="center"
                   buttonMarginTop="32px"
@@ -991,9 +991,9 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{this.state.totalCashier}</div>
                 </Card>
               </Col>
-              <Col>
+              <Col  cW='33%'>
                 <Card
-                  style={{height:'160px'}}
+                  style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1004,9 +1004,9 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
                 </Card>
               </Col>
-              <Col>
-              <Card
-                   style={{height:'160px'}}
+              <Col  cW='33%'>
+                <Card
+                   style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1017,9 +1017,11 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{CURRENCY}: {this.state.cashPaid}</div>
                 </Card>
               </Col>
-              <Col>
-              <Card
-                   style={{height:'160px'}}
+            </Row>
+            <Row>
+              <Col  cW='33%'>
+                <Card
+                   style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1030,10 +1032,10 @@ export default class BranchDashboard extends Component {
 
                   <div className="cardValue">{CURRENCY}: {this.state.cashReceived}</div>
                 </Card>
-              </Col>
-              <Col>
+                </Col>
+              <Col  cW='33%'>
                 <Card
-                   style={{height:'160px'}}
+                   style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1045,12 +1047,9 @@ export default class BranchDashboard extends Component {
                   <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
                 </Card>
               </Col>
-              
-            </Row>
-          <Row style={{marginTop:'35px',marginBottom:'35px'}}>
-              <Col cW='30%'l>
+              <Col cW='33%'>
                 <Card
-                  style={{height:'160px'}}
+                  style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1068,14 +1067,14 @@ export default class BranchDashboard extends Component {
                       <div className="cardValue">{CURRENCY}: {this.state.amountPaid}</div>
                     </Col>
                   </Row>
-
-                 
                 </Card>
               </Col>
-            
-              <Col cW='40%'>
+            </Row>
+            <Row >
+              
+              <Col cW='50%'>
               <Card
-                  style={{height:'160px'}}
+                  style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -1099,9 +1098,9 @@ export default class BranchDashboard extends Component {
                   </Row>
                 </Card>
               </Col>
-              <Col cW='30%'>
+              <Col cW='50%'>
               <Card
-                   style={{height:'160px'}}
+                   style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   bigPadding

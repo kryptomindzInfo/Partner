@@ -6,6 +6,8 @@
  */
 import React, { Component } from 'react';
 import axios from 'axios';
+import PrintIcon from '@material-ui/icons/Print';
+import ReactToPrint from 'react-to-print';
 import { Helmet } from 'react-helmet';
 import endOfDay from 'date-fns/endOfDay';
 import startOfDay from 'date-fns/startOfDay';
@@ -62,6 +64,8 @@ export default class BranchReports extends Component {
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
       cashiers:[],
+      branchName: localStorage.getItem('branchName'),
+      partnerName: localStorage.getItem('partnerName'),
       selectedCashierDetails: {},
       datearray:[],
       cancelled: 0,
@@ -81,6 +85,7 @@ export default class BranchReports extends Component {
       accepted: 0,
       declined: 0,
       invoicePaid: 0,
+      invoiceAmount:0,
       commissionGenerated: 0,
       closingTime: null,
       history: [],
@@ -90,7 +95,7 @@ export default class BranchReports extends Component {
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
     this.warn = this.warn.bind(this);
-
+    this.componentRef = React.createRef();
 
     this.child = React.createRef();
   }
@@ -192,6 +197,7 @@ export default class BranchReports extends Component {
           pending: res.data.pending,
           declined: res.data.decline,
           paid: res.data.invoicePaid,
+          amountpaid : res.data.amountPaid,
         });
       }
     } catch (err){
@@ -262,6 +268,9 @@ export default class BranchReports extends Component {
         ),
         totalInvoice:  cashiedatestats.reduce(
           (a, b) => a + b.cashiedatestats.paid, 0
+        ),
+        totalInvoiceAmount:  cashiedatestats.reduce(
+          (a, b) => a + b.cashiedatestats.amountpaid, 0
         ),
       })
     });
@@ -353,6 +362,9 @@ export default class BranchReports extends Component {
         ),
         invoicePaid: datestats.res.reduce(
           (a, b) => a + parseInt(b.totalInvoice), 0
+        ),
+        invoiceAmount:datestats.res.reduce(
+          (a, b) => a + parseInt(b.totalInvoiceAmount), 0
         ),
         loading:datestats.loading,
       }
@@ -506,9 +518,32 @@ export default class BranchReports extends Component {
                     <Col cw='25%'></Col>
 
                   </Row>
-                   
-                
+                  <Row>
+                    <Col cW='90%'></Col>
+                    <Col cW='10%'>
+                      <ReactToPrint
+                        style={{float:'right'}}
+                      trigger={() => <Button ><PrintIcon/>  Print</Button>}
+                      content={() => this.componentRef.current}
+                    />
+                    </Col>
+                  </Row>
             </ActionBar>
+           <div ref={this.componentRef}>
+            <Card marginBottom="20px" buttonMarginTop="5px" smallValue style={{height:'90px'}}>
+              <Row>
+                <Col>
+                  <h4 style={{color:"green",marginBottom:"20px" }}><b>Bank Name : </b>{this.state.bankName} </h4> 
+                </Col>
+                <Col>
+                  <h4 style={{color:"green",marginBottom:"20px" }}><b>Partner Name : </b>{this.state.partnerName}</h4> 
+                </Col>
+                <Col>
+                  <h4 style={{color:"green", marginBottom:"20px"}}><b>Branch Name : </b>{this.state.branchName}</h4>      
+                </Col>
+              </Row>
+      
+      </Card>
             <div className="clr">
             <Row>
               <Col>
@@ -567,9 +602,9 @@ export default class BranchReports extends Component {
               </Col>
             </Row>
           <Row style={{marginTop:'5px',marginBottom:'0px'}}>
-              <Col cW='20%'l>
+          <Col cW='25%'>
                 <Card
-                  style={{height:'140px'}}
+                  style={{height:'120px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -577,12 +612,19 @@ export default class BranchReports extends Component {
                   smallValue
                 >
                   <h4>Invoices Paid</h4>
-
-                  <div className="cardValue">{this.state.invoicePaid}</div>
+                  <Row>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Number</h5>
+                      <div className="cardValue">{this.state.invoicePaid}</div>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Amount</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.invoiceAmount}</div>
+                    </Col>
+                  </Row>
                 </Card>
-              </Col>
-            
-              <Col cW='50%'>
+              </Col>   
+              <Col cW='45%'>
               <Card
                   style={{height:'140px'}}
                   marginBottom="10px"
@@ -762,13 +804,13 @@ export default class BranchReports extends Component {
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalDis}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRa}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRa}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRd}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRd}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalRp}</b></div>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRp}</b></div>
                           </td>
                         </tr>
                   </tbody>
@@ -781,7 +823,7 @@ export default class BranchReports extends Component {
           })
           :'ef'}
 
-           
+          </div> 
         </Container>
         <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
