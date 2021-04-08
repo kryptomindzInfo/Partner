@@ -71,6 +71,7 @@ export default class BranchDashboard extends Component {
       pendingtransStatus:'',
       commissionGenerated: 0,
       invoicePaid:0,
+      amountPaid:0,
       cashPaid: 0,
       pending: 0,
       accepted: 0,
@@ -830,6 +831,7 @@ export default class BranchDashboard extends Component {
             cashReceived: received.toFixed(2),
             cashPaid: paid.toFixed(2),
             invoicePaid: res.data.invoicePaid,
+            amountPaid: res.data.amountPaid,
             cashInHand: res.data.cashInHand.toFixed(2),
             feeGenerated:res.data.feeGenerated.toFixed(2),
             commissionGenerated:res.data.commissionGenerated.toFixed(2),
@@ -1046,7 +1048,7 @@ export default class BranchDashboard extends Component {
               
             </Row>
           <Row style={{marginTop:'35px',marginBottom:'35px'}}>
-              <Col cW='20%'l>
+              <Col cW='30%'l>
                 <Card
                   style={{height:'160px'}}
                   marginBottom="10px"
@@ -1056,12 +1058,22 @@ export default class BranchDashboard extends Component {
                   smallValue
                 >
                   <h4>Invoices Paid</h4>
+                  <Row>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Number</h5>
+                      <div className="cardValue">{this.state.invoicePaid}</div>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Amount</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.amountPaid}</div>
+                    </Col>
+                  </Row>
 
-                  <div className="cardValue">{this.state.invoicePaid}</div>
+                 
                 </Card>
               </Col>
             
-              <Col cW='50%'>
+              <Col cW='40%'>
               <Card
                   style={{height:'160px'}}
                   marginBottom="10px"
