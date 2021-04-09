@@ -43,13 +43,6 @@ toast.configure({
   pauseOnHover: true,
   draggable: true,
 });
-
-const token = localStorage.getItem('branchLogged');
-const bid = localStorage.getItem('branchId');
-const logo = localStorage.getItem('bankLogo');
-const email = localStorage.getItem('cashierEmail');
-const mobile = localStorage.getItem('cashierMobile');
-const bankId = localStorage.getItem('bankId');
 //enable the following line and disable the next line to test for tomorrow
 var today = new Date(new Date().setDate(new Date().getDate() + 1));
 //var today =new Date();
@@ -59,17 +52,14 @@ today = today.getTime();
 
 
 
-export default class BranchReports extends Component {
+export default class PartnerReports extends Component {
   constructor(props) {
     super();
     this.state = {
-      token: props.apitype === 'partner' ? localStorage.getItem('partnerLogged') : localStorage.getItem('branchLogged'),
-      bid: props.apitype === 'partner' ? props.match.params.id : localStorage.getItem('branchId'),
-      apiType: props.apitype,
+      token: localStorage.getItem('partnerLogged'),
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
       cashiers:[],
-      branchName: props.apitype === 'partner' ?   JSON.parse(localStorage.getItem('selectedBranch')).name  : localStorage.getItem('branchName'),
       partnerName: localStorage.getItem('partnerName'),
       selectedCashierDetails: {},
       datearray:[],
@@ -95,6 +85,7 @@ export default class BranchReports extends Component {
       closingTime: null,
       history: [],
       datelist: [],
+      branches:[],
       filter: '',
     };
     this.success = this.success.bind(this);
@@ -119,23 +110,16 @@ export default class BranchReports extends Component {
     );
   }
 
-  getCashiers = async() => {
+  getBranches = async() => {
     try {
-      const res = await axios.post(`${API_URL}/getAll`, {
-        page: 'partnerCashier',
-        type: this.state.apiType,
-        token: this.state.token,
-        where: { branch_id: this.state.bid },
-      })
-      if (res.status === 200){
-        return ({
-          cashiers: res.data.rows
-        });
-      } 
-    }catch(err){
+      const res = await axios.post(`${API_URL}/partner/listBranches`, { token:this.state.token });
+      if (res.status == 200) {
+        return ({branches:res.data.branches,loading:false});
+      }
+    } catch(err){
       console.log(err);
     }
-  };
+  }
 
   getCashierDetails = async(id) => {
     try {
@@ -186,17 +170,17 @@ export default class BranchReports extends Component {
     return dates;
   };
 
-  getCashierDailyReport = async(after,before,cashier) => {
+  getBranchDailyReport = async(after,before,branch) => {
     try{
-      const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDailyReport`, {
+      const res = await axios.post(`${API_URL}/partner/getBranchDailyReport`, {
         token: this.state.token,
-        cashier_id: cashier._id,
+        branch_id: branch._id,
         start:after,
         end: before,
       });
       if (res.status == 200) {
         return ({
-          cashier: cashier,
+          branch: branch,
           reports: res.data.reports,
           accepted: res.data.accepted,
           pending: res.data.pending,
@@ -213,22 +197,22 @@ export default class BranchReports extends Component {
   };
   
 
-  getCashierStatsByDate = async(date,clist) => {
-    const stats = clist.map(async (cashier) => {
+  getBranchStatsByDate = async(date,blist) => {
+    const stats = blist.map(async (branch) => {
       const after = new Date(date);
       const before = new Date(date);
       after.setHours(0,0,0,0);
       before.setHours(23,59,59,0);
-      const cashiedatestats = await this.getCashierDailyReport(after,before,cashier);
+      const cashiedatestats = await this.getBranchDailyReport(after,before,branch);
       return ({cashiedatestats:cashiedatestats});
     });
     const result= await Promise.all(stats);
     return(result);
   }
 
-  getDateStats = async(dlist,clist) => {
+  getDateStats = async(dlist,blist) => {
     const stats = dlist.map(async (date) => {
-      const cashiedatestats = await this.getCashierStatsByDate(date,clist);
+      const cashiedatestats = await this.getBranchStatsByDate(date,blist);
       console.log(cashiedatestats);
       return ({
         cashiedatestats: cashiedatestats,
@@ -241,27 +225,27 @@ export default class BranchReports extends Component {
         totalCb: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance : 0), 0
         ).toFixed(2),
-        totalDis: cashiedatestats.reduce(
-          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
-        ).toFixed(2),
+        // totalDis: cashiedatestats.reduce(
+        //   (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
+        // ).toFixed(2),
         totalCr: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received : 0), 0
         ).toFixed(2),
         totalCb: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance : 0), 0
         ).toFixed(2),
-        totalDis: cashiedatestats.reduce(
-          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
-        ).toFixed(2),
+        // totalDis: cashiedatestats.reduce(
+        //   (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
+        // ).toFixed(2),
         totalFee: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].fee_generated : 0), 0
         ).toFixed(2),
         totalComm: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].comm_generated : 0), 0
         ).toFixed(2),
-        totalPic: cashiedatestats.reduce(
-          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].paid_in_cash : 0), 0
-        ),
+        // totalPic: cashiedatestats.reduce(
+        //   (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].paid_in_cash : 0), 0
+        // ),
         totalRa: cashiedatestats.reduce(
           (a, b) => a + b.cashiedatestats.accepted, 0
         ),
@@ -324,15 +308,15 @@ export default class BranchReports extends Component {
         loading:true,
       }
     );
-    const cashiers = await this.getCashiers();
+    const branches = await this.getBranches();
     const start = startOfDay(new Date(this.state.from));
     const end = endOfDay(new Date(this.state.to));
     const datelist = await this.getDatesBetweenDates(start, end);
-    const datestats =  await this.getDateStats(datelist,cashiers.cashiers);
+    const datestats =  await this.getDateStats(datelist,branches.branches);
     console.log(datestats);
     this.setState(
       {
-        cashiers: cashiers.cashiers,
+        branches: branches.branches,
         datelist: datelist,
         datestats: datestats.res,
         openingBalance: datestats.res.reduce(
@@ -430,36 +414,8 @@ export default class BranchReports extends Component {
           <meta charSet="utf-8" />
           <title>Reports | AGENCY | E-WALLET</title>
         </Helmet>
-        {this.state.apiType === 'partner' ?   (
+       
           <PartnerHeader />
-        ) : (
-        <BranchHeader
-          active="reports"
-          bankName={this.props.match.params.bank}
-          bankLogo={STATIC_URL + logo}
-        />
-        )}
-         {this.state.apiType === 'partner' ? (
-        
-        <Card >
-        <div style={{display:'flex'}}>
-          <button style={{border:"none",width:"100px",marginLeft:"150px"}} >
-              <A>
-                <u>Reports</u>
-              </A>
-          </button>
-          <button style={{border:"none",width:"100px"}} onClick={() => {
-             history.push(`/partner/branch/dashboard/${this.state.bid}`);
-            }}>
-              <A>
-                DashBoard
-            </A>
-          </button>
-        <h2 style={{color:"green", marginLeft:"220px"  }}><b>{this.state.branchName}</b> </h2> 
-        
-        </div>
-      </Card>
-      ):''}
         <Container verticalMargin>
         <ActionBar
               marginBottom="15px"
@@ -567,9 +523,6 @@ export default class BranchReports extends Component {
                 </Col>
                 <Col>
                   <h4 style={{color:"green",marginBottom:"20px" }}><b>Partner Name : </b>{this.state.partnerName}</h4> 
-                </Col>
-                <Col>
-                  <h4 style={{color:"green", marginBottom:"20px"}}><b>Branch Name : </b>{this.state.branchName}</h4>      
                 </Col>
               </Row>
       
@@ -724,18 +677,14 @@ export default class BranchReports extends Component {
               >
                 <thead>
                       <tr>
-                        <th>Cashier</th>
-                        <th>Opening Time</th>
+                        <th>Branch</th>
                         <th>Opening Balance</th>
                         <th>Cash in Hand</th>
-                        <th>Paid in cash</th>
                         <th>Cash Received</th>
                         <th>Fee Generated</th>
                         <th>Commission Generated</th>
                         <th>Revenue Generated</th>
-                        <th>Closing Time</th>
                         <th>Closing Balance</th>
-                        <th>Discripancy</th>
                         <th>Requests Approved</th>
                         <th>Requests Declined</th>
                         <th>Requests Pending</th></tr>
@@ -747,10 +696,7 @@ export default class BranchReports extends Component {
                           <tr key={index} >
                             
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.cashier.name}</div>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? `${new Date(b.cashiedatestats.reports[0].opening_time).getHours()}:${new Date(b.cashiedatestats.reports[0].opening_time).getMinutes()}` : "-:--"}</div>
+                              <div className="labelGrey">{b.cashiedatestats.branch.name}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].opening_balance.toFixed(2) : "-"}</div>
@@ -758,9 +704,9 @@ export default class BranchReports extends Component {
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_in_hand.toFixed(2) : "-"}</div>
                             </td>
-                            <td style={{textAlign:"center"}}>
+                            {/* <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].paid_in_cash.toFixed(2) : "-"}</div>
-                            </td>
+                            </td> */}
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received.toFixed(2) : "-"}</div>
                             </td>
@@ -774,13 +720,7 @@ export default class BranchReports extends Component {
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? (b.cashiedatestats.reports[0].fee_generated + b.cashiedatestats.reports[0].comm_generated).toFixed(2) : ""}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? `${new Date(b.cashiedatestats.reports[0].closing_time).getHours()}:${new Date(b.cashiedatestats.reports[0].closing_time).getMinutes()}` : "-:--"}</div>
-                            </td>
-                            <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance.toFixed(2) : "-"}</div>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency.toFixed(2) : "-"}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.accepted}</div>
@@ -801,17 +741,14 @@ export default class BranchReports extends Component {
                       <tr style={{textAlign:"center", backgroundColor:'green'}}>
                           <td style={{textAlign:"center", color:'white'}}><b>Total</b></td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}></div>
-                          </td>
-                          <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalOb}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCih}</b></div>
                           </td>
-                          <td style={{textAlign:"center"}}>
+                          {/* <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalPic}</b></div>
-                          </td>
+                          </td> */}
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCr}</b></div>
                           </td>
@@ -825,13 +762,7 @@ export default class BranchReports extends Component {
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {parseInt(this.state.datestats[i].totalComm) + parseInt(this.state.datestats[i].totalFee)}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}></div>
-                          </td>
-                          <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCb}</b></div>
-                          </td>
-                          <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalDis}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRa}</b></div>

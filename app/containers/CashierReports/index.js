@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 import Wrapper from 'components/Wrapper';
 import CashierHeader from 'components/Header/CashierHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
 import Loader from 'components/Loader';
 import Card from 'components/Card';
@@ -47,7 +48,6 @@ toast.configure({
   draggable: true,
 });
 
-const token = localStorage.getItem('cashierLogged');
 const bid = localStorage.getItem('cashierId');
 const logo = localStorage.getItem('bankLogo');
 const email = localStorage.getItem('cashierEmail');
@@ -66,9 +66,8 @@ export default class CashierDashboard extends Component {
   constructor(props) {
     super();
     this.state = {
-      token,
       toggle: 'report',
-      token: props.apitype === 'partnerCashier' ?  localStorage.getItem('cashierLogged') :localStorage.getItem('branchLogged'),
+      token: props.apitype === 'partnerCashier' ?  localStorage.getItem('cashierLogged') :  props.apitype === 'partner' ? localStorage.getItem('partnerLogged') : localStorage.getItem('branchLogged'),
       id: props.apitype === 'partnerCashier' ?  localStorage.getItem('cashierId') : props.match.params.id,
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
@@ -425,12 +424,18 @@ export default class CashierDashboard extends Component {
         />
 
         ) : (
-          <BranchHeader
-          page="branch"
-          goto={"/branch/"+this.props.match.params.bank+"/dashboard"}
-          bankName={this.props.match.params.bank}
-          bankLogo={STATIC_URL + logo}
-        />
+          <div>
+          {this.props.apitype==='partner' ? (
+            <PartnerHeader />
+          ) :(
+            <BranchHeader
+            page="branch"
+            goto={"/branch/"+this.props.match.params.bank+"/dashboard"}
+            bankName={this.props.match.params.bank}
+            bankLogo={STATIC_URL + logo}
+          />
+          )}
+          </div>
         )}
         
         <Container verticalMargin>

@@ -55,6 +55,7 @@ import CashierForgotPassword from 'containers/CashierForgotPassword';
 import CashierOTPPage from 'containers/CashierOTPPage';
 import CashierSetup from 'containers/CashierSetup';
 import BranchReports from 'containers/BranchReports';
+import PartnerReports from 'containers/PartnerReports';
 import CashierReports from 'containers/CashierReports';
 import CashierDashboard from 'containers/CashierDashboard';
 import CashierInfo from 'containers/CashierInfo';
@@ -116,12 +117,32 @@ export default function App(props) {
           />
           <Route exact path="/bank/otp" component={BankOTPPage} />
 
-          <BankRoute exact path="/dashboard" component={PartnerDashboard} />
+          <BankRoute exact path="/dashboard" component={PartnerBranchList} />
+          <BankRoute exact path="/reports" component={PartnerReports} />
           <BankRoute path="/info" component={PartnerInfo} />
           <BankRoute path="/bank/fees" component={BankFees} />
           <BankRoute path="/bank/documents" component={BankDocuments} />
           <BankRoute path="/branches" component={PartnerBranchList} />
+          <BankRoute
+            exact
+            apitype={'partner'}
+            path="/partner/branch/reports/:id?"
+            component={BranchReports}
+          />
+           <BankRoute
+            apitype='partner'
+            exact
+            path="/partner/branch/cashier/reports/:id"
+            component={CashierReports}
+          />
+          <BankRoute
+            apitype={"partner"}
+            exact
+            path="/partner/branch/dashboard/:id?"
+            component={BranchDashboard}
+          />
           <BankRoute path="/partner/branch/:branch?" component={PartnerBranchInfo} />
+          
           <BankRoute
             path="/partner/cashiers/:branch?"
             component={PartnerCashierList}
@@ -201,12 +222,14 @@ export default function App(props) {
           <Route exact path="/branch/:bank?/otp" component={BranchOTPPage} />
           <Route exact path="/branch/:bank?/setup" component={BranchSetup} />
           <BranchRoute
+            apitype={"partnerBranch"}
             exact
             path="/branch/:bank?/dashboard"
             component={BranchDashboard}
           />
           <BranchRoute
             exact
+            apitype={'partnerBranch'}
             path="/branch/:bank?/report"
             component={BranchReports}
           />

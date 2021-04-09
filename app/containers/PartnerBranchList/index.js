@@ -8,12 +8,12 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
-
+import history from 'utils/history.js';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
+import Footer from 'components/Footer';
 import Wrapper from '../../components/Wrapper';
 import A from '../../components/A';
 import PartnerHeader from '../../components/Header/PartnerHeader';
@@ -57,6 +57,8 @@ export default class PartnerBranchList extends Component {
     this.state = {
       sid: '',
       bank: bid,
+      bankName: localStorage.getItem('bankName'),
+      bankLogo: localStorage.getItem('bankLogo'),
       name: '',
       address1: '',
       html: '',
@@ -80,7 +82,18 @@ export default class PartnerBranchList extends Component {
       user_id: token,
       banks: [],
       branches: [],
+      branchStats: [],
       copybranches: [],
+      totalCashier: 0,
+      cashInHand:0,
+      openingBalance :0,
+      feeGenerated: 0,
+      invoicePaid: 0,
+      amountPaid:0,
+      accepted:0,
+      declined:0,
+      pending:0,
+      commissionGenerated: 0,
       otp: '',
       showOtp: false,
     };
@@ -392,23 +405,92 @@ export default class PartnerBranchList extends Component {
 
   };
 
-  getBranches = () => {
-    axios
-      .post(`${API_URL}/partner/listBranches`, { token })
-      .then(res => {
-        if (res.status == 200) {
-          console.log(res.data);
-          this.setState({ loading: false, branches: res.data.branches, copybranches: res.data.branches });
-        }
-      })
-      .catch(err => { });
+  getBranches = async() => {
+    try {
+      const res = await axios.post(`${API_URL}/partner/listBranches`, { token });
+      if (res.status == 200) {
+        return ({branches:res.data.branches,loading:false});
+      }
+    } catch(err){
+      console.log(err);
+    }
+  }
+
+  getBranchDashStats = async(id) => {
+    try {
+      const res = await axios.post(`${API_URL}/partner/getBranchDashStats`, { token,branch_id:id });
+      if (res.status == 200) {
+        return (res.data);
+      }
+    } catch(err){
+      console.log(err);
+    }
+  }
+
+  getBranchStats = async(blist) => {
+    const stats = blist.map(async (branch) => {
+      const branchstats = await this.getBranchDashStats(branch._id);
+      return (branchstats);
+    });
+    const result= await Promise.all(stats);
+    return({res:result,loading:false});
+  }
+  getData = async() => {
+    this.setState(
+      {
+        loading:true,
+      }
+    );
+    const branches = await this.getBranches();
+    console.log(branches.branches);
+    const branchstats = await this.getBranchStats(branches.branches);
+    console.log(branchstats);
+    this.setState(
+      {
+        branches: branches.branches,
+        branchStats:branchstats.res,
+        loading:branchstats.loading,
+        totalCashier: branchstats.res.reduce(
+          (a, b) => a + b.totalCashier, 0
+        ),
+        openingBalance: branchstats.res.reduce(
+          (a, b) => a + b.openingBalance, 0
+        ).toFixed(2),
+        cashInHand: branchstats.res.reduce(
+          (a, b) => a + b.cashInHand, 0
+        ).toFixed(2),
+        feeGenerated: branchstats.res.reduce(
+          (a, b) => a + b.feeGenerated, 0
+        ).toFixed(2),
+        commissionGenerated: branchstats.res.reduce(
+          (a, b) => a + b.commissionGenerated, 0
+        ).toFixed(2),
+        invoicePaid: branchstats.res.reduce(
+          (a, b) => a + b.invoicePaid, 0
+        ),
+        amountPaid: branchstats.res.reduce(
+          (a, b) => a + b.amountPaid, 0
+        ),
+        accepted: branchstats.res.reduce(
+          (a, b) => a + b.accepted, 0
+        ),
+        declined: branchstats.res.reduce(
+          (a, b) => a + b.cancelled, 0
+        ),
+        pending: branchstats.res.reduce(
+          (a, b) => a + b.pending, 0
+        )
+      }
+    );
+    
   }
 
   componentDidMount() {
     // this.setState({ bank: this.state.bank_id });
     if (token !== undefined && token !== null) {
       // this.getBank();
-      this.getBranches();
+      this.getData();
+      // this.getBranches();
     } else {
       // alert('Login to continue');
       // this.setState({loading: false, redirect: true });
@@ -454,11 +536,145 @@ export default class PartnerBranchList extends Component {
           <meta charSet="utf-8" />
           <title>Partners | INFRA | E-WALLET</title>
         </Helmet>
-        <PartnerHeader active="branches" />
+        <PartnerHeader active="dashboard" />
         <Container verticalMargin>
           <SidebarBank />
           <Main>
-            <ActionBar
+          <Row>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'120px'}}
+                  marginBottom="10px"
+                  textAlign="center"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Number of Cashier</h4>
+                  <div className="cardValue">{this.state.totalCashier}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Opening Balance</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.openingBalance}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash In Hand</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                </Card>
+              </Col>
+            </Row>
+          <Row>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'120px'}}
+                  marginBottom="10px"
+                  textAlign="center"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Fee Generated</h4>
+                  <div className="cardValue">{this.state.feeGenerated}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Commission Generated</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Revenue Generated</h4>
+                  <div className="cardValue">{CURRENCY}: {(parseInt(this.state.commissionGenerated)+ parseInt(this.state.feeGenerated)).toFixed(2)}</div>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+            <Col cW='33%'>
+                <Card
+                  style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Invoices Paid</h4>
+                  <Row>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Number</h5>
+                      <div className="cardValue">{this.state.invoicePaid}</div>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Amount</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.amountPaid}</div>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+              <Col cW='50%'>
+              <Card
+                   style={{height:'120px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  textAlign="center"
+                  smallValue
+                >
+                  <h4>Authorisation Requests</h4>
+                  <Row>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Approved</h5>
+                      <div className="cardValue">{this.state.accepted}</div>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Declined</h5>
+                      <div className="cardValue">{this.state.declined}</div>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                      <h5>Pending</h5>
+                      <div className="cardValue">{this.state.pending}</div>
+                    </Col>
+                  </Row>
+                  
+                </Card>
+              </Col>
+            </Row>
+               
+            {/* <ActionBar
               marginBottom="33px"
               inputWidth="calc(100% - 241px)"
               className="clr"
@@ -474,8 +690,20 @@ export default class PartnerBranchList extends Component {
                 <i className="material-icons">add</i>
                 <span>Add Branch</span>
               </Button>
-            </ActionBar>
+            </ActionBar> */}
             <Card bigPadding>
+            <Button
+              className="addBankButton"
+              flex
+              style={{
+                float:"right",
+                marginBottom:'10px',
+              }}
+              onClick={() => this.showPopup()}
+            >
+               <i className="material-icons">add</i>
+              <span>Add Branch</span>
+            </Button>
               <div className="cardHeader">
                 <div className="cardHeaderLeft">
                   <i className="material-icons">supervised_user_circle</i>
@@ -491,36 +719,44 @@ export default class PartnerBranchList extends Component {
                     <tr>
                       <th>Branch Name</th>
                       <th>Total Cashier</th>
-                      <th>Credit limit ({CURRENCY})</th>
                       <th>Cash in Hand ({CURRENCY})</th>
-                      <th className="tal">
-                        No. of Transaction
-                        <Row className="small">
-                          <Col>Yearly</Col>
-                          <Col>Monthly</Col>
-                          <Col>Weekly</Col>
-                          <Col>Daily</Col>
-                        </Row>
-                      </th>
+                      <th>Opening Balance ({CURRENCY})</th>
+                      <th>Fee Generated ({CURRENCY})</th>
+                      <th>Commission Generated ({CURRENCY})</th>
+                      <th>Revenue Generated ({CURRENCY})</th>
+                      <th>Invoice Paid </th>
+                      <th>Amount Collected ({CURRENCY})</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.branches && this.state.branches.length > 0
-                      ? this.state.branches.map(function (b) {
+                      ? this.state.branches.map(function (b,i) {
                         return (
                           <tr key={b._id}>
                             <td>{b.name}</td>
                             <td className="tac">{b.total_cashiers}</td>
-                            <td className="tac">{b.credit_limit}</td>
-                            <td className="tac">{b.cash_in_hand}</td>
-
-                            <td className="tac bold">
-                              <Row className="green">
-                                <Col>0</Col>
-                                <Col>0</Col>
-                                <Col>0</Col>
-                                <Col>0</Col>
-                              </Row>
+                            <td className="tac">{dis.state.branchStats[i].cashInHand}</td>
+                            <td className="tac">{dis.state.branchStats[i].openingBalance}</td>
+                            <td className="tac">{dis.state.branchStats[i].feeGenerated.toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].commissionGenerated.toFixed(2)}</td>
+                            <td className="tac">{(dis.state.branchStats[i].feeGenerated + dis.state.branchStats[i].commissionGenerated).toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].invoicePaid}</td>
+                            <td className="tac">{dis.state.branchStats[i].amountPaid}</td>
+                            <td className="tac bold green">
+                              
+                              <Button
+                                style={{minWidth:'90%', marginRight:'5px'}}
+                                onClick={() => {
+                                  localStorage.setItem(
+                                    'selectedBranch',
+                                    JSON.stringify(b),
+                                  );
+                                history.push(`/partner/branch/dashboard/${b._id}`);
+                                }}
+                              >                    
+                                View                   
+                              </Button>
                               <span className="absoluteMiddleRight primary popMenuTrigger">
                                 <i className="material-icons ">more_vert</i>
                                 <div className="popMenu">
@@ -1536,6 +1772,7 @@ export default class PartnerBranchList extends Component {
             )}
           </Popup>
         ) : null}
+        <Footer bankname={this.state.bankName} banklogo={this.state.bankLogo}/>
       </Wrapper>
     );
   }

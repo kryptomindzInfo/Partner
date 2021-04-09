@@ -17,6 +17,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Wrapper from 'components/Wrapper';
 import A from 'components/A';
 import BranchHeader from 'components/Header/BranchHeader';
+import PartnerHeader from 'components/Header/PartnerHeader';
 import Container from 'components/Container';
 import Loader from 'components/Loader';
 import Nav from 'components/Header/Nav';
@@ -27,6 +28,8 @@ import ActionBar from 'components/ActionBar';
 import Card from 'components/Card';
 import Button from 'components/Button';
 import Table from 'components/Table';
+import BranchOperationalWallet from 'components/Sidebar//BranchOperationalWallet';
+import BranchMasterWallet from 'components/Sidebar//BranchMasterWallet';
 import MiniPopUp from 'components/MiniPopUp';
 import FormGroup from 'components/FormGroup';
 import TextInput from 'components/TextInput';
@@ -35,8 +38,7 @@ import Row from 'components/Row';
 import Col from 'components/Col';
 import Popup from 'components/Popup';
 import SelectInput from 'components/SelectInput';
-import Pagination from 'react-js-pagination';
-
+import history from 'utils/history.js';
 import { API_URL, STATIC_URL, CURRENCY } from '../App/constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,6 +51,12 @@ toast.configure({
   draggable: true,
 });
 
+const Sidebar = styled.aside `
+width: 260px;
+float:left;
+margin-right: ${props => props.marginRight ? '33px' : '0' };
+`;
+
 const token = localStorage.getItem('branchLogged');
 const bid = localStorage.getItem('branchId');
 const logo = localStorage.getItem('bankLogo');
@@ -58,10 +66,14 @@ const mobile = localStorage.getItem('branchMobile');
 const name = localStorage.getItem('branchName');
 
 export default class BranchDashboard extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      token,
+      token: props.apitype === 'partner' ? localStorage.getItem('partnerLogged') : localStorage.getItem('branchLogged'),
+      bid: props.apitype === 'partner' ? props.match.params.id : localStorage.getItem('branchId'),
+      bankId: props.apitype === 'partner' ?  localStorage.getItem('partnerId')  : localStorage.getItem('bankid'),
+      branchName: props.apitype === 'partner' ?   JSON.parse(localStorage.getItem('selectedBranch')).name  : '',
+      apiType:props.apitype,
       otpEmail: email,
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
@@ -96,8 +108,6 @@ export default class BranchDashboard extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
-
-    this.showHistory = this.showHistory.bind(this);
   }
 
   success = () => toast.success(this.state.notification);
@@ -736,63 +746,6 @@ export default class BranchDashboard extends Component {
       })
       .catch(err => { });
   };
-  showHistory = () => {
-    this.setState({ history: [] }, () => {
-      var out = [];
-      var start = (this.state.activePage - 1) * this.state.perPage;
-      var end = this.state.perPage * this.state.activePage;
-      if (end > this.state.totalCount) {
-        end = this.state.totalCount;
-      }
-      for (var i = start; i < end; i++) {
-        out.push(this.state.allhistory[i]);
-      }
-      this.setState({ history: out }, () => {
-        let dis = this;
-        setTimeout(function () {
-          dis.getHistory();
-        }, 5000);
-      });
-    });
-  };
-
-  getHistory = () => {
-    axios
-      .post(`${API_URL}/getBranchTransHistory`, {
-        token: token,
-        where: { branch_id: bid },
-        from: 'branch',
-        page: this.state.activePage,
-        offset: this.state.perPage,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          var notification = {};
-          var result = res.data.history1.concat(res.data.history2);
-          result.sort(function (a, b) {
-            return (
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime()
-            ); // implicit conversion in number
-          });
-          var l = result.length;
-          const history = result;
-          this.setState(
-            {
-              ticker: history[l - 1],
-              result: history,
-              loading: false,
-              allhistory: history,
-              totalCount: history.length,
-            },
-            () => {
-              this.showHistory();
-            },
-          );
-        }
-      })
-      .catch(err => { });
-  };
 
   filterData = e => {
     this.setState({ filter: e });
@@ -816,8 +769,9 @@ export default class BranchDashboard extends Component {
   };
   getStats = () => {
     axios
-      .post(`${API_URL}/partnerBranch/getDashStats`, {
-        token: token,
+      .post(`${API_URL}/${this.state.apiType}/getBranchDashStats`, {
+        token: this.state.token,
+        branch_id: this.state.bid,
       })
       .then(res => {
         if (res.status == 200) {
@@ -856,21 +810,6 @@ export default class BranchDashboard extends Component {
         }, 10000);
       });
   };
-  getBranchByName = () => {
-    axios
-      .post(`${API_URL}/partnerBranch/getDetailsByName`, {
-        name: name,
-      })
-      .then(res => {
-        if (res.status == 200) {
-          this.setState({ branchDetails: res.data.banks }, () => {
-            this.getStats();
-            this.getHistory();
-          });
-        }
-      })
-      .catch(err => { });
-  };
   formatDate = date => {
     var months = [
       'Jan',
@@ -901,10 +840,10 @@ export default class BranchDashboard extends Component {
 
   getCashiers = () => {
     axios
-      .post(`${API_URL}/partnerBranch/getAll`, {
+      .post(`${API_URL}/${this.state.apiType}/getAll`, {
         page: 'partnerCashier',
-        token: token,
-        where: { branch_id: bid },
+        token: this.state.token,
+        where: { branch_id: this.state.bid },
       })
       .then(res => {
         if (res.status == 200) {
@@ -917,10 +856,10 @@ export default class BranchDashboard extends Component {
 
   getUsers = () => {
     axios
-      .post(`${API_URL}/partnerBranch/getAll`, {
+      .post(`${API_URL}/${this.state.apiType}/getAll`, {
         page: 'partnerUser',
         type: 'partnerBranch',
-        token: token,
+        token: this.state.token,
         where: {partner_id:bankId},
       })
       .then(res => {
@@ -937,8 +876,7 @@ export default class BranchDashboard extends Component {
 
     this.getCashiers();
     this.getUsers();
-    // this.getBranches();
-    this.getBranchByName();
+    this.getStats()
   }
 
   render() {
@@ -969,13 +907,57 @@ export default class BranchDashboard extends Component {
           <meta charSet="utf-8" />
           <title>Dashboard | BRANCH | E-WALLET</title>
         </Helmet>
-        <BranchHeader
+        {this.state.apiType === 'partner' ?   (
+          <PartnerHeader />
+        ) : (
+          <BranchHeader
           active="dashboard"
           bankName={this.props.match.params.bank}
           bankLogo={STATIC_URL + logo}
         />
+
+        )}
+         {this.state.apiType === 'partner' ? (
+        <Card >
+          <div style={{display:'flex'}}>
+            <button  style={{border:"none",width:"100px",marginLeft:"150px"}} onClick={() => {
+                history.push(`/dashboard`);
+              }}>
+                <A>
+                  Back
+              </A>
+            </button>
+            <button style={{border:"none",width:"100px"}} onClick={() => {
+              history.push(`/partner/branch/reports/${this.state.bid}`);
+            }}>
+                <A>
+                  Reports
+                </A>
+            </button>
+            <button style={{border:"none",width:"100px"}} onClick={() => {
+                history.goBack();
+              }}>
+                <A>
+                  <u>DashBoard</u>
+              </A>
+            </button>
+          <h2 style={{color:"green", marginLeft:"220px" }}><b>{this.state.branchName}</b> </h2> 
+          
+          </div>
+        </Card>
+      ):''}
+       
         <Container verticalMargin>
+        {this.state.apiType === 'partner' ? (
+          <Sidebar marginRight>
+             <BranchOperationalWallet branchId={this.state.bid} bankName={this.props.bankName}/>
+            <BranchMasterWallet branchId={this.state.bid} bankName={this.props.bankName}/>
+          </Sidebar>
+        ) : (
           <SidebarBranch bankName={this.props.match.params.bank} />
+        )}
+         
+         
           <Main>
             <Row>
               <Col  cW='33%'>
@@ -1207,70 +1189,102 @@ export default class BranchDashboard extends Component {
                               <span onClick={() => this.showPending(b._id)}> {b.pending_trans}</span>
 
                             </td>
-                            <td className="tac bold green">
-                                <Button
-                                  className="sendMoneyButton"
-                                  style ={{marginRight:"10px"}} 
+                            {this.state.apiType === 'partner' ? (
+                              <td className="tac bold green">
+                                 <Button
+                                className="sendMoneyButton"
+                                style ={{marginRight:"10px"}} 
+                              >
+                                {/* <A
+                                  href={
+                                    '/branch/' +
+                                    dis.props.match.params.bank +
+                                    '/cashier/' +
+                                    b._id
+                                  }
                                 >
-                                  {/* <A
-                                    href={
-                                      '/branch/' +
-                                      dis.props.match.params.bank +
-                                      '/cashier/' +
-                                      b._id
-                                    }
-                                  >
-                                    View
-                                  </A> */}
-                                  <A
-                                    href={
-                                      '/branch/' +
-                                      dis.props.match.params.bank +
-                                      '/cashier/reports/' +
-                                      b._id
-                                    }
-                                  >
-                                    Reports
-                                  </A>
-                              </Button>
-                              <span style ={{marginLeft:"10px"}} className="absoluteMiddleRight primary popMenuTrigger">
-                                <i className="material-icons ">more_vert</i>
-                                <div className="popMenu">
-                                  <span onClick={() => dis.showEditPopup(b)}>
-                                    Edit
-                                    </span>
+                                  View
+                                </A> */}
+                                <A
+                                  href={
+                                    '/partner/branch/cashier/reports/' +
+                                    b._id
+                                  }
+                                >
+                                  Reports
+                                </A>
+                            </Button>
+
+                              </td>
+
+                              ) : (
+                              <td className="tac bold green">
+                              <Button
+                                className="sendMoneyButton"
+                                style ={{marginRight:"10px"}} 
+                              >
+                                {/* <A
+                                  href={
+                                    '/branch/' +
+                                    dis.props.match.params.bank +
+                                    '/cashier/' +
+                                    b._id
+                                  }
+                                >
+                                  View
+                                </A> */}
+                                <A
+                                  href={
+                                    '/branch/' +
+                                    dis.props.match.params.bank +
+                                    '/cashier/reports/' +
+                                    b._id
+                                  }
+                                >
+                                  Reports
+                                </A>
+                            </Button>
+                            <span style ={{marginLeft:"10px"}} className="absoluteMiddleRight primary popMenuTrigger">
+                              <i className="material-icons ">more_vert</i>
+                              <div className="popMenu">
+                                <span onClick={() => dis.showEditPopup(b)}>
+                                  Edit
+                                  </span>
+                                <span
+                                  onClick={() => dis.showAssignPopup(b)}
+                                >
+                                  Assign User
+                                  </span>
+                                {/* {b.is_closed ? (
                                   <span
-                                    onClick={() => dis.showAssignPopup(b)}
+                                    onClick={() => dis.releaseCashier(b._id)}
                                   >
-                                    Assign User
-                                    </span>
-                                  {/* {b.is_closed ? (
-                                    <span
-                                      onClick={() => dis.releaseCashier(b._id)}
-                                    >
-                                      Re-open Access
-                                    </span>
-                                  ) : null} */}
-                                  {b.status == -1 ? (
+                                    Re-open Access
+                                  </span>
+                                ) : null} */}
+                                {b.status == -1 ? (
+                                  <span
+                                    onClick={() =>
+                                      dis.blockBranch(b._id, 1)
+                                    }
+                                  >
+                                    Unblock
+                                  </span>
+                                ) : (
                                     <span
                                       onClick={() =>
-                                        dis.blockBranch(b._id, 1)
+                                        dis.blockBranch(b._id, -1)
                                       }
                                     >
-                                      Unblock
+                                      Block
                                     </span>
-                                  ) : (
-                                      <span
-                                        onClick={() =>
-                                          dis.blockBranch(b._id, -1)
-                                        }
-                                      >
-                                        Block
-                                      </span>
-                                    )}
-                                </div>
-                              </span>
-                            </td>
+                                  )}
+                              </div>
+                            </span>
+                          </td>
+
+                            )}
+                           
 
                           </tr>
                         );

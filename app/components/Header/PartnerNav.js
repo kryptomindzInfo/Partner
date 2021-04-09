@@ -39,15 +39,15 @@ class PartnerNav extends Component {
               <FormattedMessage {...messages.menu1} />
             </Link>
           </A>
-          <A href="/branches">
+          {/* <A href="/branches">
             <Link active={branches}>
               <FormattedMessage {...messages.bmenu1} />
             </Link>
-          </A>
+          </A> */}
           <A href="/users">
             <Link active={bankusers}>Users</Link>
           </A>
-          <A>
+          <A href="/reports">
             <Link active={reports}>
               <FormattedMessage {...messages.menu4} />
             </Link>
