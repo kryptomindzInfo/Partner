@@ -581,7 +581,7 @@ export default class PartnerBranchList extends Component {
                 </Card>
               </Col>
             </Row>
-          <Row>
+          {/* <Row>
               <Col  cW='33%'>
                 <Card
                   style={{height:'120px'}}
@@ -622,8 +622,9 @@ export default class PartnerBranchList extends Component {
                 </Card>
               </Col>
             </Row>
+             */}
             <Row>
-            <Col cW='33%'>
+            <Col cW='40%'>
                 <Card
                   style={{height:'120px'}}
                   marginBottom="10px"
@@ -645,7 +646,7 @@ export default class PartnerBranchList extends Component {
                   </Row>
                 </Card>
               </Col>
-              <Col cW='50%'>
+              <Col cW='60%'>
               <Card
                    style={{height:'120px'}}
                   marginBottom="10px"
@@ -654,25 +655,27 @@ export default class PartnerBranchList extends Component {
                   textAlign="center"
                   smallValue
                 >
-                  <h4>Authorisation Requests</h4>
+                  <h4>Revenue Collected</h4>
                   <Row>
                     <Col style={{textAlign:'center'}}>
-                      <h5>Approved</h5>
-                      <div className="cardValue">{this.state.accepted}</div>
+                      <h5>Fee</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.feeGenerated}</div>
                     </Col>
                     <Col style={{textAlign:'center'}}>
-                      <h5>Declined</h5>
-                      <div className="cardValue">{this.state.declined}</div>
+                      <h5>Commission</h5>
+                      <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
                     </Col>
                     <Col style={{textAlign:'center'}}>
-                      <h5>Pending</h5>
-                      <div className="cardValue">{this.state.pending}</div>
+                      <h5>Total</h5>
+                      <div className="cardValue">{CURRENCY}: {(parseInt(this.state.commissionGenerated)+ parseInt(this.state.feeGenerated)).toFixed(2)}</div>
                     </Col>
                   </Row>
                   
                 </Card>
               </Col>
             </Row>
+          </Main>
+          <Main fullWidth>
                
             {/* <ActionBar
               marginBottom="33px"

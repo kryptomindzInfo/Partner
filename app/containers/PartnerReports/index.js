@@ -585,7 +585,7 @@ export default class PartnerReports extends Component {
               </Col>
             </Row>
           <Row style={{marginTop:'5px',marginBottom:'0px'}}>
-          <Col cW='25%'>
+          <Col cW='40%'>
                 <Card
                   style={{height:'120px'}}
                   marginBottom="10px"
@@ -607,7 +607,7 @@ export default class PartnerReports extends Component {
                   </Row>
                 </Card>
               </Col>   
-              <Col cW='45%'>
+              <Col cW='60%'>
               <Card
                   style={{height:'140px'}}
                   marginBottom="10px"
@@ -633,7 +633,7 @@ export default class PartnerReports extends Component {
                   </Row>
                 </Card>
               </Col>
-              <Col cW='30%'>
+              {/* <Col cW='30%'>
               <Card
                    style={{height:'140px'}}
                   marginBottom="10px"
@@ -659,7 +659,7 @@ export default class PartnerReports extends Component {
                   </Row>
                   
                 </Card>
-              </Col>
+              </Col> */}
             </Row>
             
             </div>
@@ -685,9 +685,10 @@ export default class PartnerReports extends Component {
                         <th>Commission Generated</th>
                         <th>Revenue Generated</th>
                         <th>Closing Balance</th>
-                        <th>Requests Approved</th>
+                        {/* <th>Requests Approved</th>
                         <th>Requests Declined</th>
-                        <th>Requests Pending</th></tr>
+                        <th>Requests Pending</th> */}
+                      </tr>
                     </thead>
                     <tbody>
                     {this.state.datestats[i].cashiedatestats.length > 0 
@@ -722,7 +723,7 @@ export default class PartnerReports extends Component {
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance.toFixed(2) : "-"}</div>
                             </td>
-                            <td style={{textAlign:"center"}}>
+                            {/* <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.accepted}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
@@ -730,7 +731,7 @@ export default class PartnerReports extends Component {
                             </td>
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.pending}</div>
-                            </td>
+                            </td> */}
                             
                           </tr>
                           )
@@ -764,7 +765,7 @@ export default class PartnerReports extends Component {
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCb}</b></div>
                           </td>
-                          <td style={{textAlign:"center"}}>
+                          {/* <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRa}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
@@ -772,7 +773,7 @@ export default class PartnerReports extends Component {
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRp}</b></div>
-                          </td>
+                          </td> */}
                         </tr>
                   </tbody>
               
