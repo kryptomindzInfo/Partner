@@ -277,7 +277,7 @@ export default class PartnerBranchInfo extends Component {
     });
     event.preventDefault();
     axios
-      .post(`${API_URL}/editBranch`, {
+      .post(`${API_URL}/partner/editBranch`, {
         name: this.state.name,
         bcode: this.state.bcode,
         username: this.state.username,

@@ -125,6 +125,9 @@ class BranchMasterWallet extends Component {
         <div className="cardValue">
         {this.state.balance ?  `${CURRENCY} ${this.state.balance.toFixed(2)}` : `${CURRENCY} 0`}
         </div>
+        {this.props.branchId ? (
+          ''
+        ) : (
         <Row>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
             <Button
@@ -135,6 +138,7 @@ class BranchMasterWallet extends Component {
             </Button>
           </Col>
         </Row>
+        )}
         {this.state.popup ? (
           <SendToOperationalPopup
             close={this.handlePopupClose}
