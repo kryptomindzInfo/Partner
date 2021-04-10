@@ -320,40 +320,40 @@ export default class PartnerReports extends Component {
         datelist: datelist,
         datestats: datestats.res,
         openingBalance: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalOb), 0
+          (a, b) => a + parseFloat(b.totalOb,10), 0
         ),
         closingBalance: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalCb), 0
+          (a, b) => a + parseFloat(b.totalCb,10), 0
         ),
         paidInCash: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalPic), 0
+          (a, b) => a + parseFloat(b.totalPic,10), 0
         ),
         cashReceived: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalCr), 0
+          (a, b) => a + parseFloat(b.totalCr,10), 0
         ),
         cashInhand: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalCih), 0
+          (a, b) => a + parseFloat(b.totalCih,10), 0
         ),
         feeGenerated: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalFee), 0
+          (a, b) => a + parseFloat(b.totalFee,10), 0
         ),
         commissionGenerated: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalComm), 0
+          (a, b) => a + parseFloat(b.totalComm,10), 0
         ),
         pending : datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalRp), 0
+          (a, b) => a + parseFloat(b.totalRp,10), 0
         ),
         accepted: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalRa), 0
+          (a, b) => a + parseFloat(b.totalRa,10), 0
         ),
         declined: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalRd), 0
+          (a, b) => a + parseFloat(b.totalRd,10), 0
         ),
         invoicePaid: datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalInvoice), 0
+          (a, b) => a + parseFloat(b.totalInvoice,10), 0
         ),
         invoiceAmount:datestats.res.reduce(
-          (a, b) => a + parseInt(b.totalInvoiceAmount), 0
+          (a, b) => a + parseFloat(b.totalInvoiceAmount,10), 0
         ),
         loading:datestats.loading,
       }
@@ -628,7 +628,7 @@ export default class PartnerReports extends Component {
                     </Col>
                     <Col>
                       <h5>Total</h5>
-                      <div className="cardValue">{CURRENCY}: {parseInt(this.state.commissionGenerated, 10)+parseInt(this.state.feeGenerated, 10)}</div>
+                      <div className="cardValue">{CURRENCY}: {parseFloat(this.state.commissionGenerated, 10)+parseFloat(this.state.feeGenerated, 10)}</div>
                     </Col>
                   </Row>
                 </Card>
