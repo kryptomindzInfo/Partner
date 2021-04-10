@@ -1170,7 +1170,7 @@ export default class BranchDashboard extends Component {
                                 {b.cash_received.toFixed(2)}
                               </td>
                               <td>
-                                {b.fee_generated+b.commission_generated}
+                                {(b.fee_generated+b.commission_generated).toFixed(2)}
                               </td>
                               <td className="tac">
                                 {b.cash_in_hand.toFixed(2)}

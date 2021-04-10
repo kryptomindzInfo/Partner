@@ -614,6 +614,7 @@ class CashierClosingBalance extends Component {
                         placeholder="Remarks"
                         value={this.state.note}
                         onChange={this.handleInputChange}
+                        required
                       />
                     </FormGroup>
                     <div

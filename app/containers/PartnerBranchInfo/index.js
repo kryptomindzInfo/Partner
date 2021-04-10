@@ -177,14 +177,14 @@ export default class PartnerBranchInfo extends Component {
     this.setState({ editPopup: true });
   };
   blockBranch = () => {
-    if (this.state.status == 1) {
+    if (this.state.status === 1) {
       var s = -1;
     } else {
       var s = 1;
     }
     var dis = this;
     axios
-      .post(`${API_URL}/branchStatus`, {
+      .post(`${API_URL}/partner/updateBranchStatus`, {
         token,
         branch_id: this.state.branch_id,
         status: s
@@ -636,7 +636,7 @@ export default class PartnerBranchInfo extends Component {
           <BankSidebarThree active="info" branchId={this.props.match.params.branch} blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={bname} />
           <Main>
 
-            <BranchWallets branchId={this.props.match.params.branch} bCode={this.state.dbcode} bankName={this.state.bname} limit={this.state.credit_limit} />
+            {/* <BranchWallets branchId={this.props.match.params.branch} bCode={this.state.dbcode} bankName={this.state.bname} limit={this.state.credit_limit} /> */}
 
             <Card bigPadding bordered>
 

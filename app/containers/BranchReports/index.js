@@ -455,7 +455,7 @@ export default class BranchReports extends Component {
                 DashBoard
             </A>
           </button>
-        <h2 style={{color:"green", marginLeft:"220px"  }}><b>{this.state.branchName}</b> </h2> 
+        <h2 style={{color:"green", marginLeft:"320px"  }}><b>{this.state.branchName}</b> </h2> 
         
         </div>
       </Card>

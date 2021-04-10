@@ -667,7 +667,7 @@ export default class PartnerBranchList extends Component {
                     </Col>
                     <Col style={{textAlign:'center'}}>
                       <h5>Total</h5>
-                      <div className="cardValue">{CURRENCY}: {(parseInt(this.state.commissionGenerated)+ parseInt(this.state.feeGenerated)).toFixed(2)}</div>
+                      <div className="cardValue">{CURRENCY}: {(parseFloat(this.state.commissionGenerated,10)+ parseFloat(this.state.feeGenerated,10)).toFixed(2)}</div>
                     </Col>
                   </Row>
                   
@@ -724,9 +724,9 @@ export default class PartnerBranchList extends Component {
                       <th>Total Cashier</th>
                       <th>Cash in Hand ({CURRENCY})</th>
                       <th>Opening Balance ({CURRENCY})</th>
-                      <th>Fee Generated ({CURRENCY})</th>
-                      <th>Commission Generated ({CURRENCY})</th>
-                      <th>Revenue Generated ({CURRENCY})</th>
+                      <th>Fee Collected ({CURRENCY})</th>
+                      <th>Commission Collected ({CURRENCY})</th>
+                      <th>Revenue Collected ({CURRENCY})</th>
                       <th>Invoice Paid </th>
                       <th>Amount Collected ({CURRENCY})</th>
                       <th></th>

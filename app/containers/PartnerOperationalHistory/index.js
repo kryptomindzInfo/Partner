@@ -522,9 +522,9 @@ export default class PartnerOperationalHistory extends Component {
                                   {
                                     b.Value.tx_data.tx_type == 'DR'
                                       ?
-                                      <span>{CURRENCY} -{b.Value.amount}</span>
+                                      <span>{CURRENCY} -{b.Value.tx_data[0].amount}</span>
                                       :
-                                      <span>{CURRENCY} {b.Value.amount}</span>
+                                      <span>{CURRENCY} {b.Value.tx_data[0].amount}</span>
                                   }
 
                                 </div>

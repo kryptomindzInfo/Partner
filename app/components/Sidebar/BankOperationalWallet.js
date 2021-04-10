@@ -9,7 +9,9 @@ import TextInput from 'components/TextInput';
 import TextArea from 'components/TextArea';
 import FormGroup from 'components/FormGroup';
 import Button from 'components/Button';
-import A from 'components/A';
+import Row from 'components/Row';
+import Col from 'components/Col';
+import history from 'utils/history.js';
 
 import { API_URL, STATIC_URL, CURRENCY } from 'containers/App/constants';
 
@@ -225,20 +227,16 @@ class BankOperationalWallet extends Component {
         <div className="cardValue">
           {CURRENCY} {this.state.balance.toFixed(2)}
         </div>
-        {
-          //   this.props.activateNeeded ?
-          //   <button className="fullWidth">
-          // <FormattedMessage {...messages.activate} />
-          // </button>
-          //   :
-          <button className="sendMoneyButton">
-            <i className="material-icons">send</i>{' '}
-            <FormattedMessage {...messages.sendmoney} />
-          </button>
-        }
-        <A href={'/partner/operationalHistory'}>
-          <span className="history">History</span>
-        </A>
+        <Row>
+          <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
+              <Button
+                smallDashBtn
+                onClick={()=>{history.push('/partner/operationalHistory')}}
+              >
+                  History
+              </Button>
+          </Col>
+        </Row>
 
         {this.state.popup ? (
           <Popup close={this.closePopup.bind(this)} roundedCorner>
