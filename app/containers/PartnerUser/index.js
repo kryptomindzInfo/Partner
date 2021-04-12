@@ -458,7 +458,7 @@ export default class PartnerUser extends Component {
 
   getBranches = () => {
     axios
-      .post(`${API_URL}/partner/listBranches`, { token })
+      .post(`${API_URL}/partner/listBranches`, { token, partner_id:this.state.partner_id })
       .then(res => {
         if (res.status == 200) {
           this.setState({ branches: res.data.branches });
@@ -753,7 +753,7 @@ export default class PartnerUser extends Component {
                         required
                       />
                     </FormGroup>
-                    {this.state.role === 'user' ? (
+                    {this.state.role !== 'partnerAdmin' ? (
                       <FormGroup>
                         <SelectInput
                           type="text"
@@ -999,7 +999,7 @@ export default class PartnerUser extends Component {
                         required
                       />
                     </FormGroup>
-
+                    {this.state.role !== 'partnerAdmin' ? (
                     <FormGroup>
                       <SelectInput
                         type="text"
@@ -1016,7 +1016,7 @@ export default class PartnerUser extends Component {
                           : null}
                       </SelectInput>
                     </FormGroup>
-
+                    ):''}
                     <FormGroup>
                       {/* <UploadedFile>
 
