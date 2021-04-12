@@ -680,11 +680,12 @@ export default class PartnerReports extends Component {
                       <tr>
                         <th>Branch</th>
                         <th>Opening Balance</th>
-                        <th>Cash in Hand</th>
                         <th>Cash Received</th>
                         <th>Fee Generated</th>
                         <th>Commission Generated</th>
                         <th>Revenue Generated</th>
+                        <th>Invoice Paid</th>
+                        <th>Cash in Hand</th>
                         <th>Closing Balance</th>
                         {/* <th>Requests Approved</th>
                         <th>Requests Declined</th>
@@ -703,9 +704,6 @@ export default class PartnerReports extends Component {
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].opening_balance.toFixed(2) : "-"}</div>
                             </td>
-                            <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_in_hand.toFixed(2) : "-"}</div>
-                            </td>
                             {/* <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].paid_in_cash.toFixed(2) : "-"}</div>
                             </td> */}
@@ -721,6 +719,13 @@ export default class PartnerReports extends Component {
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? (b.cashiedatestats.reports[0].fee_generated + b.cashiedatestats.reports[0].comm_generated).toFixed(2) : ""}</div>
                             </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.paid : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_in_hand.toFixed(2) : "-"}</div>
+                            </td>
+                          
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance.toFixed(2) : "-"}</div>
                             </td>
@@ -745,9 +750,6 @@ export default class PartnerReports extends Component {
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalOb}</b></div>
                           </td>
-                          <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCih}</b></div>
-                          </td>
                           {/* <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalPic}</b></div>
                           </td> */}
@@ -764,6 +766,12 @@ export default class PartnerReports extends Component {
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {parseInt(this.state.datestats[i].totalComm) + parseInt(this.state.datestats[i].totalFee)}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalInvoice}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCih}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCb}</b></div>
                           </td>
                           {/* <td style={{textAlign:"center"}}>
@@ -775,6 +783,7 @@ export default class PartnerReports extends Component {
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRp}</b></div>
                           </td> */}
+                          
                         </tr>
                   </tbody>
               
