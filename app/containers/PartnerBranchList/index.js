@@ -553,8 +553,8 @@ export default class PartnerBranchList extends Component {
                   bigPadding
                   smallValue
                 >
-                  <h4>Number of Cashier</h4>
-                  <div className="cardValue">{this.state.totalCashier}</div>
+                  <h4>Number of Branch</h4>
+                  <div className="cardValue">{this.state.branches.length}</div>
                 </Card>
               </Col>
               <Col  cW='33%'>
@@ -726,13 +726,13 @@ export default class PartnerBranchList extends Component {
                     <tr>
                       <th>Branch Name</th>
                       <th>Total Cashier</th>
-                      <th>Cash in Hand ({CURRENCY})</th>
                       <th>Opening Balance ({CURRENCY})</th>
                       <th>Fee Collected ({CURRENCY})</th>
                       <th>Commission Collected ({CURRENCY})</th>
                       <th>Revenue Collected ({CURRENCY})</th>
+                      <th>Cash in Hand ({CURRENCY})</th>
                       <th>Invoice Paid </th>
-                      <th>Amount Collected ({CURRENCY})</th>
+                      {/* <th>Amount Collected ({CURRENCY})</th> */}
                       <th></th>
                     </tr>
                   </thead>
@@ -743,13 +743,13 @@ export default class PartnerBranchList extends Component {
                           <tr key={b._id}>
                             <td>{b.name}</td>
                             <td className="tac">{b.total_cashiers}</td>
-                            <td className="tac">{dis.state.branchStats[i].cashInHand}</td>
                             <td className="tac">{dis.state.branchStats[i].openingBalance}</td>
                             <td className="tac">{dis.state.branchStats[i].feeGenerated.toFixed(2)}</td>
                             <td className="tac">{dis.state.branchStats[i].commissionGenerated.toFixed(2)}</td>
                             <td className="tac">{(dis.state.branchStats[i].feeGenerated + dis.state.branchStats[i].commissionGenerated).toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].cashInHand}</td>
                             <td className="tac">{dis.state.branchStats[i].invoicePaid}</td>
-                            <td className="tac">{dis.state.branchStats[i].amountPaid}</td>
+                            {/* <td className="tac">{dis.state.branchStats[i].amountPaid}</td> */}
                             <td className="tac bold green">
                               
                               <Button
