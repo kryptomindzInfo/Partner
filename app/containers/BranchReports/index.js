@@ -122,7 +122,7 @@ export default class BranchReports extends Component {
   getCashiers = async() => {
     let apiType = "";
     if (this.props.apitype === 'partner'){
-      if( localStorage.getItem('admin')){
+      if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
         apiType = 'partner';
@@ -150,7 +150,7 @@ export default class BranchReports extends Component {
   getCashierDetails = async(id) => {
     let apiType = "";
     if (this.props.apitype === 'partner'){
-      if( localStorage.getItem('admin')){
+      if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
         apiType = 'partner';
@@ -209,7 +209,7 @@ export default class BranchReports extends Component {
   getCashierDailyReport = async(after,before,cashier) => {
     let apiType = "";
     if (this.props.apitype === 'partner'){
-      if( localStorage.getItem('admin')){
+      if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
         apiType = 'partner';
@@ -407,6 +407,7 @@ export default class BranchReports extends Component {
   }
 
   componentDidMount= async() => {
+    console.log(localStorage.getItem('admin') === true);
     this.getData();
   };
 

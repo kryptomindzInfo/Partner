@@ -840,8 +840,8 @@ export default class BranchDashboard extends Component {
 
   getCashiers = () => {
     let apiType = "";
-    if (this.props.apitype === 'partner'){
-      if( localStorage.getItem('admin')){
+    if (this.props.apitype === 'partner' || this.props.apitype === 'partnerBranch'){
+      if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
         apiType = 'partner';
@@ -866,8 +866,8 @@ export default class BranchDashboard extends Component {
 
   getUsers = () => {
     let apiType = "";
-    if (this.props.apitype === 'partner'){
-      if( localStorage.getItem('admin')){
+    if (this.props.apitype === 'partner' || this.props.apitype === 'partnerBranch'){
+      if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
         apiType = 'partner';
