@@ -814,6 +814,23 @@ export default class PartnerUser extends Component {
                         </div>
                       </UploadArea>
                     </FormGroup>
+                    <FormGroup mR="10%" mL="10%">
+                      <Row>
+                            <Col cW="4%">
+                                <TextInput
+                                  type="checkbox"
+                                  // value={values.read_only}
+                                  // checked={values.read_only}
+                                  name="read_only"
+                                  required
+                                  style={{ margin: 'revert', height:"20px", width:"20px" }}
+                                  // onChange={handleChange}
+                                />
+                            </Col>
+                            <Col cW="1%"></Col>
+                            <Col cW="95%">Read Only</Col>
+                      </Row>
+                    </FormGroup>
                     <Icon className="material-icons">fingerprint</Icon>
                     {this.state.addUserLoading ? (
                       <Button filledBtn marginTop="20px" disabled>
@@ -1058,6 +1075,23 @@ export default class PartnerUser extends Component {
                         </label>
                         </div>
                       </UploadArea>
+                    </FormGroup>
+                    <FormGroup mR="10%" mL="10%">
+                      <Row>
+                            <Col cW="4%">
+                                <TextInput
+                                  type="checkbox"
+                                  // value={values.read_only}
+                                  // checked={values.read_only}
+                                  name="read_only"
+                                  required
+                                  style={{ margin: 'revert', height:"20px", width:"20px" }}
+                                  // onChange={handleChange}
+                                />
+                            </Col>
+                            <Col cW="1%"></Col>
+                            <Col cW="95%">Read Only</Col>
+                      </Row>
                     </FormGroup>
                     <Icon className="material-icons">fingerprint</Icon>
 
