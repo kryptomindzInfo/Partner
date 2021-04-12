@@ -120,8 +120,18 @@ export default class BranchReports extends Component {
   }
 
   getCashiers = async() => {
+    let apiType = "";
+    if (this.props.apitype === 'partner'){
+      if( localStorage.getItem('admin')){
+        apiType = 'partnerUser';
+      }else{
+        apiType = 'partner';
+      }
+    }else{
+      apiType = this.props.apitype;
+    }
     try {
-      const res = await axios.post(`${API_URL}/getAll`, {
+      const res = await axios.post(`${API_URL}/${apiType}/getAll`, {
         page: 'partnerCashier',
         type: this.state.apiType,
         token: this.state.token,
@@ -138,8 +148,18 @@ export default class BranchReports extends Component {
   };
 
   getCashierDetails = async(id) => {
+    let apiType = "";
+    if (this.props.apitype === 'partner'){
+      if( localStorage.getItem('admin')){
+        apiType = 'partnerUser';
+      }else{
+        apiType = 'partner';
+      }
+    }else{
+      apiType = this.props.apitype;
+    }
     try {
-      const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDetails`, {
+      const res = await axios.post(`${API_URL}/${apiType}/getCashierDetails`, {
         cashier_id: id,
         token: this.state.token,
       })
@@ -187,8 +207,18 @@ export default class BranchReports extends Component {
   };
 
   getCashierDailyReport = async(after,before,cashier) => {
+    let apiType = "";
+    if (this.props.apitype === 'partner'){
+      if( localStorage.getItem('admin')){
+        apiType = 'partnerUser';
+      }else{
+        apiType = 'partner';
+      }
+    }else{
+      apiType = this.props.apitype;
+    }
     try{
-      const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDailyReport`, {
+      const res = await axios.post(`${API_URL}/${apiType}/getCashierDailyReport`, {
         token: this.state.token,
         cashier_id: cashier._id,
         start:after,

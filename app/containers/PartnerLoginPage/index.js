@@ -87,6 +87,7 @@ export default class BankLoginPage extends Component {
             localStorage.setItem('partnerName', res.data.name);
             localStorage.setItem('partnerUserName', res.data.username);
             localStorage.setItem('partnerContract', res.data.contract);
+            localStorage.setItem('admin', res.data.admin);
             localStorage.setItem('bankName', res.data.bank_name);
             localStorage.setItem('bankLogo', res.data.bank_logo);
             localStorage.setItem('partnerLogo', res.data.logo);

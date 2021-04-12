@@ -186,10 +186,10 @@ class BankOperationalWallet extends Component {
         }
       })
       .catch(err => {
-        this.setState({
-          notification: err.response ? err.response.data.error : err.toString(),
-        });
-        this.error();
+        // this.setState({
+        //   notification: err.response ? err.response.data.error : err.toString(),
+        // });
+        // this.error();
       });
   }
 
@@ -225,7 +225,7 @@ class BankOperationalWallet extends Component {
           <FormattedMessage {...messages.available} />
         </h5>
         <div className="cardValue">
-          {CURRENCY} {this.state.balance.toFixed(2)}
+          {CURRENCY} {this.state.balance? this.state.balance.toFixed(2):0}
         </div>
         <Row>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">

@@ -839,8 +839,18 @@ export default class BranchDashboard extends Component {
 
 
   getCashiers = () => {
+    let apiType = "";
+    if (this.props.apitype === 'partner'){
+      if( localStorage.getItem('admin')){
+        apiType = 'partnerUser';
+      }else{
+        apiType = 'partner';
+      }
+    }else{
+      apiType = this.props.apitype;
+    }
     axios
-      .post(`${API_URL}/${this.state.apiType}/getAll`, {
+      .post(`${API_URL}/${apiType}/getAll`, {
         page: 'partnerCashier',
         token: this.state.token,
         where: { branch_id: this.state.bid },
@@ -855,8 +865,18 @@ export default class BranchDashboard extends Component {
   };
 
   getUsers = () => {
+    let apiType = "";
+    if (this.props.apitype === 'partner'){
+      if( localStorage.getItem('admin')){
+        apiType = 'partnerUser';
+      }else{
+        apiType = 'partner';
+      }
+    }else{
+      apiType = this.props.apitype;
+    }
     axios
-      .post(`${API_URL}/${this.state.apiType}/getAll`, {
+      .post(`${API_URL}/${apiType}/getAll`, {
         page: 'partnerUser',
         type: 'partnerBranch',
         token: this.state.token,

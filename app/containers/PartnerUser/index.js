@@ -60,11 +60,14 @@ export default class PartnerUser extends Component {
     super();
     this.state = {
       name: '',
+      partner_id: localStorage.getItem('partnerId'),
       address1: '',
+      admin: localStorage.getItem('admin'),
       state: '',
       otpMobile: mobile,
       zip: '',
       username: '',
+      role:'user',
       password: '',
       mobile: '',
       email: '',
@@ -187,6 +190,7 @@ export default class PartnerUser extends Component {
       .post(`${API_URL}/partner/addUser`, {
         name: this.state.name,
         email: this.state.email,
+        role: this.state.role,
         mobile: this.state.mobile,
         username: this.state.username,
         password: this.state.password,
@@ -340,6 +344,7 @@ export default class PartnerUser extends Component {
       .post(`${API_URL}/partner/editUser`, {
         name: this.state.name,
         email: this.state.email,
+        role: this.state.role,
         mobile: this.state.mobile,
         ccode: this.state.ccode,
         username: this.state.username,
@@ -440,7 +445,7 @@ export default class PartnerUser extends Component {
 
   getUsers = () => {
     axios
-      .post(`${API_URL}/partner/listUsers`, { token })
+      .post(`${API_URL}/partner/listUsers`, { token, partner_id:this.state.partner_id  })
       .then(res => {
         if (res.status == 200) {
           this.setState({ loading: false, users: res.data.users, copyusers: res.data.users });
@@ -524,6 +529,7 @@ export default class PartnerUser extends Component {
     if (redirect) {
       return <Redirect to="/" />;
     }
+    const dis = this;
 
     return (
       <Wrapper from="bank">
@@ -539,6 +545,7 @@ export default class PartnerUser extends Component {
               marginBottom="33px"
               inputWidth="calc(100% - 241px)"
               className="clr"
+              style={{ display: this.state.admin === true ? 'none' : ''}}
             >
               <div className="iconedInput fl">
                 <i className="material-icons">search</i>
@@ -577,6 +584,7 @@ export default class PartnerUser extends Component {
                           <Col cW="20%">
                             <Button
                               noMin
+                              style={{ display: dis.state.admin === true ? 'none' : ''}}
                               className="fr"
                               onClick={() => ep.showEditPopup(b)}
                             >
@@ -659,6 +667,23 @@ export default class PartnerUser extends Component {
                         required
                       />
                     </FormGroup>
+                    <FormGroup mR="10%" mL="10%">
+                      <label className="focused">Role*</label>
+                      <SelectInput
+                        type="text"
+                        name="role"
+                        value={this.state.role}
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        onChange={this.handleInputChange}
+                        required
+                      >
+
+                        <option value="user">User</option>
+                        <option value="partnerAdmin">Partner Admin</option>
+                        <option value="branchAdmin">Branch Admin</option>
+                      </SelectInput>
+                    </FormGroup>
 
                     <Row>
                       <Col cW="30%" mR="2%">
@@ -728,24 +753,25 @@ export default class PartnerUser extends Component {
                         required
                       />
                     </FormGroup>
-
-                    <FormGroup>
-                      <SelectInput
-                        type="text"
-                        name="branch_id"
-                        value={this.state.branch_id}
-                        onChange={this.handleInputChange}
-                        required
-                      >
-                        <option value="">Select Branch*</option>
-                        {this.state.branches && this.state.branches.length > 0
-                          ? this.state.branches.map(function (b) {
-                            return <option value={b._id} key={b._id}>{b.name}</option>;
-                          })
-                          : null}
-                      </SelectInput>
-                    </FormGroup>
-
+                    {this.state.role === 'user' ? (
+                      <FormGroup>
+                        <SelectInput
+                          type="text"
+                          name="branch_id"
+                          value={this.state.branch_id}
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Branch*</option>
+                          {this.state.branches && this.state.branches.length > 0
+                            ? this.state.branches.map(function (b) {
+                              return <option value={b._id} key={b._id}>{b.name}</option>;
+                            })
+                            : null}
+                        </SelectInput>
+                      </FormGroup>
+                    ):''}
+                    
                     <FormGroup>
                       {/* <UploadedFile>
 
@@ -885,7 +911,24 @@ export default class PartnerUser extends Component {
                         required
                       />
                     </FormGroup>
+                    <FormGroup mR="10%" mL="10%">
+                      <label className="focused">Role*</label>
+                      <SelectInput
+                        type="text"
+                        name="role"
+                        onFocus={inputFocus}
+                        onBlur={inputBlur}
+                        value={this.state.role}
+                        onChange={this.handleInputChange}
+                        required
+                      >
 
+                        {/* <option value="">Select Role*</option> */}
+                        <option value="user">User</option>
+                        <option value="partnerAdmin">Partner Admin</option>
+                        <option value="branchAdmin">Branch Admin</option>
+                      </SelectInput>
+                    </FormGroup>
                     <Row>
                       <Col cW="30%" mR="2%">
                         <FormGroup>

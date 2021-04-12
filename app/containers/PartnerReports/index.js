@@ -57,6 +57,7 @@ export default class PartnerReports extends Component {
     super();
     this.state = {
       token: localStorage.getItem('partnerLogged'),
+      partner_id: localStorage.getItem('partnerId'),
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
       cashiers:[],
@@ -112,7 +113,7 @@ export default class PartnerReports extends Component {
 
   getBranches = async() => {
     try {
-      const res = await axios.post(`${API_URL}/partner/listBranches`, { token:this.state.token });
+      const res = await axios.post(`${API_URL}/partner/listBranches`, { token:this.state.token, partner_id:this.state.partner_id });
       if (res.status == 200) {
         return ({branches:res.data.branches,loading:false});
       }
@@ -121,24 +122,24 @@ export default class PartnerReports extends Component {
     }
   }
 
-  getCashierDetails = async(id) => {
-    try {
-      const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDetails`, {
-        cashier_id: id,
-        token: this.state.token,
-      })
-      if (res.status === 200){
-        this.setState({
-          selectedCashierDetails: res.data.cashier,
-          accepted:res.data.accepted,
-          pending:res.data.pending,
-          cancelled:res.data.cancelled,
-        });
-      } 
-    }catch(err){
-      console.log(err);
-    }
-  };
+  // getCashierDetails = async(id) => {
+  //   try {
+  //     const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDetails`, {
+  //       cashier_id: id,
+  //       token: this.state.token,
+  //     })
+  //     if (res.status === 200){
+  //       this.setState({
+  //         selectedCashierDetails: res.data.cashier,
+  //         accepted:res.data.accepted,
+  //         pending:res.data.pending,
+  //         cancelled:res.data.cancelled,
+  //       });
+  //     } 
+  //   }catch(err){
+  //     console.log(err);
+  //   }
+  // };
 
   getdays = async(from,to) => {
     function addDays(date, days) {

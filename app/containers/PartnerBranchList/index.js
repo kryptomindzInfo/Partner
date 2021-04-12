@@ -57,8 +57,10 @@ export default class PartnerBranchList extends Component {
     this.state = {
       sid: '',
       bank: bid,
+      partner_id: localStorage.getItem('partnerId'),
       bankName: localStorage.getItem('bankName'),
       bankLogo: localStorage.getItem('bankLogo'),
+      admin: localStorage.getItem('admin'),
       name: '',
       address1: '',
       html: '',
@@ -407,7 +409,7 @@ export default class PartnerBranchList extends Component {
 
   getBranches = async() => {
     try {
-      const res = await axios.post(`${API_URL}/partner/listBranches`, { token });
+      const res = await axios.post(`${API_URL}/partner/listBranches`, { token, partner_id:this.state.partner_id });
       if (res.status == 200) {
         return ({branches:res.data.branches,loading:false});
       }
@@ -486,6 +488,7 @@ export default class PartnerBranchList extends Component {
   }
 
   componentDidMount() {
+    console.log(localStorage.getItem('admin'));
     // this.setState({ bank: this.state.bank_id });
     if (token !== undefined && token !== null) {
       // this.getBank();
@@ -701,6 +704,7 @@ export default class PartnerBranchList extends Component {
               style={{
                 float:"right",
                 marginBottom:'10px',
+                display: this.state.admin === true ? 'none' : '',
               }}
               onClick={() => this.showPopup()}
             >

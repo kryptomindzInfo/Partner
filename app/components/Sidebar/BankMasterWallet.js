@@ -97,7 +97,7 @@ class BankMasterWallet extends Component {
         <h5>
           <FormattedMessage {...messages.available} />
         </h5>
-        <div className="cardValue">{CURRENCY} {this.state.balance.toFixed(2)}</div>
+        <div className="cardValue">{CURRENCY} {this.state.balance? this.state.balance.toFixed(2):0}</div>
         <Row>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
             <Button
