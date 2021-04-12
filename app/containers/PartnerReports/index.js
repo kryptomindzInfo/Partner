@@ -232,12 +232,12 @@ export default class PartnerReports extends Component {
         totalCr: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received : 0), 0
         ).toFixed(2),
-        totalCb: cashiedatestats.reduce(
-          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance : 0), 0
+        totalCp: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_paid : 0), 0
         ).toFixed(2),
-        // totalDis: cashiedatestats.reduce(
-        //   (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].descripency : 0), 0
-        // ).toFixed(2),
+        totalDis: cashiedatestats.reduce(
+          (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].discripancy : 0), 0
+        ).toFixed(2),
         totalFee: cashiedatestats.reduce(
           (a, b) => a + (b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].fee_generated : 0), 0
         ).toFixed(2),
@@ -331,6 +331,9 @@ export default class PartnerReports extends Component {
         ),
         cashReceived: datestats.res.reduce(
           (a, b) => a + parseFloat(b.totalCr,10), 0
+        ),
+        cashPaid: datestats.res.reduce(
+          (a, b) => a + parseFloat(b.totalCp,10), 0
         ),
         cashInhand: datestats.res.reduce(
           (a, b) => a + parseFloat(b.totalCih,10), 0
@@ -681,12 +684,15 @@ export default class PartnerReports extends Component {
                         <th>Branch</th>
                         <th>Opening Balance</th>
                         <th>Cash Received</th>
+                        <th>Cash Paid</th>
+                        <th>Invoice Paid</th>
+                        <th>Amount of Invoice Paid</th>
                         <th>Fee Generated</th>
                         <th>Commission Generated</th>
                         <th>Revenue Generated</th>
-                        <th>Invoice Paid</th>
                         <th>Cash in Hand</th>
                         <th>Closing Balance</th>
+                        <th>Discripancy</th>
                         {/* <th>Requests Approved</th>
                         <th>Requests Declined</th>
                         <th>Requests Pending</th> */}
@@ -711,6 +717,15 @@ export default class PartnerReports extends Component {
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_received.toFixed(2) : "-"}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_paid.toFixed(2) : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.paid : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.amountpaid : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].fee_generated.toFixed(2) : "-"}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
@@ -720,14 +735,14 @@ export default class PartnerReports extends Component {
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? (b.cashiedatestats.reports[0].fee_generated + b.cashiedatestats.reports[0].comm_generated).toFixed(2) : ""}</div>
                             </td>
                             <td style={{textAlign:"center"}}>
-                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.paid : "-"}</div>
-                            </td>
-                            <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].cash_in_hand.toFixed(2) : "-"}</div>
                             </td>
                           
                             <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].closing_balance.toFixed(2) : "-"}</div>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                              <div className="labelGrey">{b.cashiedatestats.reports.length > 0 ? b.cashiedatestats.reports[0].discripancy.toFixed(2) : "-"}</div>
                             </td>
                             {/* <td style={{textAlign:"center"}}>
                               <div className="labelGrey">{b.cashiedatestats.accepted}</div>
@@ -757,6 +772,15 @@ export default class PartnerReports extends Component {
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCr}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCp}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalInvoice}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalInvoiceAmount}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalFee}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
@@ -766,13 +790,13 @@ export default class PartnerReports extends Component {
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {parseInt(this.state.datestats[i].totalComm) + parseInt(this.state.datestats[i].totalFee)}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
-                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalInvoice}</b></div>
-                          </td>
-                          <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCih}</b></div>
                           </td>
                           <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalCb}</b></div>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>XOF {this.state.datestats[i].totalDis}</b></div>
                           </td>
                           {/* <td style={{textAlign:"center"}}>
                             <div className="labelGrey" style={{textAlign:"center", color:'white'}}><b>{this.state.datestats[i].totalRa}</b></div>

@@ -95,6 +95,9 @@ export default class PartnerBranchList extends Component {
       accepted:0,
       declined:0,
       pending:0,
+      cashReceived:0,
+      cashPaid:0,
+      closingBalance:0,
       commissionGenerated: 0,
       otp: '',
       showOtp: false,
@@ -481,7 +484,16 @@ export default class PartnerBranchList extends Component {
         ),
         pending: branchstats.res.reduce(
           (a, b) => a + b.pending, 0
-        )
+        ),
+        cashReceived: branchstats.res.reduce(
+          (a, b) => a + b.cashReceived, 0
+        ).toFixed(2),
+        cashPaid: branchstats.res.reduce(
+          (a, b) => a + b.cashPaid, 0
+        ).toFixed(2),
+        closingBalance: branchstats.res.reduce(
+          (a, b) => a + b.closingBalance, 0
+        ).toFixed(2),
       }
     );
     
@@ -546,7 +558,7 @@ export default class PartnerBranchList extends Component {
           <Row>
               <Col  cW='33%'>
                 <Card
-                  style={{height:'120px'}}
+                  style={{height:'130px'}}
                   marginBottom="10px"
                   textAlign="center"
                   buttonMarginTop="32px"
@@ -559,7 +571,7 @@ export default class PartnerBranchList extends Component {
               </Col>
               <Col  cW='33%'>
                 <Card
-                  style={{height:'120px'}}
+                  style={{height:'130px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -572,64 +584,35 @@ export default class PartnerBranchList extends Component {
               </Col>
               <Col  cW='33%'>
                 <Card
-                   style={{height:'120px'}}
+                   style={{height:'130px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
                   bigPadding
                   smallValue
                 >
-                  <h4>Cash In Hand</h4>
-                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                  <h4>Cash Received</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashReceived}</div>
                 </Card>
               </Col>
             </Row>
-          {/* <Row>
-              <Col  cW='33%'>
-                <Card
-                  style={{height:'120px'}}
-                  marginBottom="10px"
-                  textAlign="center"
-                  buttonMarginTop="32px"
-                  bigPadding
-                  smallValue
-                >
-                  <h4>Fee Generated</h4>
-                  <div className="cardValue">{this.state.feeGenerated}</div>
-                </Card>
-              </Col>
-              <Col  cW='33%'>
-                <Card
-                  style={{height:'120px'}}
-                  marginBottom="10px"
-                  buttonMarginTop="32px"
-                  textAlign="center"
-                  bigPadding
-                  smallValue
-                >
-                  <h4>Commission Generated</h4>
-                  <div className="cardValue">{CURRENCY}: {this.state.commissionGenerated}</div>
-                </Card>
-              </Col>
-              <Col  cW='33%'>
-                <Card
-                   style={{height:'120px'}}
-                  marginBottom="10px"
-                  buttonMarginTop="32px"
-                  textAlign="center"
-                  bigPadding
-                  smallValue
-                >
-                  <h4>Revenue Generated</h4>
-                  <div className="cardValue">{CURRENCY}: {(parseInt(this.state.commissionGenerated)+ parseInt(this.state.feeGenerated)).toFixed(2)}</div>
-                </Card>
-              </Col>
-            </Row>
-             */}
             <Row>
-            <Col cW='40%'>
+            <Col  cW='20%'>
                 <Card
-                  style={{height:'120px'}}
+                   style={{height:'130px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash Paid</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashPaid}</div>
+                </Card>
+              </Col>
+            <Col cW='35%'>
+                <Card
+                  style={{height:'130px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   textAlign="center"
@@ -649,9 +632,9 @@ export default class PartnerBranchList extends Component {
                   </Row>
                 </Card>
               </Col>
-              <Col cW='60%'>
+              <Col cW='45%'>
               <Card
-                   style={{height:'120px'}}
+                   style={{height:'130px'}}
                   marginBottom="10px"
                   buttonMarginTop="32px"
                   bigPadding
@@ -677,6 +660,48 @@ export default class PartnerBranchList extends Component {
                 </Card>
               </Col>
             </Row>
+            <Row>
+            <Col  cW='33%'>
+                <Card
+                   style={{height:'130px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Cash In Hand</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'130px'}}
+                  marginBottom="10px"
+                  buttonMarginTop="32px"
+                  textAlign="center"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Closing Balance</h4>
+                  <div className="cardValue">{CURRENCY}: {this.state.closingBalance}</div>
+                </Card>
+              </Col>
+              <Col  cW='33%'>
+                <Card
+                  style={{height:'130px'}}
+                  marginBottom="10px"
+                  textAlign="center"
+                  buttonMarginTop="32px"
+                  bigPadding
+                  smallValue
+                >
+                  <h4>Discripancy</h4>
+                  <div className="cardValue">{CURRENCY}: 0</div>
+                </Card>
+              </Col>
+            </Row>
+            
           </Main>
           <Main fullWidth>
                
@@ -727,12 +752,16 @@ export default class PartnerBranchList extends Component {
                       <th>Branch Name</th>
                       <th>Total Cashier</th>
                       <th>Opening Balance ({CURRENCY})</th>
+                      <th>Cash Received ({CURRENCY})</th>
+                      <th>Cash Paid ({CURRENCY})</th>
+                      <th>Invoice Paid </th>
+                      <th>Amount Collected ({CURRENCY})</th>
                       <th>Fee Collected ({CURRENCY})</th>
                       <th>Commission Collected ({CURRENCY})</th>
                       <th>Revenue Collected ({CURRENCY})</th>
                       <th>Cash in Hand ({CURRENCY})</th>
-                      <th>Invoice Paid </th>
-                      {/* <th>Amount Collected ({CURRENCY})</th> */}
+                      <th>Closing Balance ({CURRENCY})</th>
+                      <th>Discripancy ({CURRENCY})</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -743,13 +772,17 @@ export default class PartnerBranchList extends Component {
                           <tr key={b._id}>
                             <td>{b.name}</td>
                             <td className="tac">{b.total_cashiers}</td>
-                            <td className="tac">{dis.state.branchStats[i].openingBalance}</td>
+                            <td className="tac">{dis.state.branchStats[i].openingBalance.toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].cashReceived.toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].cashPaid.toFixed(2)}</td>
+                            <td className="tac">{dis.state.branchStats[i].invoicePaid}</td>
+                            <td className="tac">{dis.state.branchStats[i].amountPaid}</td>
                             <td className="tac">{dis.state.branchStats[i].feeGenerated.toFixed(2)}</td>
                             <td className="tac">{dis.state.branchStats[i].commissionGenerated.toFixed(2)}</td>
                             <td className="tac">{(dis.state.branchStats[i].feeGenerated + dis.state.branchStats[i].commissionGenerated).toFixed(2)}</td>
                             <td className="tac">{dis.state.branchStats[i].cashInHand}</td>
-                            <td className="tac">{dis.state.branchStats[i].invoicePaid}</td>
-                            {/* <td className="tac">{dis.state.branchStats[i].amountPaid}</td> */}
+                            <td className="tac">{dis.state.branchStats[i].closingBalance.toFixed(2)}</td>
+                            <td className="tac">0</td>
                             <td className="tac bold green">
                               
                               <Button
