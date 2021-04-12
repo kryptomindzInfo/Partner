@@ -581,7 +581,7 @@ export default class PartnerReports extends Component {
                 >
                   <h4>Cash in Hand</h4>
 
-                  <div className="cardValue">{CURRENCY}: {this.state.cashInHand}</div>
+                  <div className="cardValue">{CURRENCY}: {this.state.cashInhand}</div>
                 </Card>
               </Col>
             </Row>
