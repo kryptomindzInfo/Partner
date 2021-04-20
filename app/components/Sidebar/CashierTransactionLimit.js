@@ -17,6 +17,8 @@ import Loader from 'components/Loader';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 import CashierToOperationalForm from './CashiertoOperationalForm';
 import TransactionReciept from '../TransactionReciept';
+import SearchTransactionPopup from './SearchTransactionsPopup';
+import SearchInvoicePopup from './SearchInvoicePopup';
 import history from 'utils/history';
 import { API_URL, CONTRACT_URL, CURRENCY, STATIC_URL } from 'containers/App/constants';
 
@@ -68,6 +70,7 @@ class CashierTransactionLimit extends Component {
       receiverIdentificationAmount: '',
       receiverIdentificationCountry: '',
       senderIdentificationCountry: '',
+      showSearchTransactionPopup: false,
       country: '',
       receiverCountry: '',
       showSendMoneyOTP: false,
@@ -78,6 +81,7 @@ class CashierTransactionLimit extends Component {
       interbank: true,
       receiptpopup: false,
       receiptvalues: {},
+      searchBillsPopup: false,
     };
     this.success = this.success.bind(this);
     this.error = this.error.bind(this);
@@ -114,6 +118,18 @@ class CashierTransactionLimit extends Component {
   openCashier = e => {
     this.setState({
       openCashierPopup: true
+    });
+  };
+
+  openSearchPopup = () => {
+    this.setState({
+      showSearchTransactionPopup: true,
+    });
+  };
+
+  closeSearchPopup = () => {
+    this.setState({
+      showSearchTransactionPopup: false,
     });
   };
 
@@ -562,6 +578,18 @@ class CashierTransactionLimit extends Component {
           claimMoneyLoading: false,
         });
       });
+  };
+
+  onSearchBillsPopupClose = () => {
+    this.setState({
+      searchBillsPopup:false,
+    });
+  };
+
+  onSearchBillsPopupOpen = () => {
+    this.setState({
+      searchBillsPopup:true,
+    });
   };
 
   cancelPending = event => {
@@ -1282,6 +1310,24 @@ class CashierTransactionLimit extends Component {
               )}
           </Col>
         </Row>
+        <Row>
+          <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
+           
+              <Button
+                dashBtn
+                onClick={this.openSearchPopup}
+              >
+                Search Transactions
+              </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
+            <Button dashBtn onClick={() => { this.onSearchBillsPopupOpen() }}>
+              Search Paid Invoices
+            </Button>
+          </Col>
+        </Row>
 
         {this.state.receiptpopup ? (
           <TransactionReciept
@@ -1295,6 +1341,20 @@ class CashierTransactionLimit extends Component {
           close={this.closeOperationalPopup}
         />
         ): null}
+
+        {this.state.showSearchTransactionPopup ? (
+          <SearchTransactionPopup
+            close={this.closeSearchPopup}
+          />
+        ) : null}
+
+        {this.state.searchBillsPopup ? (
+          <SearchInvoicePopup
+            close={() => this.onSearchBillsPopupClose()}
+          />
+        ) : (
+          ''
+        )}
 
         {this.state.popupClaimMoney ? (
           <>

@@ -844,7 +844,7 @@ export default class BranchDashboard extends Component {
       if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
-        apiType = 'partner';
+        apiType = this.props.apitype;
       }
     }else{
       apiType = this.props.apitype;
@@ -870,7 +870,7 @@ export default class BranchDashboard extends Component {
       if( localStorage.getItem('admin') === true){
         apiType = 'partnerUser';
       }else{
-        apiType = 'partner';
+        apiType = this.props.apitype;
       }
     }else{
       apiType = this.props.apitype;

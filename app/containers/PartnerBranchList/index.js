@@ -704,24 +704,6 @@ export default class PartnerBranchList extends Component {
             
           </Main>
           <Main fullWidth>
-               
-            {/* <ActionBar
-              marginBottom="33px"
-              inputWidth="calc(100% - 241px)"
-              className="clr"
-            >
-              <div className="iconedInput fl">
-                <i className="material-icons">search</i>
-                <input type="text" placeholder="Search Branches" onChange={(e) => {
-                  this.searchlistfunction(e.target.value)
-                }} />
-              </div>
-
-              <Button className="addBankButton" flex onClick={this.showPopup}>
-                <i className="material-icons">add</i>
-                <span>Add Branch</span>
-              </Button>
-            </ActionBar> */}
             <Card bigPadding>
             <Button
               className="addBankButton"
@@ -835,6 +817,7 @@ export default class PartnerBranchList extends Component {
               </div>
             </Card>
           </Main>
+        
         </Container>
         {this.state.popup ? (
           <Popup close={this.closePopup.bind(this)} accentedH1>

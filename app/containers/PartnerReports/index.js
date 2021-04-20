@@ -122,25 +122,6 @@ export default class PartnerReports extends Component {
     }
   }
 
-  // getCashierDetails = async(id) => {
-  //   try {
-  //     const res = await axios.post(`${API_URL}/${this.state.apiType}/getCashierDetails`, {
-  //       cashier_id: id,
-  //       token: this.state.token,
-  //     })
-  //     if (res.status === 200){
-  //       this.setState({
-  //         selectedCashierDetails: res.data.cashier,
-  //         accepted:res.data.accepted,
-  //         pending:res.data.pending,
-  //         cancelled:res.data.cancelled,
-  //       });
-  //     } 
-  //   }catch(err){
-  //     console.log(err);
-  //   }
-  // };
-
   getdays = async(from,to) => {
     function addDays(date, days) {
       var result = new Date(date);
