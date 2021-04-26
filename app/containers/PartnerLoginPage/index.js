@@ -93,6 +93,7 @@ export default class BankLoginPage extends Component {
             localStorage.setItem('partnerLogo', res.data.logo);
             localStorage.setItem('partnerId', res.data.id);
             localStorage.setItem('partnerPhone', res.data.mobile);
+            localStorage.setItem('verifyUserAccess', res.data.verify_user_access);
             if (res.data.status == 0 && res.data.message === "Incorrect username or password") {
               throw res.data.message;
             }

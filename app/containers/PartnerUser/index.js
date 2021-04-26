@@ -62,6 +62,7 @@ export default class PartnerUser extends Component {
       name: '',
       partner_id: localStorage.getItem('partnerId'),
       address1: '',
+      verifyaccess:localStorage.getItem('verifyUserAccess'),
       admin: localStorage.getItem('admin'),
       state: '',
       otpMobile: mobile,
@@ -77,6 +78,7 @@ export default class PartnerUser extends Component {
       contract: '',
       loading: true,
       redirect: false,
+      verify_user_access:false,
       totalBanks: 0,
       notification: 'Welcome',
       popup: false,
@@ -130,6 +132,14 @@ export default class PartnerUser extends Component {
     }
   };
 
+  handleVerifyChange = event => {
+    console.log(event.target.checked);
+      this.setState({
+        verify_user_access: event.target.checked,
+      });
+    
+  };
+
   showPopup = () => {
     this.setState({ popup: true });
   };
@@ -137,6 +147,7 @@ export default class PartnerUser extends Component {
     this.setState({
       editPopup: true,
       name: v.name,
+      verify_user_access: v.verify_user_access,
       otpEmail: v.email,
       otpMobile: v.mobile,
       email: v.email,
@@ -191,6 +202,7 @@ export default class PartnerUser extends Component {
         name: this.state.name,
         email: this.state.email,
         role: this.state.role,
+        verify_user_access: this.state.verify_user_access,
         mobile: this.state.mobile,
         username: this.state.username,
         password: this.state.password,
@@ -343,6 +355,7 @@ export default class PartnerUser extends Component {
     axios
       .post(`${API_URL}/partner/editUser`, {
         name: this.state.name,
+        verify_user_access: this.state.verify_user_access,
         email: this.state.email,
         role: this.state.role,
         mobile: this.state.mobile,
@@ -814,23 +827,25 @@ export default class PartnerUser extends Component {
                         </div>
                       </UploadArea>
                     </FormGroup>
-                    <FormGroup mR="10%" mL="10%">
+                    {this.state.verifyaccess === true || this.state.verifyaccess==='true'? (
+                      <FormGroup mR="10%" mL="10%">
                       <Row>
                             <Col cW="4%">
                                 <TextInput
                                   type="checkbox"
-                                  // value={values.read_only}
-                                  // checked={values.read_only}
-                                  name="read_only"
-                                  required
+                                  value={this.state.verify_user_access}
+                                  checked={this.state.verify_user_access}
+                                  name="verify_user_access"
                                   style={{ margin: 'revert', height:"20px", width:"20px" }}
-                                  // onChange={handleChange}
+                                  onClick={(e)=>{this.handleVerifyChange(e)}}
                                 />
                             </Col>
                             <Col cW="1%"></Col>
-                            <Col cW="95%">Read Only</Col>
+                            <Col cW="95%">Verify User Access</Col>
                       </Row>
                     </FormGroup>
+                    ):''}
+                    
                     <Icon className="material-icons">fingerprint</Icon>
                     {this.state.addUserLoading ? (
                       <Button filledBtn marginTop="20px" disabled>
@@ -1076,23 +1091,24 @@ export default class PartnerUser extends Component {
                         </div>
                       </UploadArea>
                     </FormGroup>
-                    <FormGroup mR="10%" mL="10%">
+                    {this.state.verifyaccess === true || this.state.verifyaccess==='true'? (
+                      <FormGroup mR="10%" mL="10%">
                       <Row>
                             <Col cW="4%">
                                 <TextInput
                                   type="checkbox"
-                                  // value={values.read_only}
-                                  // checked={values.read_only}
-                                  name="read_only"
-                                  required
+                                  value={this.state.verify_user_access}
+                                  checked={this.state.verify_user_access}
+                                  name="verify_user_access"
                                   style={{ margin: 'revert', height:"20px", width:"20px" }}
-                                  // onChange={handleChange}
+                                  onClick={(e)=>{this.handleVerifyChange(e)}}
                                 />
                             </Col>
                             <Col cW="1%"></Col>
-                            <Col cW="95%">Read Only</Col>
+                            <Col cW="95%">Verify User Access</Col>
                       </Row>
                     </FormGroup>
+                    ):''}
                     <Icon className="material-icons">fingerprint</Icon>
 
                     <Button filledBtn marginTop="20px">

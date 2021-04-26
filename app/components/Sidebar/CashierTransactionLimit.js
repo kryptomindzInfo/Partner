@@ -63,6 +63,7 @@ class CashierTransactionLimit extends Component {
       openingTime: null,
       withoutID: false,
       requireOTP: false,
+      verifyaccess:localStorage.getItem('verifyUserAccess'),
       sendtooperationalpopup: false,
       token,
       proceed: false,
@@ -1241,12 +1242,14 @@ class CashierTransactionLimit extends Component {
               )}
           </Col>
         </Row>
+        {this.state.verifyaccess === true || this.state.verifyaccess==='true'? (
         <Row style={{ marginTop: '25%' }}>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
             <FormDialog />
           </Col>
         </Row>
-        <Row>
+        ):""}
+        <Row style={{ marginTop: this.state.verifyaccess === true || this.state.verifyaccess==='true'? '0%' : '25%' }}>
           <Col style={{ width: '100%', marginTop: '5px' }} cw="100%">
             {this.state.transactionStarted && !this.state.isClosed ? (
               <Button

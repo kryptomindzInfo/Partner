@@ -106,6 +106,7 @@ export default class CashierLogin extends Component {
             localStorage.setItem('branchName', res.data.branch_name);
             localStorage.setItem('partnerName', res.data.partner_name);
             localStorage.setItem('maxTransAmt', res.data.max_trans_amt);
+            localStorage.setItem('verifyUserAccess', res.data.verify_user_access);
             window.location.href = '/cashier/'+this.props.match.params.bank+'/dashboard';
           }
         } else {
