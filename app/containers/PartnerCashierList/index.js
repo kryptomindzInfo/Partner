@@ -572,7 +572,7 @@ export default class PartnerCashierList extends Component {
         </Helmet>
         <PartnerHeader page="branch" middleTitle={this.state.bankName} goto="/branches" />
         <Container verticalMargin>
-          <BankSidebarThree active="cashier" branchId={this.props.match.params.branch} bankName={this.state.name} />
+        <BankSidebarThree active="info" branchId={this.props.match.params.branch} blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={bname} />
           <Main>
             <BranchWallets branchId={this.props.match.params.branch} bCode={this.state.dbcode} bankName={this.state.bname} />
             <ActionBar marginBottom="33px" inputWidth="calc(100% - 241px)" className="clr">

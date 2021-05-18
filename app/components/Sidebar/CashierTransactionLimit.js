@@ -2069,8 +2069,8 @@ class CashierTransactionLimit extends Component {
                     >
                       <Container>
                         <Row>
-                          {/* <Col md="4" /> */}
-                          <Col sm="12" md="12">
+                          <Col md="4" />
+                          <Col sm="12" md="4">
                             <FormGroup>
                               <label>
                                 Enter the transfer code
@@ -2089,7 +2089,7 @@ class CashierTransactionLimit extends Component {
                               />
                             </FormGroup>
                           </Col>
-                          {/* <Col md="4" /> */}
+                          <Col md="4" />
                         </Row>
                       </Container>
                       <Container>

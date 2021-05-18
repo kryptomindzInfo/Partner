@@ -45,7 +45,7 @@ class BankSidebarTwo extends Component {
             <h3>Documents</h3>
           </Card>
         </A>
-        <A href="/bank/fees">
+        {/* <A href="/bank/fees">
           <Card rounded selected={fees} className="sideNav">
             <i className="material-icons">mobile_screen_share</i>
             <h3>Fees</h3>
@@ -56,7 +56,7 @@ class BankSidebarTwo extends Component {
             <i className="material-icons">color_lens</i>
             <h3>Theme</h3>
           </Card>
-        </A>
+        </A> */}
       </Sidebar>
     );
   }

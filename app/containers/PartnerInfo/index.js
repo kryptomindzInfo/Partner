@@ -498,9 +498,9 @@ export default class PartnerInfo extends Component {
             // className="clr"
             >
               <h3>{this.state.banks.name}</h3>
-              <Button className="addBankButton" flex onClick={this.showPopup} style={{ marginTop: "-4%" }}>
+              {/* <Button className="addBankButton" flex onClick={this.showPopup} style={{ marginTop: "-4%" }}>
                 <span>Edit</span>
-              </Button>
+              </Button> */}
             </ActionBar>
             <Card bigPadding bordered>
               <div className="cardBody">

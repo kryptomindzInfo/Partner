@@ -917,6 +917,69 @@ const CashierToWalletForm = ({ onClose, formValues, isValidFee }) => {
                           ''
                         )}
                       </Grid>
+                      <Grid
+                        item
+                        xs={4}
+                        md={4}
+                        alignItems="center"
+                        className={classes.dialogTextFieldGrid}
+                      >
+                        {walletBankName ? (
+                          <TextField
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            id="firstName"
+                            label="First Name"
+                            disabled
+                            fullWidth
+                            className={classes.dialogTextFieldGrid}
+                            variant="outlined"
+                            style={{
+                              color: 'green',
+                              fontSize: '13px',
+                              fontWeight: '600',
+                            }}
+                            type="text"
+                            size="small"
+                            value={receiverGivenName}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={4}
+                        md={4}
+                        alignItems="center"
+                        className={classes.dialogTextFieldGrid}
+                      >
+                        {walletBankName ? (
+                          <TextField
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            id="Last Name"
+                            label="Last Name"
+                            disabled
+                            fullWidth
+                            className={classes.dialogTextFieldGrid}
+                            variant="outlined"
+                            style={{
+                              color: 'green',
+                              fontSize: '13px',
+                              fontWeight: '600',
+                            }}
+                            type="text"
+                            size="small"
+                            value={receiverFamilyName}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </Grid>
+                      
                       <Popper
                         open={openWalletPopup}
                         anchorEl={anchorRef.current}
