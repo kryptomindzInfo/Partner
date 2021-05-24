@@ -102,8 +102,8 @@ export default class BranchLogin extends Component {
           if (res.data.status == 0 && res.data.message === "Incorrect username or password") {
             throw res.data.message;
           }
-          else if (res.data.status == 0 && res.data.message === "Your account has been blocked, pls contact the admin!") {
-            throw res.data.message;
+          else if (res.data.status == -1 ) {
+            throw "Your account has been blocked, pls contact the admin!";
           }
           else if (res.data.initial_setup) {
             window.location.href = '/branch/' + this.props.match.params.bank + '/dashboard';

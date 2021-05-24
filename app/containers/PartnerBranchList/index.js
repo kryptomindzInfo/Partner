@@ -237,7 +237,7 @@ export default class PartnerBranchList extends Component {
             });
             this.success();
             this.closePopup();
-            this.getBranches();
+            this.getData();
           }
         } else {
           const error = new Error(res.data.error);
@@ -290,7 +290,7 @@ export default class PartnerBranchList extends Component {
               function () {
                 this.success();
                 this.closePopup();
-                this.getBranches();
+                this.getData();
               },
             );
           }
@@ -329,7 +329,7 @@ export default class PartnerBranchList extends Component {
               notification: 'Branch ' + n,
             });
             this.success();
-            this.getBranches();
+            this.getData();
           }
         } else {
           const error = new Error(res.data.error);
