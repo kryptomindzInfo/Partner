@@ -449,7 +449,7 @@ getTransactions = async(after,before) => {
           from="cashier"
         />
         <Container verticalMargin>
-          <SidebarCashier refresh={this.getHistory.bind(this)}  bankName={this.props.match.params.bank} branchName={this.props.match.params.bank} ref={this.child} />
+          <SidebarCashier refresh={this.getData.bind(this)}  bankName={this.props.match.params.bank} branchName={this.props.match.params.bank} ref={this.child} />
           <Main>
 
             <div className="clr">

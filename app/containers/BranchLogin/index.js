@@ -98,11 +98,11 @@ export default class BranchLogin extends Component {
           localStorage.setItem('branchEmail', res.data.email);
           localStorage.setItem('branchMobile', res.data.mobile);
           localStorage.setItem('bankid', res.data.partner_id);
-          console.log(res);
-          if (res.data.status == 0 && res.data.message === "Incorrect username or password") {
+          console.log(res.data.status);
+          if (res.data.status == 0) {
             throw res.data.message;
           }
-          else if (res.data.status == -1 ) {
+          else if (res.data.status === -1 ) {
             throw "Your account has been blocked, pls contact the admin!";
           }
           else if (res.data.initial_setup) {
