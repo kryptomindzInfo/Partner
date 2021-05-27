@@ -759,7 +759,7 @@ export default class PartnerCashierList extends Component {
                         required
                       />
                     </FormGroup>
-                    <FormGroup>
+                    {/* <FormGroup>
                       <label>Maximum daily transaction amount*</label>
                       <TextInput
                         type="text"
@@ -782,7 +782,7 @@ export default class PartnerCashierList extends Component {
                         onChange={this.handleInputChange}
                         required
                       />
-                    </FormGroup>
+                    </FormGroup> */}
                     {
                       !this.state.cashiers || this.state.cashiers.length <= 0 ?
                         <p className="note"><span style={{ color: "red" }}>*</span> This cashier will be the central cashier</p>
@@ -937,7 +937,7 @@ export default class PartnerCashierList extends Component {
                         required
                       />
                     </FormGroup>
-                    <FormGroup>
+                    {/* <FormGroup>
                       <label>Maximum daily transaction amount*</label>
                       <TextInput
                         type="text"
@@ -963,7 +963,7 @@ export default class PartnerCashierList extends Component {
                         required
                       />
 
-                    </FormGroup>
+                    </FormGroup> */}
 
                     {
                       this.state.editBranchLoading ?

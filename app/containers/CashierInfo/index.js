@@ -771,7 +771,7 @@ export default class CashierInfo extends Component {
                   required
                 />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <label>Maximum daily transaction amount*</label>
                 <TextInput
                   type="text"
@@ -796,7 +796,7 @@ export default class CashierInfo extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
-              </FormGroup>
+              </FormGroup> */}
                     {
                       this.state.editBranchLoading ?
                       <Button filledBtn marginTop="50px" disabled>

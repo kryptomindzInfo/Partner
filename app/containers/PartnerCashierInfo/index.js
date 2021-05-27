@@ -588,7 +588,7 @@ export default class PartnerCashierInfo extends Component {
     </Col>
   </Row>
 
-  <Row>
+  {/* <Row>
     <Col className="infoLeft">
     Maximum daily transaction amount
     </Col>
@@ -604,7 +604,7 @@ export default class PartnerCashierInfo extends Component {
     <Col className="infoRight">
     {this.state.max_trans_count}
     </Col>
-  </Row>
+  </Row> */}
   
 
 </div>
@@ -735,7 +735,7 @@ export default class PartnerCashierInfo extends Component {
                   required
                 />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <label>Maximum daily transaction amount*</label>
                 <TextInput
                   type="text"
@@ -760,7 +760,7 @@ export default class PartnerCashierInfo extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
-              </FormGroup>
+              </FormGroup> */}
                     {
                       this.state.editBranchLoading ?
                       <Button filledBtn marginTop="50px" disabled>
