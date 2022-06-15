@@ -75,16 +75,16 @@ import CashierMerchantListPage from '../CashierPayBills/CashierMerchantListPage'
 // import { CashierSendMoney } from '../CashierSendMoney';
 
 const appTheme = {
-  primary: '#417505',
+  primary: '#316B83',
   // primary: "#ff0000",
   // secondary: "#ff0000",
-  secondary: '#6cac69',
+  secondary: '#6D8299',
   accent: '#f5a623',
   danger: '#f52828',
   light: '#9ea0a5',
   greyLine: '#666565 ',
-  vGradient: 'linear-gradient(to bottom, #6cac6a, #102910)',
-  hGradient: 'linear-gradient(to right, #6cac6a 1%, #102910)',
+  vGradient: 'linear-gradient(to bottom, #6D8299, #316B83)',
+  hGradient: 'linear-gradient(to right, #6D8299 1%, #316B83)',
   font: 'Roboto',
   fontSize: '14px',
 };
