@@ -199,7 +199,7 @@ export default class BranchCashierInfo extends Component {
           this.generateOTP();
         },
       );
-    
+
   };
   startTimer = () => {
     var dis = this;
@@ -537,7 +537,7 @@ export default class BranchCashierInfo extends Component {
     this.setState({ popup: true});
   };
 
- 
+
 
   componentDidMount() {
 
@@ -583,9 +583,9 @@ export default class BranchCashierInfo extends Component {
           <meta charSet="utf-8" />
           <title>Branch | INFRA | E-WALLET</title>
         </Helmet>
-        <BranchHeader active="cashier" middleTitle={this.state.name} page="branch" goto={"/branch/"+this.props.match.params.bank+"/dashboard"} bankName={this.props.match.params.bank} bankLogo={STATIC_URL+logo} />  
+        <BranchHeader active="cashier" middleTitle={this.state.name} page="branch" goto={"/branch/"+this.props.match.params.bank+"/dashboard"} bankName={this.props.match.params.bank} bankLogo={STATIC_URL+logo} />
         <Container verticalMargin>
-          
+
           <BankSidebarCashier active="info" blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={this.state.name}/>
           <Main>
 
@@ -617,11 +617,11 @@ export default class BranchCashierInfo extends Component {
                 Worrking Hours
                 </Col>
                 <Col className="infoRight">
-                
+
                 </Col>
               </Row>
 
-             
+
               <Row>
                 <Col className="infoLeft">
                 From
@@ -649,7 +649,7 @@ export default class BranchCashierInfo extends Component {
                 </Col>
               </Row>
 
-              {/* <Row>
+             <Row>
                 <Col className="infoLeft">
                 Maximum daily transaction amount
                 </Col>
@@ -665,8 +665,8 @@ export default class BranchCashierInfo extends Component {
                 <Col className="infoRight">
                 {this.state.max_trans_count}
                 </Col>
-              </Row> */}
-              
+              </Row>
+
 
             </div>
           </Card>
@@ -747,7 +747,7 @@ export default class BranchCashierInfo extends Component {
               </FormGroup>
               <label>Working Hours</label>
               <Row>
-              
+
                 <Col  cW="30%" mR="2%">
 
                 <FormGroup>
@@ -796,7 +796,7 @@ export default class BranchCashierInfo extends Component {
                   required
                 />
               </FormGroup>
-              {/* <FormGroup>
+              <FormGroup>
                 <label>Maximum daily transaction amount*</label>
                 <TextInput
                   type="text"
@@ -821,7 +821,7 @@ export default class BranchCashierInfo extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
-              </FormGroup> */}
+              </FormGroup>
                     {
                       this.state.editBranchLoading ?
                       <Button filledBtn marginTop="50px" disabled>

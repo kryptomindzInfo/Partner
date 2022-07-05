@@ -25,10 +25,10 @@ export const DEFAULT_LOCALE = 'en';
 // export const STATIC_URL =
 //   'http://91d90ac373dc.sn.mynetname.net:30301/api/uploads/';
 
-export const API_URL = 'http://91d90ac373dc.sn.mynetname.net:40301/api';
+export const API_URL = `http://143.198.183.41:30301/api`;
 export const STATIC_URL =
-  'http://91d90ac373dc.sn.mynetname.net:40301/api/uploads/';
-export const CONTRACT_URL = 'http://91d90ac373dc.sn.mynetname.net:40880/ipfs/';
+  `http://143.198.183.41:30301/api/uploads/`;
+export const CONTRACT_URL = `http://143.198.183.41:30880/ipfs/`;
 // export const API_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/api';
 // export const STATIC_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/api/uploads/';
 // export const CONTRACT_URL = 'http://91d90ac373dc.sn.mynetname.net:2020/ipfs/';

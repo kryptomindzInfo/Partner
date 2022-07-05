@@ -888,7 +888,7 @@ export default class BranchDashboard extends Component {
         }
       })
       .catch(err => {
-        
+
       });
   };
 
@@ -961,12 +961,12 @@ export default class BranchDashboard extends Component {
                   <u>DashBoard</u>
               </A>
             </button>
-          <h2 style={{color:"green", marginLeft:"220px" }}><b>{this.state.branchName}</b> </h2> 
-          
+          <h2 style={{color:"green", marginLeft:"220px" }}><b>{this.state.branchName}</b> </h2>
+
           </div>
         </Card>
       ):''}
-       
+
         <Container verticalMargin>
         {this.state.apiType === 'partner' ? (
           <Sidebar marginRight>
@@ -976,8 +976,8 @@ export default class BranchDashboard extends Component {
         ) : (
           <SidebarBranch bankName={this.props.match.params.bank} />
         )}
-         
-         
+
+
           <Main>
             <Row>
               <Col  cW='33%'>
@@ -1073,7 +1073,7 @@ export default class BranchDashboard extends Component {
               </Col>
             </Row>
             <Row >
-              
+
               <Col cW='50%'>
               <Card
                   style={{height:'120px'}}
@@ -1124,12 +1124,12 @@ export default class BranchDashboard extends Component {
                       <div className="cardValue">{this.state.pending}</div>
                     </Col>
                   </Row>
-                  
+
                 </Card>
               </Col>
             </Row>
           </Main>
-          <Main fullWidth>  
+          <Main fullWidth>
             <Card bigPadding>
               <div className="cardHeader">
                 <div className="cardHeaderLeft">
@@ -1213,7 +1213,7 @@ export default class BranchDashboard extends Component {
                               <td className="tac bold green">
                                  <Button
                                 className="sendMoneyButton"
-                                style ={{marginRight:"10px"}} 
+                                style ={{marginRight:"10px"}}
                               >
                                 {/* <A
                                   href={
@@ -1241,7 +1241,7 @@ export default class BranchDashboard extends Component {
                               <td className="tac bold green">
                               <Button
                                 className="sendMoneyButton"
-                                style ={{marginRight:"10px"}} 
+                                style ={{marginRight:"10px"}}
                               >
                                 {/* <A
                                   href={
@@ -1304,7 +1304,7 @@ export default class BranchDashboard extends Component {
                           </td>
 
                             )}
-                           
+
 
                           </tr>
                         );
@@ -1884,7 +1884,7 @@ export default class BranchDashboard extends Component {
                         required
                       />
                     </FormGroup>
-                    {/* <FormGroup>
+                     <FormGroup>
                       <label>Maximum daily transaction amount*</label>
                       <TextInput
                         type="text"
@@ -1909,7 +1909,7 @@ export default class BranchDashboard extends Component {
                         onChange={this.handleInputChange}
                         required
                       />
-                    </FormGroup> */}
+                    </FormGroup>
                     {this.state.editBranchLoading ? (
                       <Button filledBtn marginTop="50px" disabled>
                         <Loader />
@@ -2276,7 +2276,7 @@ export default class BranchDashboard extends Component {
                   </Col>
                   <Col>
                   {this.state.pendingtransStatus === 0 ? (
-                       
+
                     <Row>
                       <Col cW="49%" mR="2%">
                         {this.state.claimMoneyLoading ? (

@@ -183,7 +183,7 @@ export default class PartnerCashierInfo extends Component {
           this.generateOTP();
         },
       );
-    
+
   };
   startTimer = () => {
     var dis = this;
@@ -479,7 +479,7 @@ export default class PartnerCashierInfo extends Component {
   };
 
   componentDidMount() {
-    
+
     this.setState({ cashier_id: this.props.match.params.cashier, branch_id : this.props.match.params.branch }, () => {
       if (token !== undefined && token !== null) {
         this.getBranches();
@@ -524,7 +524,7 @@ export default class PartnerCashierInfo extends Component {
         </Helmet>
         <PartnerHeader page="branch"  goto={"/bank/cashiers/"+this.props.match.params.branch} middleTitle={this.state.name} />
         <Container verticalMargin>
-          
+
           <BankSidebarCashier active="info" blockTxt={this.state.status} edit={this.showEditPopup.bind(this)} block={this.blockBranch.bind(this)} bankName={this.state.name}/>
           <Main>
 
@@ -556,11 +556,11 @@ export default class PartnerCashierInfo extends Component {
     Worrking Hours
     </Col>
     <Col className="infoRight">
-    
+
     </Col>
   </Row>
 
- 
+
   <Row>
     <Col className="infoLeft">
     From
@@ -588,7 +588,7 @@ export default class PartnerCashierInfo extends Component {
     </Col>
   </Row>
 
-  {/* <Row>
+   <Row>
     <Col className="infoLeft">
     Maximum daily transaction amount
     </Col>
@@ -604,8 +604,8 @@ export default class PartnerCashierInfo extends Component {
     <Col className="infoRight">
     {this.state.max_trans_count}
     </Col>
-  </Row> */}
-  
+  </Row>
+
 
 </div>
 </Card>
@@ -686,7 +686,7 @@ export default class PartnerCashierInfo extends Component {
               </FormGroup>
               <label>Working Hours</label>
               <Row>
-              
+
                 <Col  cW="30%" mR="2%">
 
                 <FormGroup>
@@ -735,7 +735,7 @@ export default class PartnerCashierInfo extends Component {
                   required
                 />
               </FormGroup>
-              {/* <FormGroup>
+              <FormGroup>
                 <label>Maximum daily transaction amount*</label>
                 <TextInput
                   type="text"
@@ -760,7 +760,7 @@ export default class PartnerCashierInfo extends Component {
                   onChange={this.handleInputChange}
                   required
                 />
-              </FormGroup> */}
+              </FormGroup>
                     {
                       this.state.editBranchLoading ?
                       <Button filledBtn marginTop="50px" disabled>
